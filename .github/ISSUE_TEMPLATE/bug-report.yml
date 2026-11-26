@@ -1,0 +1,40 @@
+name: Bug or regression
+description: Describe a reproducible AETHERFALL defect without exposing private data
+title: "[BUG] "
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps and actual commands
+    validations:
+      required: true
+  - type: input
+    id: sha
+    attributes:
+      label: Exact source commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Tested environment
+      options:
+        - Source-only GitHub CI
+        - Real Godot 4.7.2 headless
+        - Actual Godot graphical game
+        - Blender
+        - Physical Android/device
+        - Other / NOT_RUN
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Log, proof, known limitations and rollback
+      description: Redact secrets, private images and player data. Mark unrun gates NOT_RUN.
