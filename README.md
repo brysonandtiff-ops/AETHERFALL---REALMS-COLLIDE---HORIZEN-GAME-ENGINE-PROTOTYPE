@@ -62,3 +62,5 @@ python3 tools/aetherfall.py handoff AETHERFALL-DEVOPS-001 --json
 `handoff` is **a safe JSON proposal**, never a remote call. The existing S.I.R.E AI master, GENESIS AI/HORIZON, Git/permission stewards and MCP/Plugin services remain external, and are **NOT_CONNECTED** until a real authorised session proves otherwise.
 
 Read [START HERE](docs/development/START_HERE.md) and [S.I.R.E. integration boundaries](docs/development/SIRE_INTEGRATION.md). The CI job on pull requests runs standard-library tests plus a genuine official Godot 4.7.2 **headless** startup. This does not produce native visual/device evidence or automatically merge or deploy anything.
+
+For the next safe job, run `python3 tools/aetherfall.py work new AETHERFALL-GAME-002 --team gameplay --goal "Implement one approved playable encounter" --criterion "Real native Godot capture and accepted tests"`. Use `python3 tools/aetherfall.py calls --json` to inspect **suggested upstream S.I.R.E. calls**, which are never executed automatically.

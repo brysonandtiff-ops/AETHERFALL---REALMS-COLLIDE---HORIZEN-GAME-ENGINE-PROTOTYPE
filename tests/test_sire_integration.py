@@ -2,6 +2,8 @@
 import copy
 import importlib.util
 import json
+import shutil
+import tempfile
 import subprocess
 import sys
 import unittest
@@ -106,6 +108,59 @@ class DeveloperInterfaceTests(unittest.TestCase):
         changed = copy.deepcopy(self.order)
         changed["status"] = "COMPLETE"
         self.assertIn("Work order claims an unverified completion", CLI.order_issues(changed))
+
+
+    def test_call_inventory_never_claims_live_connection(self):
+        result = self.invoke("calls", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        calls = json.loads(result.stdout)
+        self.assertEqual(set(calls), CLI.ROUTE_IDS)
+        self.assertTrue(all(row["invoked"] is False for row in calls.values()))
+        self.assertTrue(all(row["connection"] == "DEFINED_NOT_CONNECTED" for row in calls.values()))
+
+    def test_new_order_is_local_non_destructive_and_no_overwrite(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            temp = Path(temporary)
+            for path in (".sire/integration.json", ".sire/commands.json"):
+                target = temp / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / path, target)
+            for route in self.config["routes"].values():
+                name = route["skill"]
+                target = temp / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / name, target)
+            (temp / ".sire/work-orders").mkdir(parents=True)
+            result = CLI.create_order(
+                "AETHERFALL-ART-002",
+                "character_art",
+                "Add approved Vellaris model intake acceptance",
+                ["Preserve original Blender source and import real GLB in Godot"],
+                root=temp
+            )
+            self.assertEqual(result["status"], "PLANNED")
+            self.assertFalse(result["dispatched"])
+            path = temp / result["saved_path"]
+            self.assertTrue(path.is_file())
+            data = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(CLI.order_issues(data), [])
+            self.assertEqual(data["evidence"]["native_godot"], "NOT_RUN")
+            self.assertEqual(data["authorised_executor"]["master"], "S.I.R.E AI")
+            with self.assertRaises(FileExistsError):
+                CLI.create_order(
+                    "AETHERFALL-ART-002", "character_art",
+                    "Second request must never overwrite first", ["Meaningful acceptance"], root=temp
+                )
+
+    def test_new_order_rejects_path_escape(self):
+        with self.assertRaises(ValueError):
+            CLI.create_order("AETHERFALL-../X", "gameplay", "A legitimate long goal",
+                             ["Meaningful acceptance"])
+
+    def test_new_order_rejects_invalid_acceptance(self):
+        with self.assertRaises(ValueError):
+            CLI.create_order("AETHERFALL-GAME-003", "gameplay",
+                             "A legitimate long goal", [])
 
     def test_source_branch_never_installs_mcp_plugin(self):
         self.assertNotIn("subprocess", self.invoke("handoff", "AETHERFALL-DEVOPS-001").stderr)

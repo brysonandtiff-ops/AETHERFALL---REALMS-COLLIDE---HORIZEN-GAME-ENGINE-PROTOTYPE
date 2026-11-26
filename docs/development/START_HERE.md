@@ -13,3 +13,13 @@
 Useful short commands: `python3 tools/aetherfall.py cmd T` explains tests; `cmd G` Git, `cmd E` evidence, `cmd N` next. These are route guides, not background executors.
 
 This project is currently a **source foundation**. Work-order and plugin files do not grant automatic dispatch, agent hosting, MCP access or paid APIs.
+
+## Creating a new job
+
+```sh
+python3 tools/aetherfall.py calls
+python3 tools/aetherfall.py work new AETHERFALL-GAME-002 --team gameplay --goal "Build the first playable combat encounter" --criterion "Real Godot run demonstrates responsive input and enemy damage"
+python3 tools/aetherfall.py work list
+```
+
+This creates a **PLANNED** work order on disk, nothing more. Stage/commit it in a reviewed branch. `handoff` requires a clean, source-pinned Git checkout and emits only a proposal. S.I.R.E. runner authentication, actual code-building AI, plugin access, merge and release remain separate authorised steps.
