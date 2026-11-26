@@ -47,5 +47,29 @@
     "dist",
     "node_modules"
   ],
-  "notes": "This policy locks file identity and removal safety, not content hashes. New characters, scenes, scripts and versions are allowed. Existing source relocation or deletion must be separately reviewed and verified before changing policy."
+  "notes": "This policy locks file identity and removal safety, not content hashes. New characters, scenes, scripts and versions are allowed. Existing source relocation or deletion must be separately reviewed and verified before changing policy. Previously committed binary originals are immutable in-place: commit a new versioned source/export/media file instead.",
+  "immutable_binary_roots": [
+    "art/",
+    "game/assets/",
+    "evidence/"
+  ],
+  "immutable_binary_extensions": [
+    ".blend",
+    ".glb",
+    ".fbx",
+    ".psd",
+    ".kra",
+    ".spp",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+    ".tif",
+    ".tiff",
+    ".exr",
+    ".wav",
+    ".ogg",
+    ".mp4",
+    ".mov"
+  ]
 }

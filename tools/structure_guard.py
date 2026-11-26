@@ -60,7 +60,7 @@ def _load_contract(root: Path) -> tuple[dict | None, list[str]]:
     problems = []
     if data.get("godot_project") != "game/project.godot" or data.get("asset_registry") != "art/asset_registry.json":
         problems.append("Canonical project/registry paths changed")
-    for key in ("protected_paths", "preserved_roots", "identity_fields", "ignore_generated_dirs"):
+    for key in ("protected_paths", "preserved_roots", "identity_fields", "ignore_generated_dirs", "immutable_binary_roots", "immutable_binary_extensions"):
         values = data.get(key)
         if not isinstance(values, list) or not values or any(not isinstance(item, str) or not item for item in values):
             problems.append("Invalid contract array: " + key)
@@ -76,9 +76,12 @@ def _load_contract(root: Path) -> tuple[dict | None, list[str]]:
     for value in paths:
         if ".." in value.split("/") or value.startswith("/") or value.endswith("/"):
             problems.append("Unsafe protected path declaration: " + value)
-    for value in roots:
+    for value in roots + data["immutable_binary_roots"]:
         if ".." in value.split("/") or not value.endswith("/") or value.startswith("/"):
-            problems.append("Unsafe preserved root declaration: " + value)
+            problems.append("Unsafe preserved/immutable root declaration: " + value)
+    for value in data["immutable_binary_extensions"]:
+        if not re.fullmatch(r"\.[a-z0-9]{2,6}", value):
+            problems.append("Invalid immutable binary extension")
     if CONTRACT_FILE not in paths or "game/project.godot" not in paths or "art/asset_registry.json" not in paths:
         problems.append("Contract does not protect itself and canonical game files")
     if set(ASSET_CHANGE_KEYS) - set(data["identity_fields"]):
@@ -206,6 +209,16 @@ def _git_show(root: Path, base: str, file_path: str) -> str | None:
     return _git(root, "show", base + ":" + file_path)
 
 
+def _declared_uid(rel: str, content: str) -> str | None:
+    if rel.endswith(".gd.uid"):
+        uid = content.strip()
+        return uid if UID_RE.fullmatch(uid) else None
+    if rel.endswith((".tscn", ".tres")):
+        found = SCENE_UID.search(content)
+        return found.group(1) if found else None
+    return None
+
+
 def compare_issues(root: Path, base: str) -> list[str]:
     """Compare against a verified ancestor SHA. Never use an untrusted branch name."""
     root = Path(root).resolve()
@@ -224,7 +237,8 @@ def compare_issues(root: Path, base: str) -> list[str]:
     if old_policy_text:
         try:
             old_policy = json.loads(old_policy_text)
-            for key in ("protected_paths", "preserved_roots", "identity_fields"):
+            for key in ("protected_paths", "preserved_roots", "identity_fields",
+                        "immutable_binary_roots", "immutable_binary_extensions", "ignore_generated_dirs"):
                 if set(old_policy[key]) - set(policy[key]):
                     errors.append("Attempted weakening of base layout contract: " + key)
             for key in ("max_component", "max_relative_path"):
@@ -279,6 +293,23 @@ def compare_issues(root: Path, base: str) -> list[str]:
                 errors.append("Protected file deleted/replaced: " + rel)
             elif any(rel.startswith(prefix) for prefix in policy["preserved_roots"]) and not rel.endswith(DELETE_OK):
                 errors.append("Existing source/art/evidence file removed without review: " + rel)
+        if status in ("M", "T"):
+            if any(rel.startswith(prefix) for prefix in policy["immutable_binary_roots"]) and (
+                Path(rel).suffix.casefold() in policy["immutable_binary_extensions"]
+            ):
+                errors.append("Original binary changed in place; version the asset instead: " + rel)
+            if rel.endswith((".tscn", ".tres", ".gd.uid")):
+                original = _git_show(root, base, rel)
+                candidate = root / rel
+                if original is not None and candidate.is_file():
+                    try:
+                        current_text = candidate.read_text(encoding="utf-8")
+                    except (OSError, UnicodeError):
+                        errors.append("Godot UID source unreadable: " + rel)
+                    else:
+                        old_uid = _declared_uid(rel, original)
+                        if old_uid is not None and _declared_uid(rel, current_text) != old_uid:
+                            errors.append("Existing Godot UID changed: " + rel)
     return errors
 
 

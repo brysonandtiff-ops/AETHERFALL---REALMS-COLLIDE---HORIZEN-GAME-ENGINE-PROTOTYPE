@@ -64,6 +64,72 @@ class StructureGuardTests(unittest.TestCase):
         self.assertEqual(guard.workspace_issues(self.root), [])
         self.assertEqual(guard.compare_issues(self.root, self.base), [])
 
+
+    def test_existing_blender_source_cannot_be_overwritten(self):
+        path = self.root / "art/blender/canonical_v001.blend"
+        path.write_bytes(b"approved-original")
+        self.commit("add approved source")
+        self.base = self.git("rev-parse", "HEAD").stdout.strip()
+        path.write_bytes(b"overwritten-in-place")
+        self.commit("overwrite source")
+        self.assert_issue(guard.compare_issues(self.root, self.base), "Original binary changed in place")
+
+    def test_new_versioned_blender_source_allowed(self):
+        old = self.root / "art/blender/canonical_v001.blend"
+        old.write_bytes(b"approved-original")
+        self.commit("archive source v1")
+        self.base = self.git("rev-parse", "HEAD").stdout.strip()
+        (self.root / "art/blender/canonical_v002.blend").write_bytes(b"separate-new-version")
+        self.commit("add source v2")
+        self.assertEqual(guard.compare_issues(self.root, self.base), [])
+
+    def test_exported_glb_cannot_be_silently_replaced(self):
+        path = self.root / "game/assets/actor_v001.glb"
+        path.write_bytes(b"original-export")
+        self.commit("add glb")
+        self.base = self.git("rev-parse", "HEAD").stdout.strip()
+        path.write_bytes(b"replaced-export")
+        self.commit("replace glb in place")
+        self.assert_issue(guard.compare_issues(self.root, self.base), "Original binary changed in place")
+
+    def test_genuine_media_cannot_be_overwritten(self):
+        path = self.root / "evidence/scene_capture.png"
+        path.write_bytes(b"original-media")
+        self.commit("add evidence")
+        self.base = self.git("rev-parse", "HEAD").stdout.strip()
+        path.write_bytes(b"new-different-bytes")
+        self.commit("replace evidence")
+        self.assert_issue(guard.compare_issues(self.root, self.base), "Original binary changed in place")
+
+    def test_existing_scene_uid_cannot_drift(self):
+        path = self.root / "game/scenes/levels/realms/old_map.tscn"
+        path.write_text('[gd_scene format=3 uid="uid://original01"]\n')
+        self.commit("assign real uid")
+        self.base = self.git("rev-parse", "HEAD").stdout.strip()
+        path.write_text('[gd_scene format=3 uid="uid://different02"]\n')
+        self.commit("change uid")
+        self.assert_issue(guard.compare_issues(self.root, self.base), "Existing Godot UID changed")
+
+    def test_existing_script_uid_cannot_drift(self):
+        script = self.root / "game/scripts/actor.gd"
+        script.parent.mkdir(parents=True, exist_ok=True)
+        script.write_text("extends Node\n")
+        uid = self.root / "game/scripts/actor.gd.uid"
+        uid.write_text("uid://original01\n")
+        self.commit("record script uid")
+        self.base = self.git("rev-parse", "HEAD").stdout.strip()
+        uid.write_text("uid://different02\n")
+        self.commit("change script uid")
+        self.assert_issue(guard.compare_issues(self.root, self.base), "Existing Godot UID changed")
+
+    def test_immutable_binary_policy_cannot_be_weakened(self):
+        path = self.root / guard.CONTRACT_FILE
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["immutable_binary_roots"].remove("art/")
+        path.write_text(json.dumps(data), encoding="utf-8")
+        self.commit("weaken art protection")
+        self.assert_issue(guard.compare_issues(self.root, self.base), "Attempted weakening")
+
     def test_new_scene_is_allowed(self):
         (self.root / "game/scenes/levels/realms/new_map.tscn").write_text(
             '[gd_scene format=3]\n[node name="New" type="Node3D"]\n',

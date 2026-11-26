@@ -17,7 +17,7 @@
 2. File names incompatible with Windows/Linux (reserved device names, trailing spaces or periods, case collisions, unnormalised Unicode, control characters, extreme lengths, symbolic links).
 3. Broken **literal** `res://` links in Godot scenes, resources, scripts, shaders and project settings; duplicate scene/script UIDs; orphan `.gd.uid` files.
 4. A second nested Godot project under `game/`, tracked caches or generated packages.
-5. On PRs, deleted tracked art, scene, script, work-order or evidence sources (except unnecessary `.gitkeep`), removed asset IDs, changed stable source/runtime paths or a changed main-scene path.
+5. On PRs, modified-in-place original binary art (Blender, GLB, image, audio) or captured evidence media, changed historical Godot resource UIDs, or deleted tracked art, scene, script, work-order or evidence sources (except unnecessary `.gitkeep`), removed asset IDs, changed stable source/runtime paths or a changed main-scene path.
 6. A PR that tries to weaken the *base version* of this contract.
 
 These are source-level checks, not a substitute for real engine import, animation or gameplay testing. Dynamic `res://` paths are intentionally not inferred; genuine Godot execution must cover those.
@@ -45,3 +45,9 @@ Owner and independent reviewers should check the change. GitHub CODEOWNERS is a 
 - **NATIVE HEADLESS PASS:** A real Godot executable imported and started the exact source.
 - **VISUAL/DEVICE PASS:** Only after original screenshots/video, source SHA, engine/device ID and independent review.
 - **RELEASE:** Separate gate; never inferred from this file structure.
+
+## Version original artwork and evidence — do not overwrite
+
+Once a binary source or exported model has been committed, save a **new filename** for updates (e.g. `CHR_Vellaris_v001.blend` → `CHR_Vellaris_v002.blend`). Never silently replace committed `.blend`, `.glb`, image, audio or genuine video capture files in `art/`, `game/assets/` or `evidence/`.
+
+Game scenes may be updated to reference new exported asset versions once those files exist and Godot imports them successfully. Original binaries remain available for rollback. Real captured video/screenshots are immutable archival evidence. Text files, scene scripts and developer docs can still be edited; previously issued Godot UIDs remain stable unless a separately authorised migration is reviewed.
