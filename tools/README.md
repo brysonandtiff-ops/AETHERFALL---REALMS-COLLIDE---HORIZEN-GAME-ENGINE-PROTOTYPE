@@ -3,8 +3,11 @@
 Run from the repo root:
 
 ~~~sh
+python3 tools/studio_preflight.py
+# individual checks for diagnosing a failure:
 python3 tools/validate_structure.py
 python3 tools/validate_studio_layout.py
+python3 tools/validate_asset_handoffs.py --report
 python3 tools/production_queue.py --validate
 python3 tools/production_queue.py --next
 python3 -m unittest discover -s tests -v
@@ -23,3 +26,5 @@ The `validate_structure.py` scan also checks high-confidence embedded-credential
 `validate_studio_layout.py` checks the machine-readable studio ownership contract and native Godot/Blender toolchain truth. It is source/layout proof only, **not** a functioning game or release pipeline.
 
 `audit_asset_history.py` is a PR-only guard for existing character IDs/source paths and protected art/evidence deletions relative to the real Git base. It needs a previous registry snapshot (`--baseline`) and optionally the exact Git base revision (`--git-base`). GitHub's CI supplies both.
+
+`studio_preflight.py` runs actual local source validators and Python regression tests; `--quick` omits tests. It prints the next unblocked work orders only after the checks succeed. `validate_asset_handoffs.py` checks real paths, provenance fields, bytes, SHA256 and required native *records*, never model fidelity or gameplay. See `art/handoffs/README.md`.

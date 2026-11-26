@@ -55,3 +55,7 @@ The native Godot project remains `game/project.godot`. Treat `studio/layout_mani
 Never create a second hero identity register. Follow `docs/production/CONTENT_HANDOFF.md`: canonical concept → editable Blender master → independently versioned engine GLB/export → native Godot scene → test and genuine evidence. Plugin imports must include license/provenance reviews and actual engine tests. Build/QA/release lanes are **reserved organisational boundaries**, not operating automation or permission to provision external servers.
 
 A requested engine migration, source-art renaming, new licensed dependency, LFS/Perforce transition or paid build farm requires a separately scoped owner decision and safe migration tests.
+
+## Operational asset receipt progression
+
+Keep the registry authoritative: `art/asset_registry.json` owns immutable character IDs and canon approval, while `art/handoffs/<id>.json` documents real source files with SHA256. Each status moves only **one adjacent stage** in a reviewed PR: reservation → concept file → Blender file → GLB export → separately reviewed Godot native import. `python3 tools/studio_preflight.py` is the single local source/test gate; `python3 tools/validate_asset_handoffs.py --report` identifies the next honest stage. Never mark an asset native verified from a header, checksum, synthetic unit-test fixture or concept illustration. Legacy candidate canon approval remains a separate owner decision.

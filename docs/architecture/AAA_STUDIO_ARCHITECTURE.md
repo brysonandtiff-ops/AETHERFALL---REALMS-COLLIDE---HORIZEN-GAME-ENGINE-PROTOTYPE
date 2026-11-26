@@ -93,3 +93,7 @@ python3 -m unittest discover -s tests -v
 ## Canonical source and review history
 
 The art registry is **append-only** by default across review branches: `tools/audit_asset_history.py` compares to target-branch truth and blocks deleted/relabelled character identities and deleted original `art/` or `evidence/` files. A future approved edit that truly needs to move source art requires a documented full migration and separately reviewed policy change; static structure is not authority to delete originals.
+
+## Refinement: operational asset custody, not a decorative structure
+
+Original concept → Blender source → Godot GLB export → Godot import review is now represented by structured, file-hashed receipts under `art/handoffs/`, and validated using `tools/validate_asset_handoffs.py`. Existing registered IDs and source paths remain immutable. `tools/studio_preflight.py` gives all disciplines a single real local validation entry point. The receipt and preflight are **source-level workflows**, not a full-scale Perforce depot, automatic asset exporter, rendered demo or proof that any character is playable.

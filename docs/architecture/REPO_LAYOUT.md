@@ -49,3 +49,7 @@ See [AAA_STUDIO_ARCHITECTURE.md](AAA_STUDIO_ARCHITECTURE.md) and the machine-own
 `art/` holds canonical editable masters and references; `game/assets/` holds tested exports only. New `art/ui/`, `art/vfx/`, `art/storyboards/`, `game/localization/`, `game/scripts/ai/`, `input/`, `save/`, `telemetry/`, and `game/scenes/cinematics/` are reserved domains, not completed features.
 
 Generated caches (`game/.godot/`, `game/.import/`, `build/`, `dist/`, `pipeline/.cache/`) are never a source-of-truth. Team asset handoffs follow `../production/CONTENT_HANDOFF.md` and real PR/build lanes follow `../production/BUILD_TRAINS.md`. All existing `CHR_*`, Godot UIDs, canonical original art and existing game paths remain unchanged.
+
+## Refinement: receipt-based content handoff
+
+`art/handoffs/` holds per-asset real-file receipts once source is genuinely present; the authoritative `art/asset_registry.json` retains ID/canon/location and the current stage. `tools/validate_asset_handoffs.py --report` shows the next safe stage. Source files stay under their existing `CHR_*`/`WPN_*` folders, verified native captures under `evidence/godot/`, and no original source is renamed or overwritten automatically. Run `python3 tools/studio_preflight.py` for one local full source/test gate.

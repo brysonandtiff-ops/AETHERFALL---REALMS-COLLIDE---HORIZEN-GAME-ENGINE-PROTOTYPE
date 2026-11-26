@@ -42,3 +42,7 @@ python3 tools/production_queue.py --next
 ```
 
 Then run the native Godot, Blender, network and device checks required by the changed feature. CI performs headless native Godot smoke; no graphical/physical proof without actual capture.
+
+## Asset file statuses are distinct from gameplay acceptance
+
+`concept_recorded`, `blender_source_recorded` and `runtime_export_recorded` mean that approved/reviewable source records point at actual files with checked SHA256—not that a native engine or a player has verified them. `native_import_reviewed` additionally requires original Godot import log and screenshot/video with an actual reviewer record; the validator can confirm recorded bytes, not the truth of their content. Every next stage requires one reviewed PR and retains canonical asset IDs and original source history. Gameplay still requires separate, genuine engine tests and videos under the production queue.

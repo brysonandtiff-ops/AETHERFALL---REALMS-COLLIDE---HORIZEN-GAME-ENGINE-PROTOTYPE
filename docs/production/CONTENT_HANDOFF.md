@@ -33,3 +33,9 @@ Never move/bulk-rename Godot resource paths, invent original artwork or call gen
 ## Non-destructive source history gate
 
 During a GitHub PR, `tools/audit_asset_history.py --baseline <base-registry> --git-base <base-commit>` refuses removal/renaming of tracked original art, evidence or canonical character definitions. New approved IDs can be appended without deleting previous history. A necessary destructive migration must be separately proposed, rights-checked, backed up, documented, tested and approved; never disable the guard silently.
+
+## Record real files instead of claiming finished characters from directories
+
+Use `python3 tools/validate_asset_handoffs.py --report` to view the registered source-art status of every character and weapon. Only genuine, rights-cleared files in the registry's exact concept/Blender/runtime directories may be referenced by `art/handoffs/<asset-id>.json` receipts containing SHA256, byte count and provenance review fields. Source-status promotions move forward just **one adjacent stage** per reviewed PR, guarded by `tools/audit_asset_history.py`. The current registry remains unchanged until actual source and approval are available. Native import review additionally needs real Godot log and screenshot/video capture evidence; no shape/CRC/hash-only test can establish visual authenticity.
+
+Run `python3 tools/studio_preflight.py` before handoff and attach actual Blender/Godot evidence separately. This source flow does not change locked canonical character identities, licensing requirements, or the owner-only approval of legacy candidates.
