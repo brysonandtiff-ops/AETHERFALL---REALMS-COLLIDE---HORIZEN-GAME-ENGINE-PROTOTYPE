@@ -1,3 +1,4 @@
+import {inspectSTL,embeddedGLTFtoGLB} from './model-extra.js';
 /** Strict local geometry inspection, not a Blender/Godot asset verifier. */
 const GLB_MAGIC=0x46546c67,JSON_CHUNK=0x4e4f534a,BIN_CHUNK=0x004e4942;
 const MAX_SOURCE_BYTES=64*1024*1024,MAX_PREVIEW_TRIANGLES=180000;
@@ -42,6 +43,11 @@ export async function inspectSource(file){
   if(!file||!file.name)throw new Error('Select a local source file.');if(file.size>MAX_SOURCE_BYTES)throw new Error('Source over 64 MiB. Store larger assets in the controlled source repository.');const type=file.name.toLowerCase().split('.').pop();
   if(type==='glb')return inspectGLB(await file.arrayBuffer());
   if(type==='obj')return inspectOBJ(await file.text());
+  if(type==='stl')return inspectSTL(await file.arrayBuffer());
+  if(type==='gltf'){
+    const info=inspectGLB(embeddedGLTFtoGLB(await file.text()));
+    return {...info,format:'GLTF',stats:{...info.stats,note:'Self-contained local glTF triangle geometry only; no external assets, materials, native Blender/Godot, or gameplay proof.'}};
+  }
   if(type==='fbx')return {format:'FBX',vertices:null,stats:{note:'FBX bytes can be hashed, but this browser does not decode FBX. Validate in native Blender before staging.'}};
-  throw new Error('Only GLB, OBJ and FBX sources are accepted.');
+  throw new Error('Only GLB, embedded glTF, OBJ, STL and FBX sources are accepted.');
 }
