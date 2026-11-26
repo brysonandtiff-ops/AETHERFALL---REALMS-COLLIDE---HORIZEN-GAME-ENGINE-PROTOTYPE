@@ -291,6 +291,13 @@ class BlenderHandoffTests(unittest.TestCase):
         self.doc['production_status'] = 'READY_FOR_OWNER_REVIEW'
         self.assert_blocked('owner review already asserted')
 
+    def test_ready_requires_pending_owner_review(self):
+        self.complete()
+        self.doc['production_status'] = 'READY_FOR_OWNER_REVIEW'
+        self.doc['owner_signoff']['approved'] = False
+        self.doc['stages']['owner_review']['status'] = 'FAIL'
+        self.assert_blocked('owner review already asserted')
+
     def test_bad_stage_type_fails_closed(self):
         self.doc['stages']['uv_pbr_bakes']['status'] = ['PASS']
         self.assert_blocked('Missing/invalid Blender stage')
