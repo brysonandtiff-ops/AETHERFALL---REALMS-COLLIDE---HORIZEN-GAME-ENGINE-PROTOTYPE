@@ -1,1 +1,59 @@
-The requested file reference is not currently visible. Use files.search or files.list to rediscover the file, then retry with a returned ref_id or file_id.
+{
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "date": "2026-11-26",
+  "status": "MODEL_BLOCKOUT_ONLY_NATIVE_BLENDER_GODOT_NOT_RUN",
+  "model_assets": [
+    {
+      "filename": "CHR_Voltex_StormConductor_BLOCKOUT_v01.glb",
+      "triangles": 5472,
+      "vertices": 2932,
+      "submeshes": 98,
+      "bounds": [
+        [
+          -0.7605798793331944,
+          -0.33999999999999997,
+          0.0
+        ],
+        [
+          0.7605798793331944,
+          0.18400000000000002,
+          1.9722499999999998
+        ]
+      ],
+      "sha256": "8b4c9c04534b773e8c39e0d48d5745557625c2de7ccf59077251d07ceb8f578b",
+      "id": "CHR_Voltex_StormConductor_BLOCKOUT_v01",
+      "status": "PROCEDURAL_BLOCKOUT_NOT_GAME_READY"
+    },
+    {
+      "filename": "CHR_Unassigned_CyanSentinel_CANDIDATE_BLOCKOUT_v01.glb",
+      "triangles": 6644,
+      "vertices": 3468,
+      "submeshes": 73,
+      "bounds": [
+        [
+          -0.9600553541152509,
+          -0.47,
+          0.0
+        ],
+        [
+          0.9600553541152509,
+          0.3268,
+          2.443885673351026
+        ]
+      ],
+      "sha256": "dc45000cfb33e4b30440a1e81712de9bf7c401991e3ff0a68827951e30a6840b",
+      "id": "CHR_Unassigned_CyanSentinel_CANDIDATE_BLOCKOUT_v01",
+      "status": "PROCEDURAL_BLOCKOUT_NOT_GAME_READY"
+    }
+  ],
+  "source_image_sha256": {
+    "40158_owner_reference.webp": "850fd9dc0ee2006005d5e620a009c90cdb8ad3b460a5399e5994d00203b485d8",
+    "40172_owner_reference.webp": "ce3e460a374fa444fb3fb651efe924a306bec78ee4d9cd6d48e78748b5f3b31f"
+  },
+  "locked_originals_preserved": true,
+  "first_two_images_from_this_turn": [
+    "40172.jpg Voltex",
+    "40158.jpg unassigned cyan-core armored candidate"
+  ],
+  "note": "No original Meshy GLB/FBX was provided; meshes are newly constructed procedural shape studies, not retopology of actual source or final artist-quality mesh."
+}
