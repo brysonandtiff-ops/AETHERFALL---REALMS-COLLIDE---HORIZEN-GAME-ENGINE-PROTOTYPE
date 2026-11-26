@@ -139,7 +139,7 @@ class HardenedStructureTests(unittest.TestCase):
         self.assert_rejected("Duplicate character one-of-one identity")
 
     def test_corrupted_master_source_hash_fails(self):
-        path = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Master_Concept_2026-11-26.png"
+        path = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp"
         path.write_bytes(b"not the owner-approved image")
         def mutate(d):
             d["concept_reference"]["archive_status"] = "source_verified"
@@ -160,7 +160,7 @@ class HardenedStructureTests(unittest.TestCase):
         self.assert_rejected("Undocumented character section waiver")
 
     def test_master_image_cannot_arrive_unreviewed(self):
-        path = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Master_Concept_2026-11-26.png"
+        path = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp"
         path.write_bytes(b"source added without updating dossier")
         self.assert_rejected("Character source present but archive not verified")
 
