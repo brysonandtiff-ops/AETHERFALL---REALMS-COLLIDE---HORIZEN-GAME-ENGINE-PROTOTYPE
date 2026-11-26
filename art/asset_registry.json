@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "note": "Reserved paths only. No completed 3D assets are present in this scaffold.",
+  "assets": [
+    {
+      "id": "CHR_Vellaris_Bloodshield",
+      "type": "character",
+      "role": "hero_tank",
+      "status": "reserved_no_source",
+      "concept_dir": "art/concepts/characters/CHR_Vellaris_Bloodshield",
+      "source_dir": "art/blender/characters/CHR_Vellaris_Bloodshield",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Vellaris_Bloodshield"
+    },
+    {
+      "id": "CHR_ThornDell",
+      "type": "character",
+      "role": "unconfirmed",
+      "status": "reserved_no_source",
+      "concept_dir": "art/concepts/characters/CHR_ThornDell",
+      "source_dir": "art/blender/characters/CHR_ThornDell",
+      "runtime_dir": "game/assets/characters/heroes/CHR_ThornDell"
+    },
+    {
+      "id": "WPN_Vellaris_Bloodshield",
+      "type": "weapon",
+      "role": "standalone_weapon_focus",
+      "status": "reserved_no_source",
+      "concept_dir": "art/concepts/weapons/WPN_Vellaris_Bloodshield",
+      "source_dir": "art/blender/weapons/WPN_Vellaris_Bloodshield",
+      "runtime_dir": "game/assets/weapons/WPN_Vellaris_Bloodshield"
+    }
+  ]
+}

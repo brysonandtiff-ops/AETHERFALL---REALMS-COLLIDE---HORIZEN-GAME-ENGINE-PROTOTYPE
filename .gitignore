@@ -1,0 +1,33 @@
+# Godot 4 generated import and editor cache
+**/.godot/
+**/.import/
+
+# Blender backups and temporary files (keep .blend source files)
+*.blend1
+*.blend2
+*.blend@
+*.blend~
+*.blend_old
+
+# Python, OS and editor noise
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local credentials, never commit keys
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated packages; imported .glb assets are NOT ignored
+build/
+dist/
+*.apk
+*.aab
+*.exe
