@@ -19,6 +19,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0 # Needed for exact PR base-to-head change detection
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Validate source and migration boundary
         run: python3 tools/validate_structure.py
       - name: Verify portable file layout and Godot references
@@ -35,6 +36,26 @@ jobs:
         run: python3 tools/aetherfall.py doctor --json
       - name: Run adversarial standard-library tests
         run: python3 -m unittest discover -s tests -v
+      - name: Create and recheck unsigned, source-only S.I.R.E. integrity receipt
+        shell: bash
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          REVIEW_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          if [[ -z "$REVIEW_BASE" || "$REVIEW_BASE" =~ ^0+$ ]]; then
+            REVIEW_BASE="$(git rev-parse HEAD^)"
+          fi
+          python3 tools/sire_seal.py source --base "$REVIEW_BASE" --expected-head "$EXPECTED_HEAD" --output "$RUNNER_TEMP/aetherfall-source-integrity.json"
+          python3 tools/sire_seal.py verify --receipt "$RUNNER_TEMP/aetherfall-source-integrity.json" --expected-head "$EXPECTED_HEAD"
+      - name: Archive source integrity receipt (NOT a signed release seal)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: aetherfall-source-integrity-${{ github.run_id }}
+          path: ${{ runner.temp }}/aetherfall-source-integrity.json
+          if-no-files-found: error
+          retention-days: 7
 
   native-godot-4-7-2-smoke:
     runs-on: ubuntu-latest
@@ -44,6 +65,14 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Check exact candidate Git commit before native smoke
+        shell: bash
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
       - name: Download and SHA256-verify official native Godot 4.7.2
         shell: bash
         run: |
@@ -69,3 +98,13 @@ jobs:
             exit 1
           fi
           echo 'PASS: exact-version native Godot import/boot; no graphic, animation, device or gameplay proof'
+      - name: Preserve original Godot headless logs as evidence (not graphical video)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: aetherfall-godot-headless-${{ github.run_id }}
+          path: |
+            /tmp/aetherfall-version.log
+            /tmp/aetherfall-import.log
+            /tmp/aetherfall-boot.log
+          if-no-files-found: error
+          retention-days: 7
