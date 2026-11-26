@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "style_lock_id": "AF-STYLE-39403-V1",
+  "state": "OWNER_LOCKED_PRESENTATION_STYLE",
+  "decision_date": "2026-11-26",
+  "internal_project_id": "AETHERFALL: REALMS COLLIDE",
+  "owner_display_title": "AETHERFALL – REALMS COLIDE",
+  "source_reference": {
+    "source_upload_name": "39403.png",
+    "actual_format": "WEBP",
+    "width": 1536,
+    "height": 1152,
+    "bytes": 340668,
+    "sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+    "repository_target": "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp",
+    "archive_state": "pending_binary_checkin"
+  },
+  "reference_role": "The owner-supplied third image is the authoritative visual presentation/style reference; it is NOT a replacement model for other characters.",
+  "frame_style": {
+    "master_ratio": "4:3",
+    "tone": "premium gothic high-fantasy character-design atlas; painterly/anime-influenced illustration with crisp high-detail fantasy armour, cinematic lighting and controlled magical glow",
+    "layout": "polished multi-panel infographic: prominent original character hero illustration and consistent turnaround/detailed studies; dense but readable information hierarchy",
+    "frame_palette": [
+      "near-black aubergine",
+      "royal violet",
+      "electric lavender",
+      "luminous magenta",
+      "cool silver-lavender typography"
+    ],
+    "branding": "Only the AETHERFALL – REALMS COLIDE title on newly produced approved sheets; do not transplant branding from earlier project images.",
+    "detail": "ornate sharp clean panels, fine rim lighting, polished armor/clothing/organic material variation, detailed silhouette and character-specific signature VFX",
+    "text": "high-contrast legible gothic-fantasy headings with clean support copy; clear labeled diagram and icon captions",
+    "forbidden_shortcuts": [
+      "generic grey clay study offered as final illustrated sheet",
+      "unrelated logo or brand",
+      "plain template/card replacement",
+      "silhouette, identity, prop or palette homogenization",
+      "AI-invented approval, game model, engine run or test evidence"
+    ]
+  },
+  "sheet_panel_order": [
+    "brand_and_character_title_header",
+    "large_hero_portrait_left",
+    "four_view_turnaround_top_centre",
+    "silhouette_explorations_top_right",
+    "expressions_middle_centre",
+    "palette_and_material_detail_middle_right",
+    "hero_role_identity_lower_left",
+    "unique_weapon_or_focus_lower_centre",
+    "gameplay_role_lower_right",
+    "ability_icons_and_descriptions_bottom",
+    "concept_art_disclaimer_footer"
+  ],
+  "applies_to": [
+    "new character concept art",
+    "hero and enemy design boards",
+    "support, tank and damage hero sheets",
+    "visual planning for weapons, factions, environments and game interfaces where a concept board is appropriate",
+    "3D character art direction and review; actual meshes need separate real evidence"
+  ],
+  "excluded_external_branding": [
+    "MIDNIGHT",
+    "SHADOWSPIRE",
+    "NEXUSFALL"
+  ],
+  "content_rules": [
+    "Use the full sheet presentation language of the third image, not a simplified replacement.",
+    "Each hero has its OWN face, silhouette, materials, colors, role, kit and unique prop; Vellaris's bloodshield belongs only to her.",
+    "Existing owner-approved designs are locked; variants are proposals until direct owner approval.",
+    "For every new design run provide the actual source reference image, asset ID, status, source hash and side-by-side original/candidate art review.",
+    "Original concept art is not Blender/Godot gameplay evidence."
+  ],
+  "candidate_review_status": "PROPOSAL_PENDING_OWNER_REVIEW",
+  "enforcement": "tools/verify_visual_canon.py + tests/test_visual_canon.py + mandatory owner side-by-side review; code cannot judge actual visual resemblance.",
+  "owner_exception_rule": "Only explicit owner approval of a versioned style change, with updated SHA pins and source-to-output evidence, can supersede this standard."
+}
