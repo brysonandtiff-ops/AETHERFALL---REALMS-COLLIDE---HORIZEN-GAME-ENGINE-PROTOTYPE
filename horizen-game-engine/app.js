@@ -1,6 +1,7 @@
 import {SCHEMA,STORAGE_KEY,PIPELINE,GATES,SUBSYSTEMS,makeEmptyState,normalizeState,createWorld,safeSameOriginUrl,filterWorlds,sha256,stagingReceipt,importReceipt,validId} from './core.js';
 import {inspectSource} from './model-inspect.js';
 import {mountPreview,clearPreview} from './viewer.js';
+import {retainSource,getRetainedSource,forgetRetainedSource} from './model-vault.js';
 const $ = s => document.querySelector(s);
 const e=(tag,cls='',str)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(str!==undefined&&str!==null)n.textContent=String(str);return n;};
 const uuid=()=>globalThis.crypto?.randomUUID?.()||`local-${Date.now()}-${Math.round(Math.random()*1e8)}`;
@@ -25,13 +26,48 @@ function renderWorlds(){const matches=filterWorlds(state.worlds,$('#world-search
 $('#world-search').addEventListener('input',renderWorlds);$('#world-filter').addEventListener('change',renderWorlds);
 $('#new-world').addEventListener('click',()=>{$('#world-form').reset();$('#world-dialog').showModal();});$('#world-close').addEventListener('click',()=>$('#world-dialog').close());$('#world-form').addEventListener('submit',ev=>{ev.preventDefault();try{const url=$('#world-url').value.trim();if(url)safeSameOriginUrl(url,location.href);if(state.worlds.length>=200)throw new Error('Local world registry limit reached.');const item=createWorld({name:$('#world-name').value,url,notes:$('#world-notes').value,status:$('#world-status').value},uuid());state.worlds.push(item);store();$('#world-dialog').close();refresh();toast('World registered locally. Launch remains gated on HTML verification.');}catch(err){toast(err.message);}});
 function renderStatus(){const gates=$('#gate-grid');gates.replaceChildren();GATES.forEach(([name,description],i)=>{const n=e('article','gate'),idx=e('span','gate-index',String(i+1).padStart(2,'0')),info=e('div','gate-info');info.append(e('b','',name),e('small','',description));let status='NOT VERIFIED';if(i===0&&state.assets.length)status='LOCAL HASH ONLY';if(i===8&&state.assets.some(a=>a.evidence.some(Boolean)))status='EVIDENCE SUBMITTED';n.append(idx,info,e('span','gate-state',status));gates.append(n);});const systems=$('#systems-grid');systems.replaceChildren();SUBSYSTEMS.forEach(([name,description,status])=>{const n=e('article','system-card');n.append(e('b','',name),e('p','',description),e('span',`system-state ${status.includes('LOCAL')?'local':''}`,status));systems.append(n);});}
-function selectAsset(id){selectedAsset=id;const info=sourcePreviews.get(id);clearPreview();const canvas=$('#model-canvas');canvas.hidden=true;$('#preview-empty').hidden=false;$('#preview-empty').querySelector('b').textContent=info?.vertices?.length?'RENDERING SOURCE':'VIEWPORT LOCKED';$('#preview-empty').querySelector('small').textContent=info?.vertices?.length?'Actual uploaded geometry can be previewed in this browser.':'Re-select the original GLB or OBJ file to render its bytes. Stored hashes are not a mesh.';$('#inspection-details').textContent='No source geometry currently rendered.';
+async function selectAsset(id){
+ selectedAsset=id;
+ let info=sourcePreviews.get(id);
+ if(!info){
+  try{
+   const saved=await getRetainedSource(id);
+   if(saved){
+    const asset=state.assets.find(item=>item.id===id);
+    if(!asset||asset.sha256!==saved.sha256)throw new Error('Stored model receipt differs from current asset registry.');
+    const original=new File([saved.file],saved.name,{type:saved.file.type});
+    if(await sha256(original)!==saved.sha256)throw new Error('Stored model hash mismatch. Reselect the original file.');
+    info=await inspectSource(original);
+    if(selectedAsset!==id)return;
+    sourcePreviews.set(id,info);
+   }
+  }catch(err){
+   if(!String(err.message).includes('IndexedDB is unavailable'))toast('Stored model not restored: '+err.message);
+  }
+ }
+ if(selectedAsset!==id)return;
+ clearPreview();const canvas=$('#model-canvas');canvas.hidden=true;$('#preview-empty').hidden=false;$('#preview-empty').querySelector('b').textContent=info?.vertices?.length?'RENDERING SOURCE':'VIEWPORT LOCKED';$('#preview-empty').querySelector('small').textContent=info?.vertices?.length?'Actual uploaded geometry can be previewed in this browser.':'Re-select the original GLB or OBJ file to render its bytes. Stored hashes are not a mesh.';$('#inspection-details').textContent='No source geometry currently rendered.';
  if(info?.vertices?.length){try{canvas.hidden=false;$('#preview-empty').hidden=true;mountPreview(canvas,info.vertices);const details=info.stats;$('#preview-state').textContent='REAL LOCAL SOURCE';$('#inspection-details').textContent=`${info.format} · ${details.sourceTriangles?.toLocaleString()||'?'} source tris · ${details.previewTriangles?.toLocaleString()||'?'} shown · ${details.note} · Browser renderer: ${canvas.dataset.renderer||'WebGL2 source triangles'}`;}catch(err){canvas.hidden=true;$('#preview-empty').hidden=false;$('#preview-state').textContent='UNAVAILABLE';$('#inspection-details').textContent=err.message;}}
  else{$('#preview-state').textContent=info?.format==='FBX'?'FBX HASHED / NO VIEWER':'NO SOURCE LOADED';$('#inspection-details').textContent=info?.stats?.note||'No file bytes available in this session. Source file hashes alone cannot render a model.';}renderForge();}
 function renderForge(){const list=$('#asset-list');list.replaceChildren();if(!state.assets.length)list.append(e('div','asset-empty','No assets yet. Register an actual source file to begin.'));for(const asset of state.assets){const item=e('button',`asset-item ${selectedAsset===asset.id?'on':''}`),left=e('div');left.append(e('b','',asset.name),e('small','',`${asset.format} · ${asset.fileName||'original source'} · ${asset.sha256.slice(0,12)}…`));item.append(left,e('span','mono small',asset.evidence.filter(Boolean).length+'/8'));item.type='button';item.addEventListener('click',()=>selectAsset(asset.id));list.append(item);}$('#asset-count').textContent=state.assets.length;
  const asset=state.assets.find(a=>a.id===selectedAsset),pipeline=$('#pipeline');pipeline.replaceChildren();$('#selected-asset-label').textContent=asset?asset.name:'NONE — REGISTER A SOURCE';$('#pipeline-summary').textContent=`${asset?asset.evidence.filter(Boolean).length:0} / 8 SUBMITTED`;
  PIPELINE.forEach(([title,desc],index)=>{const evidence=asset?.evidence[index],row=e('div',`step ${evidence?'evidenced':''}`),body=e('div');body.append(e('strong','',title),e('small','',evidence?`Submitted ${evidence.name} · independent review pending`:desc));const button=addButton(evidence?'REPLACE RECEIPT':'ATTACH EVIDENCE',()=>{pendingStage=index;$('#evidence-file').click();},!asset);row.append(e('span','step-num',String(index+1).padStart(2,'0')),body,button);pipeline.append(row);});}
-$('#asset-form').addEventListener('submit',async ev=>{ev.preventDefault();const file=$('#asset-file').files?.[0],name=$('#asset-id').value.trim();if(!validId(name)){toast('Use a valid registered-style asset ID: letters, numbers, _ or -.');return;}if(!file){toast('Choose a genuine source file.');return;}const button=$('#asset-form button[type=submit]');button.disabled=true;button.textContent='INSPECTING SOURCE…';try{if(state.assets.length>=100)throw new Error('Asset registry limit reached.');const inspection=await inspectSource(file),hash=await sha256(file),id=uuid();state.assets.push({id,name,worldId:$('#asset-world').value,fileName:file.name,format:inspection.format,sha256:hash,bytes:file.size,inspection:inspection.stats.note,createdAt:stamp(),evidence:Array(8).fill(null)});sourcePreviews.set(id,inspection);store();$('#asset-form').reset();refresh();selectAsset(id);toast('Source hashed and inspected. Asset has not passed native game-engine verification.');}catch(err){toast(`Source rejected: ${err.message}`);}finally{button.disabled=false;button.textContent='INSPECT & REGISTER SOURCE';}});
+$('#asset-form').addEventListener('submit',async ev=>{ev.preventDefault();const file=$('#asset-file').files?.[0],name=$('#asset-id').value.trim();if(!validId(name)){toast('Use a valid registered-style asset ID: letters, numbers, _ or -.');return;}if(!file){toast('Choose a genuine source file.');return;}const button=$('#asset-form button[type=submit]');button.disabled=true;button.textContent='INSPECTING SOURCE…';try{if(state.assets.length>=100)throw new Error('Asset registry limit reached.');const inspection=await inspectSource(file),hash=await sha256(file),id=uuid();
+ const keepOriginal=$('#asset-retain').checked;
+ state.assets.push({id,name,worldId:$('#asset-world').value,fileName:file.name,format:inspection.format,sha256:hash,bytes:file.size,inspection:inspection.stats.note,createdAt:stamp(),evidence:Array(8).fill(null)});
+ sourcePreviews.set(id,inspection);store();
+ let storeNote='Original source is session-only.';
+ if(keepOriginal){
+  try{await retainSource(id,file,hash);storeNote='Original source saved on THIS browser using IndexedDB.';}
+  catch(e){storeNote='Local original retention failed: '+e.message+'; reselect after reload.';}
+ }
+ $('#asset-form').reset();refresh();selectAsset(id);
+ toast('Source hash inspected. '+storeNote+' No native Blender/Godot or gameplay verification.');}catch(err){toast(`Source rejected: ${err.message}`);}finally{button.disabled=false;button.textContent='INSPECT & REGISTER SOURCE';}});
+$('#forget-local-model').addEventListener('click',async()=>{
+ if(!selectedAsset){toast('Select an asset first.');return;}
+ try{await forgetRetainedSource(selectedAsset);toast('Stored original removed from this browser. In-session preview remains available until reload.');}
+ catch(err){toast('Could not erase stored original: '+err.message);}
+});
 $('#evidence-file').addEventListener('change',async ev=>{const file=ev.target.files?.[0],asset=state.assets.find(a=>a.id===selectedAsset),index=pendingStage;ev.target.value='';pendingStage=null;if(!file||!asset||index===null)return;if(file.size>64*1024*1024){toast('Evidence file limit is 64 MiB. Register larger files in an approved source repository.');return;}try{asset.evidence[index]={name:file.name,bytes:file.size,sha256:await sha256(file),submittedAt:stamp(),review:'PENDING_INDEPENDENT_REVIEW'};store();renderForge();toast('Evidence hash submitted. This does not certify a pipeline stage.');}catch(err){toast(err.message);}});
 async function browserChecks(){let storage=false,indexedDBSupported=false,worker=false;try{const x='__sire_probe';localStorage.setItem(x,'1');storage=localStorage.getItem(x)==='1';localStorage.removeItem(x);}catch{}try{indexedDBSupported=typeof indexedDB!=='undefined';}catch{}try{worker=!!(await navigator.serviceWorker?.getRegistration('./'))?.active;}catch{}let webgl=false;try{const c=document.createElement('canvas');webgl=!!c.getContext('webgl2');}catch{}return {'Secure context / loopback':isSecureContext,'Local storage writable':storage,'IndexedDB available':indexedDBSupported,'SHA-256 Web Crypto':!!crypto?.subtle,'Service worker active':worker,'WebGL2 source viewport':webgl,'Network reachable (device only)':navigator.onLine};}
 function showChecks(checks){const box=$('#doctor-checks');box.replaceChildren();for(const [key,value] of Object.entries(checks)){const row=e('div','doctor-check');const status=typeof value==='boolean'?(value?'AVAILABLE':'UNAVAILABLE'):String(value);row.append(e('span','',key),e('b',value===true?'pass':value===false?'fail':'',status));box.append(row);}}
