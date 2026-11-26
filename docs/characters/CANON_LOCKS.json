@@ -25,7 +25,11 @@
       "ability_icons_and_descriptions_bottom",
       "concept_art_disclaimer_footer"
     ],
-    "variation_policy": "Maintain panel completeness and brand style for all character sheets, never copy Vellaris character features/colors/props onto other characters. Only owner-approved improvement to layout."
+    "variation_policy": "Maintain panel completeness and brand style for all character sheets, never copy Vellaris character features/colors/props onto other characters. Only owner-approved improvement to layout.",
+    "style_lock_id": "AF-STYLE-39403-V1",
+    "style_reference_sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+    "style_manifest_path": "docs/art/AETHERFALL_STYLE_CANON.json",
+    "display_brand": "AETHERFALL – REALMS COLIDE"
   },
   "locked_characters": {
     "CHR_Vellaris_Bloodshield": {
