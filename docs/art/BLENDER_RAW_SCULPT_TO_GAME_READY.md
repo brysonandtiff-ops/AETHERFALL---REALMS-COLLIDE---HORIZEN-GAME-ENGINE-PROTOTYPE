@@ -8,6 +8,8 @@
 
 This is the mandatory detailed procedure beneath `docs/art/ASSET_PIPELINE.md` and `docs/characters/CHARACTER_WORKFLOW.md`. Follow FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH. No shortcut or AI render establishes "game-ready" without the real deliverables and tests below.
 
+**Mandatory evidence hardening:** Before completing any step, read [AF-ART-BLENDER-001 — hardened evidence contract](BLENDER_EVIDENCE_HARDENING.md). The original raw input must be kept under the registered character's `raw/` folder; every stage marked `PASS` needs real capture provenance, source commit and file hash. This standard **cannot** itself verify that Blender/Godot was run or that a visual match was approved.
+
 ## 0. PRE-FLIGHT — art and source lock (blocking)
 
 1. Read `AGENTS.md`, `docs/characters/VISUAL_CANON_LOCK.md` and `docs/characters/CANON_LOCKS.json`. Check the exact registered asset ID in `art/asset_registry.json` and its character plan.
@@ -20,7 +22,7 @@ This is the mandatory detailed procedure beneath `docs/art/ASSET_PIPELINE.md` an
 
 ## 1. IMPORT, SCALE & REMOVE PEDESTAL
 
-- Save a **versioned copy** of the raw file as the working `.blend` under `art/blender/characters/<CHR_ID>/` before destructive edits. Keep the untouched source in `RawSource` and a working duplicate in `Working`. Suggested collection layout: `Reference`, `RawSource`, `HighPoly`, `GameMesh_3P`, `ViewModel_1P`, `Rig`, `Weapons`, `LOD` and `Evidence`.
+- Preserve the untouched original file under `art/blender/characters/<CHR_ID>/raw/` and save a **separate versioned working `.blend`** under `art/blender/characters/<CHR_ID>/` before destructive edits. Keep the untouched source in `RawSource` and a working duplicate in `Working`. Suggested collection layout: `Reference`, `RawSource`, `HighPoly`, `GameMesh_3P`, `ViewModel_1P`, `Rig`, `Weapons`, `LOD` and `Evidence`.
 - Blender: **File → Import** `glTF 2.0 (.glb/.gltf)`, `FBX` or `Wavefront (.obj)` as appropriate. An OBJ does **not** contain a usable animation/rig handoff by itself.
 - Set **Scene Properties → Units → Metric**, Unit Scale `1.0` (1 Blender unit = 1 metre). Align the feet/ground-contact reference to Z=0; confirm +Z up and the agreed engine-facing orientation (existing repo baseline: -Y forward in Blender). For ordinary humanoids, ~1.8–2.2 m is a provisional range; preserve intended giant, quadruped, flying or crouched proportions.
 - Select the display base only if it is a **separate connected component**: Edit Mode (`Tab`), hover over base, `L` (Select Linked), `X → Faces`. Inspect selection before deletion; if joined to feet/boots, separate safely with manual topology work instead. Never delete canonical props as "pedestal".
@@ -76,7 +78,7 @@ This is the mandatory detailed procedure beneath `docs/art/ASSET_PIPELINE.md` an
 | 3P and 1P .glb / approved LODs | `game/assets/characters/.../<CHR_ID>/` (repo's matching role path) | GLB exists ≠ model visually verified |
 | Weapon/gear GLB where separate | `game/assets/weapons/` | Socket/animation must pass actual runtime tests |
 | Handoff checklist (copy template) | Next to versioned source .blend; keep source commit/hash | Checklist ≠ engine evidence |
-| Blender/Godot capture, test report, hashes | `evidence/blender/`, `evidence/godot/`, and `evidence/characters/<CHR_ID>/` | Only genuine native captures count |
+| Blender/Godot capture, test report, hashes | `evidence/blender/<CHR_ID>/`, `evidence/godot/<CHR_ID>/`, and `evidence/characters/<CHR_ID>/` | Only genuine native captures count |
 | Owner-facing Android transfer | Exact existing `AETHERFALL – REALMS COLIDE` phone folder (name as actually present) | Repository or sandbox upload ≠ phone save |
 
 Use versioned filenames; preserve existing `korvex_blockout_v01` and all canonical originals. Do not overwrite old approved work, re-label procedural reconstructions as originals, or copy into guessed phone paths.
