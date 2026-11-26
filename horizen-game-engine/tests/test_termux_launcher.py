@@ -80,6 +80,22 @@ class TermuxLauncherContract(unittest.TestCase):
         self.assertEqual((installed / 'serve.py').read_bytes(), (original / 'serve.py').read_bytes())
         self.assertTrue((original / 'serve.py').is_file())
 
+    def test_follows_real_termux_storage_shared_symlink(self):
+        # termux-setup-storage creates a symlink; default find does not traverse it.
+        real_shared = self.home / 'android-emulated-0'
+        source = real_shared / 'AETHERFALL – REALMS COLIDE' / '02_GAME_AND_ENGINE' / 'horizen-game-engine'
+        source.mkdir(parents=True)
+        for rel in MINIMUM:
+            destination = source / rel
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / rel, destination)
+        storage = self.home / 'storage'
+        storage.mkdir()
+        (storage / 'shared').symlink_to(real_shared, target_is_directory=True)
+        self.run_server(self.base_port)
+        self.assertTrue((self.home / 'horizen-game-engine' / 'serve.py').is_file())
+        self.assertEqual((source / 'serve.py').read_bytes(), (self.home / 'horizen-game-engine' / 'serve.py').read_bytes())
+
     def test_occupied_port_chooses_another_without_killing_existing_listener(self):
         self.put_shared_source()
         with socket.socket() as listener:
