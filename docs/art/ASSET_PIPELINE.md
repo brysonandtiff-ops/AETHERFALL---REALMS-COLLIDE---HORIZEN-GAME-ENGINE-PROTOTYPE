@@ -1,5 +1,7 @@
 # AETHERFALL — Concept-to-game art pipeline
 
+**ART STYLE LOCK:** The owner's exact THIRD uploaded Vellaris concept image (`39403.png`; actual WebP, pinned SHA) governs the illustrated gothic-fantasy finish and 4:3 character-sheet layout. Read `AETHERFALL_STYLE_CANON.md`, `AETHERFALL_STYLE_CANON.json` and `STYLE_DESIGN_BRIEF_TEMPLATE.md` before new character or world visual planning. New title is **AETHERFALL – REALMS COLIDE**; never borrow logos from other projects. Do not assert the source image is in GitHub before the correct binary is archived and hash-checked.
+
 1. **Reference / concept:** Save owner-approved, rights-cleared source sheets under `art/concepts/`; record which version is canonical. Do not substitute or edit approved art without permission.
 2. **Blender source:** Save editable models in `art/blender/` using the asset ID; preserve iterations, armatures, UVs, materials, actions and mesh names.
 3. **Scale and orientation:** Use metric units, unit scale 1.0, +Z up and -Y forward in Blender. Confirm the final orientation and scale after importing into Godot.
