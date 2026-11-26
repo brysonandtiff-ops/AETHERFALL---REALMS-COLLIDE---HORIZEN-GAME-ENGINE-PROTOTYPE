@@ -1,0 +1,38 @@
+test_ability_passes_as_not_implemented_fixture (test_production_contract.ContractTests.test_ability_passes_as_not_implemented_fixture) ... ok
+test_ability_rejects_client_damage_auth (test_production_contract.ContractTests.test_ability_rejects_client_damage_auth) ... ok
+test_ability_rejects_double_commit_allowed (test_production_contract.ContractTests.test_ability_rejects_double_commit_allowed) ... ok
+test_ability_rejects_missing_telegraph_caption (test_production_contract.ContractTests.test_ability_rejects_missing_telegraph_caption) ... ok
+test_ability_rejects_zero_active (test_production_contract.ContractTests.test_ability_rejects_zero_active) ... ok
+test_bad_lod_fraction_type_is_rejected_not_crash (test_production_contract.ContractTests.test_bad_lod_fraction_type_is_rejected_not_crash) ... ok
+test_integrity_detects_case_collision (test_production_contract.ContractTests.test_integrity_detects_case_collision) ... ok
+test_integrity_detects_mismatch (test_production_contract.ContractTests.test_integrity_detects_mismatch) ... ok
+test_integrity_happy_path (test_production_contract.ContractTests.test_integrity_happy_path) ... ok
+test_missing_locomotion_states_rejected (test_production_contract.ContractTests.test_missing_locomotion_states_rejected) ... ok
+test_path_refuses_windows_drive_absolute_and_symlink_style (test_production_contract.ContractTests.test_path_refuses_windows_drive_absolute_and_symlink_style) ... ok
+test_rejects_1p_reusing_3p (test_production_contract.ContractTests.test_rejects_1p_reusing_3p) ... ok
+test_rejects_bad_orientation (test_production_contract.ContractTests.test_rejects_bad_orientation) ... ok
+test_rejects_doubled_sockets (test_production_contract.ContractTests.test_rejects_doubled_sockets) ... ok
+test_rejects_fake_blender_evidence (test_production_contract.ContractTests.test_rejects_fake_blender_evidence) ... ok
+test_rejects_traversal (test_production_contract.ContractTests.test_rejects_traversal) ... ok
+test_rejects_unverified_promotion (test_production_contract.ContractTests.test_rejects_unverified_promotion) ... ok
+test_rejects_vfx_as_collision (test_production_contract.ContractTests.test_rejects_vfx_as_collision) ... ok
+test_rejects_visual_canonless_name (test_production_contract.ContractTests.test_rejects_visual_canonless_name) ... ok
+test_release_gate_always_needs_external_proof (test_production_contract.ContractTests.test_release_gate_always_needs_external_proof) ... ok
+test_rig_proof_cannot_be_faked_in_spec (test_production_contract.ContractTests.test_rig_proof_cannot_be_faked_in_spec) ... ok
+test_spec_only_rejects_false_signed_receipt (test_production_contract.ContractTests.test_spec_only_rejects_false_signed_receipt) ... ok
+test_spec_passes_structurally_only (test_production_contract.ContractTests.test_spec_passes_structurally_only) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.011s
+
+OK
+{
+  "check": "AETHERFALL_SPEC_OR_INTEGRITY_ONLY",
+  "errors": [
+    "native engine + independent LAW-108 signature + real owner-phone evidence required; offline validator cannot certify"
+  ],
+  "gameplay_certified": false,
+  "native_certified": false,
+  "release_certified": false,
+  "result": "BLOCKED"
+}
