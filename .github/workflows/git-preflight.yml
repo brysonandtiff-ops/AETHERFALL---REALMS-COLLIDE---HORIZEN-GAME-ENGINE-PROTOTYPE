@@ -1,0 +1,40 @@
+name: AETHERFALL Git Hygiene
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: git-hygiene-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  git-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact source commit without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify exact SHA, safe diff and repository identity
+        shell: bash
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$PR_BASE_SHA" ]]; then
+            python3 tools/git_preflight.py check --expected-head "$EXPECTED_HEAD" --base "$PR_BASE_SHA" --json
+          else
+            python3 tools/git_preflight.py check --expected-head "$EXPECTED_HEAD" --json
+          fi
+      - name: Run isolated Git safety regression tests
+        run: python3 -m unittest discover -s tests -p 'test_git_preflight.py' -v
