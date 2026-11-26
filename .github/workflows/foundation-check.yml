@@ -40,6 +40,16 @@ jobs:
           else
             echo 'Initial adoption: baseline has no production queue; enforce source, plan and test checks'
           fi
+      - name: Protect canonical character register and original art/evidence history
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          git show "$BASE_SHA:art/asset_registry.json" > "$RUNNER_TEMP/aetherfall_base_asset_registry.json"
+          python3 tools/audit_asset_history.py --baseline "$RUNNER_TEMP/aetherfall_base_asset_registry.json" --git-base "$BASE_SHA"
       - name: Compile validators and tests
         run: python3 -m compileall -q tools tests
       - name: Run adversarial standard-library tests

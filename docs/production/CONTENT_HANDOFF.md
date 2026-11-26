@@ -29,3 +29,7 @@ A professional content pipeline is a **verified handoff**, not just a folder. Ea
 Binary .blend and image files cannot always merge. Use branch ownership, explicit asset reservations, immutable handoff hashes, source version history, reviewed locks or an **approved** LFS/Perforce workflow once enabled. If two artists edit one master, stop the conflicting change and resolve against the canonical original—never automatically overwrite.
 
 Never move/bulk-rename Godot resource paths, invent original artwork or call generated concepts native model evidence. Protect private original photographs before putting any material in this public repository.
+
+## Non-destructive source history gate
+
+During a GitHub PR, `tools/audit_asset_history.py --baseline <base-registry> --git-base <base-commit>` refuses removal/renaming of tracked original art, evidence or canonical character definitions. New approved IDs can be appended without deleting previous history. A necessary destructive migration must be separately proposed, rights-checked, backed up, documented, tested and approved; never disable the guard silently.

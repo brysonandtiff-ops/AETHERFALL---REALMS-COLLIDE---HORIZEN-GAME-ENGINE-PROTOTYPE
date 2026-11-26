@@ -17,6 +17,7 @@ REQUIRED_FILES = (
     "docs/production/CONTENT_HANDOFF.md", "docs/production/BUILD_TRAINS.md",
     "pipeline/README.md", "game/addons/README.md",
     "tools/validate_studio_layout.py", "tests/test_studio_layout.py",
+    "tools/audit_asset_history.py", "tests/test_art_history.py",
     "tools/production_queue.py", "docs/production/WORK_QUEUE.json",
     "docs/production/README.md", "docs/production/MASTER_BUILD_ROADMAP.md",
     "docs/production/DEFINITION_OF_DONE.md",

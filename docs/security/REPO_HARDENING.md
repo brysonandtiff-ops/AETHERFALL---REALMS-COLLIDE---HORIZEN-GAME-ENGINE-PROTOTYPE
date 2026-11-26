@@ -54,3 +54,9 @@ Review this branch's latest GitHub Actions run for actual exit codes, test count
 `studio/layout_manifest.json` defines ten ownership zones and thirteen runtime module boundaries. The new `tools/validate_studio_layout.py` detects removals, misrouted future modules, dangerous paths, contradictory Godot/Blender/Perforce claims, dropped art-root protections and suspicious Unreal-only cooked assets inside the Godot source tree. CI executes this validator as a separate step.
 
 The hierarchy is **not** proof of a running commercial build farm or a Blender/render pipeline. All future plugins under `game/addons/` must have local `AETHERFALL_PROVENANCE.md` evidence of source, licence, hash, Godot compatibility and owner review. External secrets, expensive infrastructure, LFS/Perforce changes and public release require separate approval.
+
+## Canonical art identity and non-destructive history checks
+
+Each PR now compares `art/asset_registry.json` with the real target-branch version using `tools/audit_asset_history.py`. It rejects deletion, alias/ID mutation, path relocation or false status promotion of existing entries; new entries must start unproduced and still satisfy other registry tests. A Git diff also rejects deletion/rename of any already-committed `art/` or `evidence/` file. This deliberately forces an explicit, independently reviewed policy migration for destructive art edits.
+
+The audit proves only what changed relative to Git's base. It does not establish copyright ownership or approve original photographs for public distribution. Genuine art and licence reviews are always mandatory. Without GitHub branch protection, direct push bypass remains possible; code-owner configuration is advisory.

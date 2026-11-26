@@ -21,3 +21,5 @@ On GitHub PRs, CI compares the committed `docs/production/WORK_QUEUE.json` basel
 The `validate_structure.py` scan also checks high-confidence embedded-credential markers in smaller UTF-8 source files (without echoing secrets), unsafe tracked caches and gitlinks. It does **not** scan private unconnected systems, non-text binaries or the full historical Git object database.
 
 `validate_studio_layout.py` checks the machine-readable studio ownership contract and native Godot/Blender toolchain truth. It is source/layout proof only, **not** a functioning game or release pipeline.
+
+`audit_asset_history.py` is a PR-only guard for existing character IDs/source paths and protected art/evidence deletions relative to the real Git base. It needs a previous registry snapshot (`--baseline`) and optionally the exact Git base revision (`--git-base`). GitHub's CI supplies both.

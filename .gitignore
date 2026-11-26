@@ -39,8 +39,7 @@ dist/
 
 # Studio pipeline generated scratch and local quality tools
 pipeline/.cache/
-*.log
-*.cache
+# Do not globally ignore *.log: genuine logs under evidence/ are source proof.
 # Do not commit locally generated build/test outputs
 .coverage
 htmlcov/

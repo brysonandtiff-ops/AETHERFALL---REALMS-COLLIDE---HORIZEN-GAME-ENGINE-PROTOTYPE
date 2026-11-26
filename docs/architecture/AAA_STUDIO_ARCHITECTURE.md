@@ -89,3 +89,7 @@ python3 -m unittest discover -s tests -v
 3. Unreal Perforce Source Control (Epic Games): https://dev.epicgames.com/documentation/en-us/unreal-engine/using-perforce-as-source-control-for-unreal-engine
 4. Godot Project Organization (Godot): https://docs.godotengine.org/en/stable/tutorials/best_practices/project_organization.html
 5. Godot Version Control (Godot): https://docs.godotengine.org/en/stable/tutorials/best_practices/version_control_systems.html
+
+## Canonical source and review history
+
+The art registry is **append-only** by default across review branches: `tools/audit_asset_history.py` compares to target-branch truth and blocks deleted/relabelled character identities and deleted original `art/` or `evidence/` files. A future approved edit that truly needs to move source art requires a documented full migration and separately reviewed policy change; static structure is not authority to delete originals.

@@ -20,3 +20,6 @@
 /pipeline/ @brysonandtiff-ops
 /game/addons/ @brysonandtiff-ops
 /game/localization/ @brysonandtiff-ops
+
+/docs/production/CONTENT_HANDOFF.md @brysonandtiff-ops
+/docs/architecture/AAA_STUDIO_ARCHITECTURE.md @brysonandtiff-ops
