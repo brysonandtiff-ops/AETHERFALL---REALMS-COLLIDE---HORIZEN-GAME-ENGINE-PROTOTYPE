@@ -164,8 +164,9 @@ def validate(data):
                 continue
             if dep == task_id:
                 errors.append("Self dependency: " + task_id)
-            if (item.get("phase") in phase_index and
-                    ids[dep].get("phase") in phase_index and
+            if (isinstance(item.get("phase"), str) and
+                    isinstance(ids[dep].get("phase"), str) and
+                    item["phase"] in phase_index and ids[dep]["phase"] in phase_index and
                     phase_index[ids[dep]["phase"]] > phase_index[item["phase"]]):
                 errors.append("Task depends on later phase: " + task_id + " -> " + dep)
             if item.get("status") in ("in_progress", "review", "verified") and ids[dep].get("status") != "verified":
