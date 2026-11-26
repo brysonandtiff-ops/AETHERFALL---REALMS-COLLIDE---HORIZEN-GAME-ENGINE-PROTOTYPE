@@ -1,0 +1,18 @@
+{
+  "character_id": "CHR_Temporis",
+  "status": "PROPOSAL_PENDING_OWNER_REVIEW",
+  "canonical_source_sha256": "SUPPLY_REAL_CHARACTER_SOURCE_SHA256_IF_EXISTING",
+  "candidate_sha256": "SUPPLY_SHA256_OF_ACTUAL_CANDIDATE_IMAGE",
+  "source_note": "Explain the exact character source supplied during generation; source absent blocks canon review.",
+  "style_lock_id": "AF-ART-STYLE-20261126-V1",
+  "style_reference_sha256": {
+    "vellaris_infographic": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+    "korvex_infographic": "ff352a079685864ced7bbc255a81f73060847156ac24f74edbc2883dd348621b"
+  },
+  "branding": "AETHERFALL: REALMS COLLIDE",
+  "presentation_mode": "FULL_CHARACTER_INFOGRAPHIC",
+  "review_state": "PENDING_OWNER_VISUAL_COMPARISON",
+  "panel_attestation": "FULL_PANEL_LIST_FROM_ART_STYLE_LOCK_JSON_BEFORE_COMMIT",
+  "reference_attestation": "Both original pinned infographic images and character's own original shown to artist in this generation session",
+  "render_origin": "AI_GENERATED_CONCEPT_ONLY"
+}

@@ -20,6 +20,8 @@ jobs:
           persist-credentials: false
       - name: Validate source and migration boundary
         run: python3 tools/validate_structure.py
+      - name: Enforce pinned AETHERFALL art style and submission integrity
+        run: python3 tools/verify_art_style_contract.py
       - name: Run adversarial standard-library tests
         run: python3 -m unittest discover -s tests -v
 

@@ -1,5 +1,11 @@
 # AETHERFALL — Agent and Contributor Work Order
 
+## ART-STYLE HARD STOP — AF-ART-STYLE-20261126-V1 (no drift)
+
+The **two exact owner-uploaded primary infographic sheets** are mandatory style references: Vellaris `39403.png` SHA-256 `4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939`, Korvex `39412.png` SHA-256 `ff352a079685864ced7bbc255a81f73060847156ac24f74edbc2883dd348621b`. Read `docs/art/MASTER_ART_STYLE_LOCK.md`, `docs/art/ART_STYLE_LOCK.json`, `docs/characters/VISUAL_CANON_LOCK.md` and character-specific original **before** any new character concept, model or key art. The supplied 39401.jpg roster screenshot is a **composition reference only**, never permission to rename the game to NEXUSFALL or approve its roster.
+
+Full 4:3 Vellaris/Korvex-grade infographic sheets require all 11 layout panels; a cinematic portrait with a black background is **only key art, not a substitute**. Preserve unique faces, silhouettes, colours, materials, props and abilities rather than styling every hero as Vellaris. New images are proposals with locked style/source SHA-256 sidecars, human side-by-side review, and no self-approval. Run `python3 tools/verify_art_style_contract.py` in addition to existing source/native smoke tests. Never claim that static style metadata checks can recognize artistic fidelity or verify Godot/Blender runtime.
+
 ## CANON HARD STOP — run before ALL character artwork or model tasks
 
 **Do not begin a canonical Vellaris, ThornDell or other approved character render unless the exact owner-approved reference image is supplied to that run and the lock file has been checked.** Read docs/characters/VISUAL_CANON_LOCK.md and CANON_LOCKS.json before generating, describing, converting, modelling or accepting output. New render = PROPOSAL_PENDING_OWNER_REVIEW until original-to-candidate evidence and explicit owner signoff. Never replace approved images, assume missing references, copy Vellaris character details to another hero, or silently resolve Korvex/Corvex or Razor/Raven variants.

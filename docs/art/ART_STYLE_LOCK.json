@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "lock_id": "AF-ART-STYLE-20261126-V1",
+  "policy": "OWNER_REFERENCES_FIRST_FAIL_CLOSED",
+  "status": "approved_presentation_direction_not_character_or_gameplay_proof",
+  "brand": {
+    "project_name": "AETHERFALL: REALMS COLLIDE",
+    "logo_text": "AETHERFALL",
+    "subtitle": "REALMS COLLIDE",
+    "forbidden_new_branding": ["NEXUSFALL", "SHADOWSPIRE"]
+  },
+  "references": {
+    "vellaris_infographic": {
+      "uploaded_filename": "39403.png",
+      "actual_media_type": "image/webp",
+      "width": 1536,
+      "height": 1152,
+      "bytes": 340668,
+      "sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+      "use": "PRIMARY_FULL_CHARACTER_INFOGRAPHIC_AND_EXISTING_VELLARIS_CANON",
+      "binary_in_git": false
+    },
+    "korvex_infographic": {
+      "uploaded_filename": "39412.png",
+      "actual_media_type": "image/webp",
+      "width": 1536,
+      "height": 1152,
+      "bytes": 364990,
+      "sha256": "ff352a079685864ced7bbc255a81f73060847156ac24f74edbc2883dd348621b",
+      "use": "PRIMARY_FULL_CHARACTER_INFOGRAPHIC_LAYOUT_AND_MATERIAL_QUALITY_REFERENCE_ONLY",
+      "binary_in_git": false
+    },
+    "legacy_roster_capture": {
+      "uploaded_filename": "39401.jpg",
+      "actual_media_type": "image/webp",
+      "width": 1384,
+      "height": 1536,
+      "bytes": 289520,
+      "sha256": "7df96bfb7a968f0b51d1423b75e99f76f06f2f04c6b8df32f512dadc91ca2aab",
+      "use": "ROSTER_COMPOSITION_AND_ROLE_CODING_REFERENCE_ONLY_NOT_BRANDING_OR_ROSTER_APPROVAL",
+      "binary_in_git": false
+    }
+  },
+  "full_infographic": {
+    "aspect_ratio": "4:3",
+    "minimum_width": 1536,
+    "minimum_height": 1152,
+    "panel_order": [
+      "brand_and_character_title_header",
+      "large_hero_portrait_left",
+      "four_view_turnaround_top_centre",
+      "silhouette_explorations_top_right",
+      "expressions_middle_centre",
+      "palette_and_material_detail_middle_right",
+      "hero_role_identity_lower_left",
+      "unique_weapon_or_focus_lower_centre",
+      "gameplay_role_lower_right",
+      "ability_icons_and_descriptions_bottom",
+      "concept_art_disclaimer_footer"
+    ],
+    "visual_treatment": "Gothic high-detail fantasy art, violet-black frame, luminous lavender/magenta section borders, silver-lavender legible type, purple eclipse castle skyline, controlled character-specific role accents. Dramatic detailed rendering; consistent front side back three-quarter model design. Do not replace sheet with portrait-only poster.",
+    "banner_disclaimer": "CONCEPT ART / CHARACTER DEVELOPMENT SHEET / NOT FINAL IN-GAME MODEL"
+  },
+  "hero_key_art": {
+    "background": "pure_or_near_black",
+    "visual_treatment": "Same polished cinematic fantasy character design and finish as canonical reference, controlled magic glow, full-body readable silhouette, title/brand restrained. Portrait-only is never sufficient for a full character infographic.",
+    "cannot_replace_full_sheet": true
+  },
+  "enforcement": {
+    "image_candidates_are_proposals_until_owner_review": true,
+    "require_exact_reference_hashes_in_review_sidecar": true,
+    "require_declared_presentation_mode": true,
+    "require_full_panel_attestation_for_full_sheets": true,
+    "no_generated_art_is_engine_proof": true,
+    "no_silent_canon_promotion": true
+  }
+}

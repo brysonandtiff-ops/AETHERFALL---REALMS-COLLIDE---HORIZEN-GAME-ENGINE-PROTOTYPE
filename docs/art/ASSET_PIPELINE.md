@@ -24,3 +24,9 @@ Follow `docs/characters/CHARACTER_WORKFLOW.md` and keep `docs/characters/plans/<
 ## Reference-locked art pipeline
 
 Honor docs/characters/CANON_LOCKS.json and VISUAL_CANON_LOCK.md. Preserve exact master source bytes/MIME and owner-approved face, silhouette, palette, weapon and kit. Use Vellaris branded infographic layout but not her personal shield/appearance on other heroes. ThornDell must preserve antlers, green venom and Root Bulwark. No character image becomes canon without source-to-output owner review. Never claim a generated reference is native Blender/Godot evidence.
+
+## Master visual style stop gate — effective 2026-11-26
+
+**Before creating ANY new hero image, turntable, concept infographic or variant**, follow `docs/art/MASTER_ART_STYLE_LOCK.md` and its pinned machine-readable `ART_STYLE_LOCK.json`. The Vellaris (`39403.png`) and Korvex (`39412.png`) 4:3 character boards are the owner-designated **presentation style** references; the older NEXUSFALL roster screenshot (`39401.jpg`) is **only** a roster-layout/role-coding inspiration. All three uploads contain WebP bytes regardless of their misleading filename suffixes. Do not import their names or branding as AETHERFALL canon.
+
+Use `python3 tools/verify_art_style_contract.py` as a **hard source metadata gate**, in addition to the preexisting character identity validator. Declare `FULL_CHARACTER_INFOGRAPHIC`, `BLACK_BACKGROUND_HERO_KEY_ART` or `3D_BLOCKOUT_EVIDENCE` explicitly in proposal sidecars. Full sheets require all 11 sections and 4:3 1536×1152+; black-background key art is *not* a substitute. Any visual art acceptance still requires actual image comparisons and the owner's approval; scripts and status checkboxes cannot certify aesthetic fidelity.
