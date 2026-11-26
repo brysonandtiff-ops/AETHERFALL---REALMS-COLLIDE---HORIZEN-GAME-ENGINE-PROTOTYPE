@@ -1,5 +1,7 @@
 # AETHERFALL — Concept-to-game art pipeline
 
+**MANDATORY DESIGN-FIRST GATE — SIRE-ART-INFO-001:** Before a newly planned visual asset can be approved for production, prepare an appropriate infographic development board and an accompanying text/JSON plan. Follow [the universal AETHERFALL infographic standard](UNIVERSAL_INFOGRAPHIC_STANDARD.md), the [machine-readable category policy](INFOGRAPHIC_POLICY.json) and the [per-asset plan template](INFOGRAPHIC_PLAN_TEMPLATE.json). All characters, weapons, levels, props, buildings, creatures, vehicles, environments and UI are covered. Use the Vellaris example's presentation grid, not its character design. Archive exact original sources and require owner review; no generated board counts as native engine proof. Historic assets do not become unfinished solely because they lack a new board; index them separately before further production changes.
+
 1. **Reference / concept:** Save owner-approved, rights-cleared source sheets under `art/concepts/`; record which version is canonical. Do not substitute or edit approved art without permission.
 2. **Blender source:** Save editable models in `art/blender/` using the asset ID; preserve iterations, armatures, UVs, materials, actions and mesh names.
 3. **Scale and orientation:** Use metric units, unit scale 1.0, +Z up and -Y forward in Blender. Confirm the final orientation and scale after importing into Godot.
