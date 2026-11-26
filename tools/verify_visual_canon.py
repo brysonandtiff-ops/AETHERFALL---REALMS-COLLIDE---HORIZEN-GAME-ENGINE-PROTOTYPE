@@ -18,6 +18,9 @@ LOCK_FILE = "docs/characters/CANON_LOCKS.json"
 STYLE_FILE = "docs/art/AETHERFALL_STYLE_CANON.json"
 STYLE_DOC = "docs/art/AETHERFALL_STYLE_CANON.md"
 STYLE_ID = "AF-STYLE-39403-V1"
+# Pin the FULL machine-readable style brief as a Git blob: every byte change
+# must be reviewed with a corresponding code change, not just JSON self-edit.
+STYLE_MANIFEST_BLOB = "40cc7fec9bd4e5d2a10c55e2ac524b7702186ec8"
 STYLE_SHA = "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939"
 STYLE_BRAND = "AETHERFALL – REALMS COLIDE"
 STYLE_BANNED_BRANDS = ["MIDNIGHT", "SHADOWSPIRE", "NEXUSFALL"]
@@ -171,7 +174,17 @@ def check(root=ROOT):
         errors.append("Character infographic presentation identity drift")
     # Third owner image is the global presentation reference. This proves
     # identifier/metadata consistency, NOT actual visual resemblance.
-    style = _json(root / STYLE_FILE)
+    style_path = root / STYLE_FILE
+    try:
+        style_bytes = style_path.read_bytes() if not style_path.is_symlink() else b""
+    except OSError:
+        style_bytes = b""
+    git_blob = hashlib.sha1(
+        b"blob " + str(len(style_bytes)).encode("ascii") + b"\\0" + style_bytes
+    ).hexdigest()
+    if git_blob != STYLE_MANIFEST_BLOB:
+        errors.append("AETHERFALL full style specification checksum drift")
+    style = _json(style_path)
     if not isinstance(style, dict):
         errors.append("Missing canonical AETHERFALL style lock")
         style = {}
@@ -198,7 +211,7 @@ def check(root=ROOT):
     if (style.get("sheet_panel_order") != LAYOUT
             or not isinstance(style.get("frame_style"), dict)
             or style["frame_style"].get("master_ratio") != "4:3"
-            or "gothic" not in style["frame_style"].get("tone", "").lower()):
+            or "gothic" not in str(style["frame_style"].get("tone", "")).lower()):
         errors.append("AETHERFALL third-image art style hierarchy drift")
     master_doc_path = _safe(root, STYLE_DOC)
     try:
