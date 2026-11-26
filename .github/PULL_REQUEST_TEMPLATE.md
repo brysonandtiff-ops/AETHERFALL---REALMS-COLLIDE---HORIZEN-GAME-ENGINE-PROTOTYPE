@@ -19,3 +19,11 @@ Describe what changed and link the work order.
 ## Risks / rollback
 
 State known limitations and exact revert instructions. No auto-deploy or merge.
+
+## Character-specific signoff if relevant
+
+- [ ] All changed characters have registered unique IDs and matching `docs/characters/plans/<ID>.json`.
+- [ ] Owner-approved unique silhouette, ability kit, palette and focus; not a generic shield copy.
+- [ ] Original concept binary, hash and provenance committed, **or gate honestly pending**.
+- [ ] Genuine Blender/Godot/device evidence for any production status claims, or explicitly not run.
+- [ ] No legacy character silently promoted; Corvex/Korvex spelling checked.

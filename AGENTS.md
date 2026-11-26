@@ -32,3 +32,7 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 - Protect original art, model versions, file paths, local saves and reference history. Do not fabricate assets or runtime media to fill missing source.
 - `tools/validate_structure.py`, adversarial tests and actual Godot headless CI are mandatory source-level gates. Only genuine graphical/native engine and actual device captures can establish visual acceptance. Never claim a playable game from a headless placeholder.
 - No new paid APIs, merges, deployments or destructive repository operations without the relevant independent evidence and owner authorisation.
+
+## Character standard and non-negotiable review
+
+Every future AETHERFALL character (including DPS, support, enemy, boss and NPC) requires a registered asset ID and matching plan under `docs/characters/plans/`. Follow `docs/characters/CHARACTER_WORKFLOW.md` (Vellaris completeness plus proof), preserve owner-locked visual identity and hero-unique kits, and never clone shields across tanks. A concept image is not a model or engine proof. New role/approval or Corvex/Korvex alias changes require owner review. CI and code-owner review must not be bypassed.

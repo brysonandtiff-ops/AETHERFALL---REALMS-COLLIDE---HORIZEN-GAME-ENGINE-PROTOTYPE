@@ -8,3 +8,8 @@
 - `evidence/PROOF_REQUIREMENTS.md`: genuine capture requirements.
 
 All unfinished or unconfirmed features remain proposed, not built. Changes to visual canon require owner approval.
+
+- `characters/CHARACTER_WORKFLOW.md`: mandatory Vellaris-plus per-character sheet and real production gates.
+- `characters/plans/<ID>.json`: exact recorded status/provenance for every registered character.
+- `characters/CHARACTER_INTAKE.md`: unresolved hero briefs, spellings and approval decisions.
+- `characters/PRODUCTION_TRACKER.md`: initial snapshot only; records are authoritative.

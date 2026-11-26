@@ -16,3 +16,7 @@
 ## Large files
 
 Binary `.blend`, `.glb`, textures and audio remain binary. Git LFS is not enabled here. Before committing large art, agree storage limits and enable an approved approach to prevent expensive repository growth.
+
+## Mandatory hero-sheet intake
+
+Follow `docs/characters/CHARACTER_WORKFLOW.md` and keep `docs/characters/plans/<ID>.json` updated. All characters require Vellaris-grade completeness (turnaround, silhouettes, expressions, palettes/materials, unique weapon/focus, gameplay, kit, technical and accessibility handoff) plus per-stage proof. Her bloodshield design is unique to her; **do not give every tank a shield**. An uploaded chat image does not satisfy the source-archival gate until the exact binary is committed and hashed.

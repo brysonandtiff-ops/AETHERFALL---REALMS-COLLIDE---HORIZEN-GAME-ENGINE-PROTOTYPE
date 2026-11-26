@@ -8,3 +8,6 @@
 - CI source tests prove only static properties. Godot headless tests prove a real native import/start, not rendered gameplay, phone acceptance or model fidelity.
 - Native screenshots, full animation footage, real device/controller tests and exact-source hashes are separate required release gates.
 - Only an individually identified, owned and fully archived Shadowspire repository could ever be considered for deletion. This upgrade deletes nothing.
+
+- Registered character manifests and non-skippable gates are now described in `docs/characters/CHARACTER_WORKFLOW.md`; production status requires real hashed evidence.
+- `.github/CODEOWNERS` records review responsibility, but to truly block unsafe merges an admin must enable required CI + code-owner reviews on `main`.
