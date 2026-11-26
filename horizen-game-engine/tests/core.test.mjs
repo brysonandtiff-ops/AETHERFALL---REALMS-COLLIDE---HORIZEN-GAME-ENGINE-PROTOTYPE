@@ -10,3 +10,12 @@ test('search includes status and session-ready filtering',()=>{const s=makeEmpty
 test('manifest cannot import invented certification state',()=>{const s=makeEmptyState(),r=stagingReceipt(s,{origin:localhost,doctor:{'Secure context':true}});assert.equal(r.schema,SCHEMA);assert.equal(r.release.certification,'HOLD_NOT_VERIFIED');assert.equal(r.release.nativeGodot,false);assert.equal(importReceipt({...r,release:{certification:'PASS'}}).worlds.length,4);assert.throws(()=>importReceipt({...r,schema:'fake'}));});
 test('evidence review is normalized fail-closed regardless of imported claims',()=>{const state=makeEmptyState();state.assets.push({id:'abc',name:'CHR_UnitTest',format:'OBJ',sha256:'a'.repeat(64),worldId:'world-aetherfall',evidence:[{name:'x',sha256:'b'.repeat(64),review:'PASS'}]});const got=normalizeState(state);assert.equal(got.assets[0].evidence[0].review,'PENDING_INDEPENDENT_REVIEW');assert.equal(got.assets[0].evidence[1],null);});
 test('deduplicated asset identifiers and illegal metadata reject',()=>{const state=makeEmptyState();state.assets=[{id:'same',name:'CHR_One',sha256:'a'.repeat(64)},{id:'same',name:'CHR_Two',sha256:'a'.repeat(64)}];assert.throws(()=>normalizeState(state));});
+
+test('owner-facing AETHERFALL name is correct and old automatic labels migrate safely',()=>{
+ const s=makeEmptyState();const w=s.worlds.find(w=>w.id==='world-aetherfall');
+ assert.equal(w.name,'AETHERFALL – REALMS COLIDE');
+ w.name='AETHERFALL: REALMS COLLIDE';
+ assert.equal(normalizeState(s).worlds.find(w=>w.id==='world-aetherfall').name,'AETHERFALL – REALMS COLIDE');
+ w.name='Custom Owner Title';
+ assert.equal(normalizeState(s).worlds.find(w=>w.id==='world-aetherfall').name,'Custom Owner Title');
+});
