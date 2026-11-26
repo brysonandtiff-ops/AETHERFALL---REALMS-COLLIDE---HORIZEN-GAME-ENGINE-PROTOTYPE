@@ -36,3 +36,13 @@ State known limitations and exact revert instructions. No auto-deploy or merge.
 - [ ] Owner approval explicitly recorded; until then saved as proposal, not new canon.
 - [ ] Cross-PR conflict (including Razor/Raven weapons) and alias (including Corvex/Korvex) reconciled.
 - [ ] Native engine/model/device status reported accurately.
+
+## AETHERFALL art-style hard lock — required for visual content
+
+- [ ] Used **exact Vellaris + Korvex original style references** (SHA-256 in `docs/art/ART_STYLE_LOCK.json`) with the correct hero's separate identity reference.
+- [ ] No NEXUSFALL/Shadowspire branding or screenshot UI from the roster composition-only source.
+- [ ] For a FULL_CHARACTER_INFOGRAPHIC, checked 4:3, >=1536x1152 and all 11 required panels (front/side/back/three-quarter, portraits, materials, silhouette, focus, kit, disclaimer).
+- [ ] For BLACK_BACKGROUND_HERO_KEY_ART, clearly marked **not a full sheet**.
+- [ ] Proposal has correct `<image>.review.json` plus style-lock ID, original reference hashes, candidate hash, origin and pending-owner-review state.
+- [ ] Showed actual original-versus-output comparisons to owner; no AI/self attestation of final visual match.
+- [ ] Ran `python3 tools/verify_art_style_contract.py` and `python3 -m unittest discover -s tests -v`; report exact result and any blockers.
