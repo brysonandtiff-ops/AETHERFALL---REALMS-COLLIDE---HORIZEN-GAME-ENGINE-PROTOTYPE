@@ -23,3 +23,7 @@ python3 tools/aetherfall.py work list
 ```
 
 This creates a **PLANNED** work order on disk, nothing more. Stage/commit it in a reviewed branch. `handoff` requires a clean, source-pinned Git checkout and emits only a proposal. S.I.R.E. runner authentication, actual code-building AI, plugin access, merge and release remain separate authorised steps.
+
+## Local Android documents
+
+To retain newly downloaded AETHERFALL documents under the existing phone project folder, see [Android local documents](ANDROID_LOCAL_DOCUMENTS.md). The local folder remains `AETHERFALL – REALMS COLIDE` (phone spelling), with `Docs/Inbox` for copied documents and untouched `korvex_blockout_v01`. No phone-side installation or automatic redirection is claimed.

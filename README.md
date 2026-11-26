@@ -75,3 +75,9 @@ python3 tools/aetherfall.py check
 ```
 
 For a proposed change, CI also checks the pull-request base against the candidate commit. New files are allowed; deleting original models, renaming existing character asset paths or breaking `res://` links fails. No change in this protection step is a playable game or graphical evidence claim.
+
+## Where local Android documents belong
+
+Keep local downloads in the **existing** phone directory `Internal storage/AETHERFALL – REALMS COLIDE/Docs/Inbox` (the single-L **COLIDE** spelling matches your actual Android folder). Do not touch `korvex_blockout_v01`.
+
+See [Android local documents](docs/development/ANDROID_LOCAL_DOCUMENTS.md). A safe optional Termux script `tools/phone_docs.py` previews and copies selected documents after the owner grants storage access. It **does not** change Android/ChatGPT's download settings or claim to be installed/running on the phone.

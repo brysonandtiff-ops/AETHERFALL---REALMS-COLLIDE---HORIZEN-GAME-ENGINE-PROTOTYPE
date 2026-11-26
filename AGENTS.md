@@ -48,3 +48,10 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 - Local command: `python3 tools/aetherfall.py doctor|status|routes|skills|check|work|handoff|cmd`. None of these automatically contacts S.I.R.E. agents/plugins or grants a runner.
 - Keep revisions in a review branch/draft PR. CI is source-contract/native headless verification only; genuine graphical/device/Blender/video evidence must be reported separately.
 - No new spending, undisclosed networks, remote control, user credential copying, automatic merge, auto-release or destructive cleanups. Only use verified upstream S.I.R.E. connections and existing permissions.
+
+## Android local documents (owner-controlled)
+
+- The on-phone folder is exactly `Internal storage/AETHERFALL – REALMS COLIDE/` (**COLIDE**, as already present in the owner's screenshots), NOT the GitHub repository spelling. Never rename this Android folder or touch its existing `korvex_blockout_v01` subfolder.
+- Downloaded, owner-approved text/PDF/Office documents go under `Docs/Inbox/` within that phone folder, per `config/local-documents.json` and `docs/development/ANDROID_LOCAL_DOCUMENTS.md`.
+- `tools/phone_docs.py` offers **preview-only by default**, then explicit `--apply` COPY + SHA256 check, no overwrite or deletion. `--watch` is owner-started foreground only; no installed service or automatic Android system setting.
+- GitHub/ChatGPT tools cannot set phone download destinations or claim the target exists after this repository edit. Phone-local use, permission and actual file-copy verification remain owner/device actions.

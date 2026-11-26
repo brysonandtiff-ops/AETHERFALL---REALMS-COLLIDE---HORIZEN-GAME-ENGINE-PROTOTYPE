@@ -6,3 +6,5 @@
 /.sire/ @brysonandtiff-ops
 /.github/workflows/ @brysonandtiff-ops
 /tools/structure_guard.py @brysonandtiff-ops
+/config/local-documents.json @brysonandtiff-ops
+/tools/phone_docs.py @brysonandtiff-ops
