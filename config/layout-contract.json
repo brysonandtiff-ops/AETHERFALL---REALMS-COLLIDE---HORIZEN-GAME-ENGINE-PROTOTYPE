@@ -10,9 +10,12 @@
     "AGENTS.md",
     "art/asset_registry.json",
     "config/layout-contract.json",
+    "config/local-documents.json",
+    "docs/development/ANDROID_LOCAL_DOCUMENTS.md",
     "game/project.godot",
     "game/scenes/bootstrap/main.tscn",
     "tools/aetherfall.py",
+    "tools/phone_docs.py",
     "tools/structure_guard.py",
     "tools/validate_structure.py"
   ],

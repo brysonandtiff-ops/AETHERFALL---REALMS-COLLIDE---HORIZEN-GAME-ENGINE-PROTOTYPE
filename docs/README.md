@@ -8,3 +8,5 @@
 - `evidence/PROOF_REQUIREMENTS.md`: genuine capture requirements.
 
 All unfinished or unconfirmed features remain proposed, not built. Changes to visual canon require owner approval.
+
+- `development/ANDROID_LOCAL_DOCUMENTS.md`: exact Android phone folder for downloaded AETHERFALL documents, optional owner-run copy, never original-art replacement.

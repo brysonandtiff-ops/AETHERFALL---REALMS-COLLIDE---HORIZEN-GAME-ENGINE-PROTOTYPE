@@ -71,11 +71,18 @@ def validate_folder(root: Path, downloads: Path, apply: bool):
     root_real, downloads_real = root.resolve(), downloads.resolve()
     if root_real == downloads_real or root_real.is_relative_to(downloads_real):
         raise ValueError("Project docs destination cannot be inside Android Download")
-    dest = root / EXPECTED_SUBDIR[0] / EXPECTED_SUBDIR[1]
-    if dest.exists() and (dest.is_symlink() or not dest.is_dir()):
+    docs = root / EXPECTED_SUBDIR[0]
+    dest = docs / EXPECTED_SUBDIR[1]
+    if docs.is_symlink() or (docs.exists() and not docs.is_dir()):
+        raise ValueError("Unsafe existing Docs folder")
+    if dest.is_symlink() or (dest.exists() and not dest.is_dir()):
         raise ValueError("Unsafe existing Docs/Inbox destination")
+    if not dest.resolve().is_relative_to(root_real):
+        raise ValueError("Docs/Inbox must stay inside the selected project folder")
     if apply:
         dest.mkdir(parents=True, exist_ok=True)
+        if not dest.resolve().is_relative_to(root_real):
+            raise ValueError("Docs/Inbox folder changed during setup")
     return dest
 
 

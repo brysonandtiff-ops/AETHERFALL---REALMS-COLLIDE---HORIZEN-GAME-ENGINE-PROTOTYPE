@@ -34,3 +34,14 @@ python3 tools/structure_guard.py diff --base <actual-ancestor-40-digit-commit>
 ```
 
 The first checks project layout, portable names, literal Godot `res://` resources, and UIDs. The second runs read-only Git comparison against a verified ancestor and rejects deletion/renaming of protected existing source and registry identity changes. Pull-request CI obtains the base SHA from GitHub. New additive game files are allowed. See `docs/architecture/FILE_STRUCTURE_SAFETY.md`.
+
+## Optional owner-run Android document intake
+
+```sh
+python3 tools/phone_docs.py --status
+python3 tools/phone_docs.py --file AETHERFALL_Concept_Brief.pdf
+python3 tools/phone_docs.py --file AETHERFALL_Concept_Brief.pdf --apply
+python3 tools/phone_docs.py --scan --apply
+```
+
+The destination is the existing Android `AETHERFALL – REALMS COLIDE/Docs/Inbox` (not a second differently spelled folder). The script is offline, restricted to the top level of Download, preview-only by default, copies with checksum, leaves originals in Download, never installs an Android system service, and is not yet running on the phone.
