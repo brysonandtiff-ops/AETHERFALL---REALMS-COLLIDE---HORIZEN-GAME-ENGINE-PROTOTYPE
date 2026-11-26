@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "game_engine": {
+    "name": "Godot",
+    "ci_version": "4.7.2",
+    "project_file": "game/project.godot",
+    "native_headless_smoke_only": true
+  },
+  "source_art_dcc": {
+    "name": "Blender",
+    "approved_version": null,
+    "native_verification": false
+  },
+  "source_control": {
+    "backend": "Git",
+    "git_lfs_configured": false,
+    "perforce_configured": false
+  },
+  "delivery": {
+    "live_server_configured": false,
+    "release_pipeline_operational": false
+  },
+  "policy": {
+    "credentials_must_stay_out_of_git": true,
+    "third_party_plugins_require_license_and_owner_approval": true,
+    "locked_art_requires_owner_approval": true
+  }
+}

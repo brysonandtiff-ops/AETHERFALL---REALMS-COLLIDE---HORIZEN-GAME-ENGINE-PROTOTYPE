@@ -76,6 +76,10 @@ class HardenedStructureTests(unittest.TestCase):
         path.write_text(json.dumps(data))
         self.assert_rejected("Unverified deletion status promotion")
 
+    def test_missing_multiplayer_boundary_fails(self):
+        (self.root / "game/scripts/network").rmdir()
+        self.assert_rejected("Missing/unsafe directory: game/scripts/network")
+
     def test_secret_env_fails(self):
         (self.root / ".env.production").write_text("TEST_NOT_SECRET=123")
         self.assert_rejected("Private environment file")
@@ -96,6 +100,42 @@ class HardenedStructureTests(unittest.TestCase):
     def test_case_collision_fails(self):
         (self.root / "game/Scenes").mkdir(parents=True)
         self.assert_rejected("Case collision")
+
+    def test_embedded_token_is_rejected_without_leaking_value(self):
+        marker = "gh" + "p_" + ("A" * 41)
+        (self.root / "game/scripts/core/token_test.gd").write_text("var example = '" + marker + "'")
+        errors = validator.check(self.root)
+        self.assertTrue(any("Possible embedded credential (GitHub access token)" in e for e in errors), errors)
+        self.assertTrue(all(marker not in e for e in errors))
+
+    def test_embedded_private_key_header_is_rejected(self):
+        marker = "-----BEGIN " + "PRIVATE KEY-----"
+        (self.root / "README.md").write_text("Not a secret: " + marker)
+        self.assert_rejected("Possible embedded credential (private key header)")
+
+    def test_build_directory_is_scanned_not_blindly_excluded(self):
+        directory = self.root / "build"
+        directory.mkdir()
+        (directory / "credentials.json").write_text("do not ship")
+        self.assert_rejected("Possible key/credential file: build/credentials.json")
+
+    def test_generated_git_cache_is_not_required(self):
+        self.assertEqual(validator.check(self.root), [])
+
+
+    def test_tracked_cache_hidden_from_walk_is_detected_by_git(self):
+        import subprocess
+        if shutil.which("git") is None:
+            self.skipTest("git unavailable, index integration test cannot run")
+        commands = (["git", "init", "-q"],)
+        for command in commands:
+            subprocess.run(command, cwd=self.root, check=True, capture_output=True)
+        private = self.root / ".venv" / "cache"
+        private.mkdir(parents=True)
+        (private / "trace.txt").write_text("fixture")
+        subprocess.run(["git", "add", "-f", ".venv/cache/trace.txt"],
+                       cwd=self.root, check=True, capture_output=True)
+        self.assert_rejected("Generated/cache directory committed to Git")
 
     def test_large_binary_without_policy_fails(self):
         path = self.root / "art/blender/unreviewed.blend"

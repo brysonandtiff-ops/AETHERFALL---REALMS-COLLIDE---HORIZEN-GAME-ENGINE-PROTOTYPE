@@ -1,0 +1,25 @@
+# AETHERFALL asset canon, governance and executable source review ownership.
+# Owner references name the actual repository owner; this file alone DOES NOT enforce approvals.
+# Configure GitHub branch protection/rulesets and authorised independent review separately.
+* @brysonandtiff-ops
+/.github/ @brysonandtiff-ops
+/AGENTS.md @brysonandtiff-ops
+/BUILD_HERE.md @brysonandtiff-ops
+/art/ @brysonandtiff-ops
+/game/project.godot @brysonandtiff-ops
+/game/scripts/network/ @brysonandtiff-ops
+/docs/production/ @brysonandtiff-ops
+/docs/architecture/ @brysonandtiff-ops
+/docs/security/ @brysonandtiff-ops
+/docs/legacy/ @brysonandtiff-ops
+/tools/ @brysonandtiff-ops
+/tests/ @brysonandtiff-ops
+
+/studio/ @brysonandtiff-ops
+/config/ @brysonandtiff-ops
+/pipeline/ @brysonandtiff-ops
+/game/addons/ @brysonandtiff-ops
+/game/localization/ @brysonandtiff-ops
+
+/docs/production/CONTENT_HANDOFF.md @brysonandtiff-ops
+/docs/architecture/AAA_STUDIO_ARCHITECTURE.md @brysonandtiff-ops

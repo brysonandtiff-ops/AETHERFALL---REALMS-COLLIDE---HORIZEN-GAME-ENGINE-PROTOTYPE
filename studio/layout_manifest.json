@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "architecture": "modular-godot-aaa-studio-monorepo",
+  "status": "structure_and_conventions_only",
+  "engine_family": "Godot",
+  "project_file": "game/project.godot",
+  "protected_art_registry": "art/asset_registry.json",
+  "authoritative_character_source": "art/asset_registry.json",
+  "zones": [
+    {
+      "id": "engine_project",
+      "path": "game",
+      "owner": "gameplay_engineering",
+      "responsibility": "Native Godot project, shipped scene/resource content and runtime modules"
+    },
+    {
+      "id": "source_art",
+      "path": "art",
+      "owner": "art_direction",
+      "responsibility": "Editable master artwork, licensed sources and approved visual concepts"
+    },
+    {
+      "id": "toolchain",
+      "path": "config",
+      "owner": "build_engineering",
+      "responsibility": "Non-secret checked-in version and environment contracts"
+    },
+    {
+      "id": "pipeline",
+      "path": "pipeline",
+      "owner": "technical_art_build",
+      "responsibility": "Asset/build/QA/release pipeline stages and entry points"
+    },
+    {
+      "id": "studio_contracts",
+      "path": "studio",
+      "owner": "production_engineering",
+      "responsibility": "Repository ownership, module boundaries and conventions"
+    },
+    {
+      "id": "documentation",
+      "path": "docs",
+      "owner": "production_design",
+      "responsibility": "Production docs, decisions, technical standards, proofs"
+    },
+    {
+      "id": "scripts",
+      "path": "tools",
+      "owner": "developer_productivity",
+      "responsibility": "Executable CLI validators and deterministic helpers"
+    },
+    {
+      "id": "testing",
+      "path": "tests",
+      "owner": "quality_engineering",
+      "responsibility": "Automated source, integration, gameplay and security tests"
+    },
+    {
+      "id": "proof",
+      "path": "evidence",
+      "owner": "quality_engineering",
+      "responsibility": "Genuine engine, Blender, device and performance evidence"
+    },
+    {
+      "id": "source_controls",
+      "path": ".github",
+      "owner": "build_engineering",
+      "responsibility": "Code review owners and GitHub Actions CI"
+    }
+  ],
+  "modules": [
+    {
+      "id": "core",
+      "path": "game/scripts/core",
+      "owner": "gameplay_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "player_input",
+      "path": "game/scripts/input",
+      "owner": "gameplay_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "characters",
+      "path": "game/scripts/characters",
+      "owner": "character_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "combat",
+      "path": "game/scripts/combat",
+      "owner": "combat_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "abilities",
+      "path": "game/scripts/abilities",
+      "owner": "combat_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "teams",
+      "path": "game/scripts/teams",
+      "owner": "gameplay_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "match",
+      "path": "game/scripts/match",
+      "owner": "gameplay_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "network",
+      "path": "game/scripts/network",
+      "owner": "multiplayer_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "ai",
+      "path": "game/scripts/ai",
+      "owner": "gameplay_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "save",
+      "path": "game/scripts/save",
+      "owner": "gameplay_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "telemetry",
+      "path": "game/scripts/telemetry",
+      "owner": "live_qa_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "worlds",
+      "path": "game/scripts/levels",
+      "owner": "level_engineering",
+      "status": "reserved_or_scaffold_only"
+    },
+    {
+      "id": "ui",
+      "path": "game/scripts/ui",
+      "owner": "ui_engineering",
+      "status": "reserved_or_scaffold_only"
+    }
+  ],
+  "required_directories": [
+    ".github/workflows",
+    "art/audio/source",
+    "art/blender/characters",
+    "art/blender/environments",
+    "art/concepts/characters",
+    "art/handoffs",
+    "art/storyboards",
+    "art/textures/source",
+    "art/ui",
+    "art/vfx",
+    "config",
+    "docs/architecture",
+    "docs/production",
+    "evidence/blender",
+    "evidence/device",
+    "evidence/godot",
+    "evidence/performance",
+    "game",
+    "game/addons",
+    "game/assets",
+    "game/assets/characters/heroes",
+    "game/assets/worlds/realms",
+    "game/audio",
+    "game/autoload",
+    "game/data/abilities",
+    "game/data/balance",
+    "game/data/heroes",
+    "game/data/modes",
+    "game/localization",
+    "game/scenes/characters/heroes",
+    "game/scenes/cinematics",
+    "game/scenes/levels/arenas",
+    "game/scenes/ui",
+    "game/scripts/abilities",
+    "game/scripts/ai",
+    "game/scripts/characters",
+    "game/scripts/combat",
+    "game/scripts/core",
+    "game/scripts/input",
+    "game/scripts/levels",
+    "game/scripts/match",
+    "game/scripts/network",
+    "game/scripts/save",
+    "game/scripts/teams",
+    "game/scripts/telemetry",
+    "game/scripts/ui",
+    "game/shaders",
+    "pipeline/asset_ingest",
+    "pipeline/build",
+    "pipeline/qa",
+    "pipeline/release",
+    "studio",
+    "tests/gameplay",
+    "tests/godot",
+    "tests/network",
+    "tools"
+  ],
+  "required_files": [
+    "game/project.godot",
+    "art/asset_registry.json",
+    "docs/architecture/REPO_LAYOUT.md",
+    "docs/architecture/AAA_STUDIO_ARCHITECTURE.md",
+    "docs/production/CONTENT_HANDOFF.md",
+    "docs/production/BUILD_TRAINS.md",
+    "studio/layout_manifest.json",
+    "config/toolchain.json",
+    "pipeline/README.md",
+    "game/addons/README.md",
+    "tools/validate_studio_layout.py",
+    "tests/test_studio_layout.py",
+    "art/handoffs/README.md",
+    "tools/validate_asset_handoffs.py",
+    "tools/studio_preflight.py",
+    "tests/test_asset_handoffs.py",
+    "tests/test_studio_preflight.py"
+  ],
+  "generated_paths": [
+    "game/.godot",
+    "game/.import",
+    "build",
+    "dist",
+    "pipeline/.cache"
+  ],
+  "asset_flow": {
+    "character_concept": "art/concepts/characters",
+    "blender_master": "art/blender/characters",
+    "godot_runtime": "game/assets/characters/heroes",
+    "hero_scenes": "game/scenes/characters/heroes",
+    "hero_definitions": "game/data/heroes"
+  },
+  "naming": {
+    "asset_ids": "CHR_* / WPN_* IDs remain stable and case-preserved",
+    "new_godot_filenames": "snake_case",
+    "new_godot_nodes": "PascalCase",
+    "approval": "No renames or visual canon changes without explicit owner approval"
+  },
+  "constraints": {
+    "no_copy_of_commercial_game_files": true,
+    "no_unapproved_godot_to_unreal_conversion": true,
+    "no_live_agents_created": true,
+    "no_gameplay_claim_from_directories": true,
+    "no_public_private_photos_or_secrets": true
+  }
+}

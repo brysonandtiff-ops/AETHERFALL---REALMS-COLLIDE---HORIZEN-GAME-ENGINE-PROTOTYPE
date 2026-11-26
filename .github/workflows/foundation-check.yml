@@ -20,6 +20,44 @@ jobs:
           persist-credentials: false
       - name: Validate source and migration boundary
         run: python3 tools/validate_structure.py
+      - name: Validate studio-grade modular Godot source and art ownership
+        run: python3 tools/validate_studio_layout.py
+      - name: Validate asset handoffs and show source readiness
+        run: |
+          python3 tools/validate_asset_handoffs.py --validate
+          python3 tools/validate_asset_handoffs.py --report
+      - name: Exercise single-command studio quick preflight
+        run: python3 tools/studio_preflight.py --quick
+      - name: Validate ordered production work queue and truth gates
+        run: |
+          python3 tools/production_queue.py --validate
+          python3 tools/production_queue.py --next
+      - name: Guard historical task identity, approvals and state transitions
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          if git cat-file -e "$BASE_SHA:docs/production/WORK_QUEUE.json" 2>/dev/null; then
+            git show "$BASE_SHA:docs/production/WORK_QUEUE.json" > "$RUNNER_TEMP/aetherfall_base_queue.json"
+            python3 tools/production_queue.py --audit-baseline "$RUNNER_TEMP/aetherfall_base_queue.json"
+          else
+            echo 'Initial adoption: baseline has no production queue; enforce source, plan and test checks'
+          fi
+      - name: Protect canonical character register and original art/evidence history
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          git show "$BASE_SHA:art/asset_registry.json" > "$RUNNER_TEMP/aetherfall_base_asset_registry.json"
+          python3 tools/audit_asset_history.py --baseline "$RUNNER_TEMP/aetherfall_base_asset_registry.json" --git-base "$BASE_SHA"
+      - name: Compile validators and tests
+        run: python3 -m compileall -q tools tests
       - name: Run adversarial standard-library tests
         run: python3 -m unittest discover -s tests -v
 

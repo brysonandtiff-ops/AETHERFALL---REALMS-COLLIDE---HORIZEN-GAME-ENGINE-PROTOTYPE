@@ -1,17 +1,37 @@
 #!/usr/bin/env python3
 """AETHERFALL offline source safety gates. Not native game or art evidence."""
 
+import importlib.util
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
-    "README.md", "AGENTS.md", ".gitignore", ".gitattributes",
+    "README.md", "BUILD_HERE.md", "AGENTS.md", ".gitignore", ".gitattributes",
+    ".github/CODEOWNERS", "docs/security/REPO_HARDENING.md",
+    "studio/layout_manifest.json", "config/toolchain.json",
+    "docs/architecture/AAA_STUDIO_ARCHITECTURE.md",
+    "docs/production/CONTENT_HANDOFF.md", "docs/production/BUILD_TRAINS.md",
+    "pipeline/README.md", "game/addons/README.md",
+    "tools/validate_studio_layout.py", "tests/test_studio_layout.py",
+    "tools/audit_asset_history.py", "tests/test_art_history.py",
+    "tools/validate_asset_handoffs.py", "tests/test_asset_handoffs.py",
+    "art/handoffs/README.md", "tools/studio_preflight.py",
+    "tests/test_studio_preflight.py",
+    "tools/production_queue.py", "docs/production/WORK_QUEUE.json",
+    "docs/production/README.md", "docs/production/MASTER_BUILD_ROADMAP.md",
+    "docs/production/DEFINITION_OF_DONE.md",
+    "docs/production/HANDOFF_AND_RECOVERY.md",
+    "docs/production/TEST_MATRIX.md",
+    "docs/production/DECISIONS_AND_RISKS.md",
+    "docs/production/RELEASE_AND_OPERATIONS.md",
     "game/project.godot", "game/scenes/bootstrap/main.tscn",
     "art/asset_registry.json", "docs/architecture/REPO_LAYOUT.md",
+    "docs/architecture/HERO_SHOOTER_TREE_RESEARCH.md",
     "docs/art/ASSET_PIPELINE.md", "docs/characters/CHARACTER_REGISTRY.md",
     "docs/legacy/shadowspire_migration.json", "docs/legacy/README.md",
     "docs/characters/LEGACY_ROSTER.md",
@@ -23,12 +43,33 @@ REQUIRED_DIRS = (
     "game/scripts/abilities", "game/assets/characters/heroes", "game/assets/weapons",
     "game/assets/worlds", "game/audio/music", "game/shaders",
     "art/blender/characters", "art/blender/weapons", "art/concepts/characters",
+    "game/data/heroes", "game/data/abilities", "game/data/modes",
+    "game/data/balance", "game/scenes/matches", "game/scenes/ui/hero_select",
+    "game/scenes/ui/hud", "game/scripts/match", "game/scripts/teams",
+    "game/scripts/network", "tests/gameplay", "tests/network",
+    "studio", "config", "pipeline/asset_ingest", "pipeline/build",
+    "pipeline/qa", "pipeline/release", "game/addons", "game/localization",
+    "game/scripts/ai", "game/scripts/input", "game/scripts/save",
+    "game/scripts/telemetry", "game/scenes/cinematics",
+    "art/storyboards", "art/ui", "art/vfx", "art/handoffs",
     "evidence/godot", "evidence/blender", "evidence/device", "tests",
 )
-IGNORED_DIRS = {".git", ".godot", ".import", ".pytest_cache", "__pycache__", "build", "dist", ".venv"}
+IGNORED_DIRS = {".git", ".godot", ".import", ".pytest_cache", "__pycache__", ".venv"}
+# build/ and dist/ are deliberately SCANNED if present, even if ignored by Git.
 PRIVATE_FILENAMES = {"id_rsa", "id_ed25519", "credentials.json", "service-account.json", "service_account.json", ".netrc", ".npmrc", ".pypirc"}
 PRIVATE_EXTENSIONS = {".pem", ".key", ".p12", ".pfx", ".jks", ".keystore"}
-BINARY_ART_EXTENSIONS = {".blend", ".glb", ".fbx", ".gltf", ".png", ".jpg", ".jpeg", ".wav", ".ogg", ".mp4"}
+BINARY_ART_EXTENSIONS = {".blend", ".glb", ".fbx", ".gltf", ".png", ".jpg", ".jpeg", ".webp", ".wav", ".ogg", ".mp3", ".mp4", ".mov", ".psd", ".exr"}
+TEXT_SCAN_EXTENSIONS = {".py", ".gd", ".gdshader", ".godot", ".tscn", ".tres", ".json", ".md", ".yml", ".yaml", ".sh", ".toml", ".cfg", ".ini", ".txt"}
+MAX_TEXT_SCAN_BYTES = 2 * 1024 * 1024
+# Only high-confidence credential signatures. Never print the matched token.
+SECRET_SIGNATURES = (
+    ("private key header", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----")),
+    ("AWS access key", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
+    ("GitHub access token", re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9_]{36,}|github_pat_[A-Za-z0-9_]{40,})\b")),
+    ("OpenAI project key", re.compile(r"\bsk-proj-[A-Za-z0-9_-]{30,}\b")),
+    ("production payment key", re.compile(r"\bsk_live_[A-Za-z0-9]{20,}\b")),
+)
+
 MAX_DIRECT_BINARY_BYTES = 50 * 1024 * 1024
 ID_PATTERN = re.compile(r"^(CHR|WPN)_[A-Za-z][A-Za-z0-9_]*$")
 MAIN_SCENE = re.compile(r'(?m)^\s*run/main_scene\s*=\s*"res://([^"]+)"')
@@ -74,8 +115,51 @@ def scan_source_tree(root, errors):
                 errors.append("Editable Blender source inside game/: " + rel)
             if rel.startswith("art/") and item.suffix.casefold() == ".glb":
                 errors.append("Runtime GLB export inside art/: " + rel)
-            if item.suffix.lower() in BINARY_ART_EXTENSIONS and item.stat().st_size > MAX_DIRECT_BINARY_BYTES:
+            size = item.stat().st_size
+            if item.suffix.lower() in BINARY_ART_EXTENSIONS and size > MAX_DIRECT_BINARY_BYTES:
                 errors.append("Binary exceeds 50 MiB without reviewed LFS/storage plan: " + rel)
+            if item.suffix.lower() in TEXT_SCAN_EXTENSIONS:
+                if size > MAX_TEXT_SCAN_BYTES:
+                    errors.append("Text file too large for secret inspection: " + rel)
+                    continue
+                try:
+                    content = item.read_text(encoding="utf-8")
+                except (UnicodeError, OSError):
+                    errors.append("Unreadable UTF-8 source text: " + rel)
+                    continue
+                for secret_type, signature in SECRET_SIGNATURES:
+                    if signature.search(content):
+                        errors.append("Possible embedded credential (" + secret_type + "): " + rel)
+
+
+def validate_git_index(root, errors):
+    """Catch tracked ignored caches and gitlinks that ordinary tree walks skip."""
+    if not (root / ".git").exists():
+        return
+    try:
+        result = subprocess.run(
+            ["git", "ls-files", "--stage", "-z"],
+            cwd=root, capture_output=True, check=True, timeout=15,
+        )
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        errors.append("Cannot inspect tracked Git source index")
+        return
+    for record in result.stdout.split(b"\x00"):
+        if not record:
+            continue
+        try:
+            meta, path = record.split(b"\t", 1)
+            mode = meta.split(b" ", 1)[0]
+            rel = path.decode("utf-8")
+        except (ValueError, UnicodeDecodeError):
+            errors.append("Unreadable Git index record")
+            continue
+        if mode == b"160000":
+            errors.append("Unreviewed git submodule: " + rel)
+        if mode == b"120000":
+            errors.append("Tracked symbolic link: " + rel)
+        if any(part in IGNORED_DIRS for part in rel.split("/")):
+            errors.append("Generated/cache directory committed to Git: " + rel)
 
 
 def validate_registry(root, errors):
@@ -114,7 +198,10 @@ def validate_registry(root, errors):
             errors.append("Asset ID/type mismatch: " + identifier)
         if not isinstance(asset.get("role"), str) or not asset["role"].strip():
             errors.append("Asset role missing: " + identifier)
-        if asset.get("status") != "reserved_no_source":
+        if asset.get("status") not in (
+            "reserved_no_source", "concept_recorded", "blender_source_recorded",
+            "runtime_export_recorded", "native_import_reviewed",
+        ):
             errors.append("Unverified asset status promotion: " + identifier)
         if asset.get("concept_status") not in (
             "aetherfall_approved", "aetherfall_design_brief",
@@ -135,6 +222,21 @@ def validate_registry(root, errors):
             if unique in destinations:
                 errors.append("Reused asset path: " + identifier)
             destinations.add(unique)
+
+
+def validate_asset_handoffs(root, errors):
+    """Validate receipt paths/checksums without claiming Blender/Godot verification."""
+    path = Path(__file__).resolve().with_name("validate_asset_handoffs.py")
+    if not path.is_file():
+        errors.append("Missing asset handoff validator")
+        return
+    try:
+        spec = importlib.util.spec_from_file_location("aetherfall_intake", path)
+        checker = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(checker)
+        errors.extend(checker.check(root))
+    except (OSError, ValueError, TypeError, UnicodeError) as exc:
+        errors.append("Asset receipt validation failed: " + type(exc).__name__)
 
 
 def validate_godot(root, errors):
@@ -197,7 +299,9 @@ def check(root=ROOT):
         if candidate is None or not candidate.is_dir() or candidate.is_symlink():
             errors.append("Missing/unsafe directory: " + rel)
     scan_source_tree(root, errors)
+    validate_git_index(root, errors)
     validate_registry(root, errors)
+    validate_asset_handoffs(root, errors)
     validate_godot(root, errors)
     validate_legacy_hold(root, errors)
     return errors

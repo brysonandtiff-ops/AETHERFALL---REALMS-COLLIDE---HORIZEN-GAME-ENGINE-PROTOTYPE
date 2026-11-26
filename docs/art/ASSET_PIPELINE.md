@@ -16,3 +16,15 @@
 ## Large files
 
 Binary `.blend`, `.glb`, textures and audio remain binary. Git LFS is not enabled here. Before committing large art, agree storage limits and enable an approved approach to prevent expensive repository growth.
+
+## Studio-scale technical art handoff
+
+Use [studio content handoff](../production/CONTENT_HANDOFF.md) for named discipline ownership, approved input licences, original source integrity, mesh/rig/UV/LOD and budget checks, export manifest hashes, versioned GLBs, real Godot imports and actual screenshots/video. `pipeline/asset_ingest/` is reserved—not an automated exporter—and `art/ui/`, `art/vfx/`, `art/storyboards/` are source-editable future categories. Godot `game/assets/` is *not* the Blender master repository.
+
+Binary files need an owner-approved storage and file-locking strategy; this repository does not claim Git LFS or Perforce are configured. Never bulk-rename existing `CHR_*` IDs or source masters, or treat owner photographs and unlicensed third-party content as public assets by default.
+
+## Executable source/art handoff contract
+
+Run `python3 tools/validate_asset_handoffs.py --report` to see each asset's recorded stage. Any move beyond `reserved_no_source` requires a real rights-reviewed `art/handoffs/<asset-id>.json` receipt with paths in the canonical directories, file bytes and SHA256. Stages are `concept_recorded` → `blender_source_recorded` → `runtime_export_recorded` → `native_import_reviewed`; only AETHERFALL-approved canon may advance into Blender production. The last stage requires genuine Godot import logs and editor/game capture reviewed by an actual person. Receipt checks validate file type/size/hash **only**, not modelling quality, animation, engine behavior or screenshot authenticity.
+
+This is a practical path for approved files, **not** an excuse to write fake source, save private owner images to a public repo, or unlock unapproved historical characters. See [handoff format](../../art/handoffs/README.md).
