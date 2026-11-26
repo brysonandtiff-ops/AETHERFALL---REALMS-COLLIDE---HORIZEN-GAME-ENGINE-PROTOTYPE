@@ -15,5 +15,6 @@ All unfinished or unconfirmed features remain proposed, not built. Changes to vi
 - `characters/PRODUCTION_TRACKER.md`: initial snapshot only; records are authoritative.
 
 - `characters/CANON_LOCKS.json` and `characters/VISUAL_CANON_LOCK.md`: exact approved source/provenance, visual template, character locks and failure rules.
+- `art/AETHERFALL_STYLE_CANON.md`, `art/AETHERFALL_STYLE_CANON.json`, and `art/STYLE_DESIGN_BRIEF_TEMPLATE.md`: **owner-locked third image 39403.png** determines new AETHERFALL visual design; source and owner review required.
 - `characters/DRIFT_REVIEW_TEMPLATE.md`: source-to-output comparison required before a proposed visual variant becomes canon.
 - `architecture/MAIN_BRANCH_LOCK_SETUP.md`: required GitHub admin ruleset and honest protection status.
