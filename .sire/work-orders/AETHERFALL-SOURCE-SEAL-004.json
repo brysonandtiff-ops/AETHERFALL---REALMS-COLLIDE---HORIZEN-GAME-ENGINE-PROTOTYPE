@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "AETHERFALL-SOURCE-SEAL-004",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository": "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE",
+  "goal": "Add a fail-closed S.I.R.E.-aligned source integrity seal that hashes exact game, art, docs and integration source without falsely certifying gameplay or release.",
+  "authorised_executor": {
+    "master": "S.I.R.E AI",
+    "specialist": "S.I.R.E. Secrets Steward",
+    "team": "security",
+    "execution_status": "NOT_CONNECTED"
+  },
+  "requirements": [
+    "Use exact candidate Git SHA, trusted ancestor and clean tree to reject stale, dirty or untrusted source",
+    "Reuse existing structure guard and remain additive without touching art, Godot or phone originals",
+    "Hash real tracked Git blobs with SHA-256/SHA3-256 and output deterministic Merkle tree outside repo",
+    "Refuse symlinks, unresolved LFS pointers, missing mandatory source, unsupported approval claims",
+    "Preserve explicit LAW-104/105/106/108/115 boundary; never self-sign, auto-deploy, install agents or claim release"
+  ],
+  "status": "STAGED_FOR_REVIEW",
+  "completion_criteria": [
+    "Source seal and code/phone configuration protected by existing layout contract",
+    "Adversarial tests reject dirty tree, stale SHA, missing paths, altered receipt and false release status",
+    "Exact-head CI source receipt and original headless Godot logs are available with SHA-bound claims",
+    "Unchanged game assets, S.I.R.E. integrations, Korvex local folder and downloaded docs preserved",
+    "No final signature, runtime scene visuals, device or game release claimed without independent proof"
+  ],
+  "evidence": {
+    "source_tests": "NOT_RUN_ON_CANDIDATE",
+    "native_godot": "NOT_RUN_ON_CANDIDATE",
+    "graphical_proof": "NOT_RUN",
+    "device": "NOT_RUN"
+  },
+  "rollback": "Close the stacked draft source-seal PR and retain the parent branch; never overwrite or delete approved sources, keys or media."
+}
