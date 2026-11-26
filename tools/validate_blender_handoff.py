@@ -283,7 +283,7 @@ def _check_manifest(root, path):
             )):
                 failures.append(f"Blender handoff 1P/3P engine exports missing/unsafe: {tag}")
         if state == "READY_FOR_OWNER_REVIEW":
-            if _obj(stages.get("owner_review")).get("status") == "PASS" or _obj(doc.get("owner_signoff")).get("approved") is True:
+            if _obj(stages.get("owner_review")).get("status") != "NOT_RUN" or _obj(doc.get("owner_signoff")).get("approved") is True:
                 failures.append(f"Blender owner review already asserted at READY stage: {tag}")
     if state == "GAME_READY":
         owner = doc.get("owner_signoff")
