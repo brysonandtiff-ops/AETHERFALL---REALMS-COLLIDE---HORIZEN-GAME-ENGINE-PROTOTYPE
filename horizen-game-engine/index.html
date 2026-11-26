@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080b13">
+  <meta name="description" content="HORIZEN GAME ENGINE — local-first worlds, governed production and evidence workshop.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <title>HORIZEN GAME ENGINE · S.I.R.E.</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Engine navigation">
+      <a class="brand" href="#library" aria-label="HORIZEN GAME ENGINE home"><span class="brand-mark">H</span><span class="brand-name"><b>HORIZEN</b><small>GAME ENGINE</small></span></a>
+      <div class="side-label">S.I.R.E. COMMAND</div>
+      <nav class="nav" aria-label="Modules">
+        <button class="nav-link selected" type="button" data-nav="library"><span class="nav-num">01</span><span>Game Library<br><small>&amp; Worlds</small></span></button>
+        <button class="nav-link" type="button" data-nav="status"><span class="nav-num">02</span><span>System Status<br><small>&amp; Certification</small></span></button>
+        <button class="nav-link" type="button" data-nav="forge"><span class="nav-num">03</span><span>Model Forge<br><small>&amp; GAISLINK</small></span></button>
+      </nav>
+      <div class="sidebar-foot"><div class="signal"><span class="signal-dot" id="network-dot"></span><span id="network-label">LOCAL SHELL</span></div><p>Governed production workspace.<br>No remote connection assumed.</p><span class="mono tiny">ENGINE SHELL / v0.1.0</span></div>
+    </aside>
+    <div class="main-wrap">
+      <header class="topbar"><div class="breadcrumbs"><span>S.I.R.E.</span><span class="slash">/</span><span>HORIZEN GAME ENGINE</span><span class="slash">/</span><strong id="breadcrumb-view">WORLD LIBRARY</strong></div><div class="header-right"><span class="badge badge-muted">LOCAL-FIRST</span><span class="clock mono" id="local-clock"></span></div></header>
+      <main id="content">
+        <section class="view active" id="view-library" aria-label="Game Library and Worlds">
+          <div class="page-head"><div class="eyebrow"><span class="lozenge"></span> MODULE 01 <span class="divider">/</span> WORLD OPERATIONS</div><h1>Game Library <span>&amp; Worlds</span></h1><p>Catalog local projects. Verify same-origin browser builds before launch. Registration is not engine certification.</p></div>
+          <div class="metrics"><article class="metric"><span>REGISTERED WORLDS</span><b id="metric-worlds">00</b><small>Owner-local catalog</small></article><article class="metric"><span>BROWSER-READY</span><b id="metric-ready">00</b><small>Verified this session</small></article><article class="metric"><span>FORGE INTAKES</span><b id="metric-assets">00</b><small>Evidence pending review</small></article><article class="metric"><span>RELEASE AUTHORITY</span><b class="hold">HOLD</b><small>No certification receipt</small></article></div>
+          <div class="section-bar"><h2>WORLD DIRECTORY <span class="count" id="world-count">0</span></h2><button class="primary" type="button" id="new-world">+ REGISTER LOCAL WORLD</button></div>
+          <div class="filter-row"><label class="search"><span aria-hidden="true">⌕</span><input id="world-search" type="search" placeholder="Search worlds, games, builds…" aria-label="Search worlds"></label><label class="select-wrap"><span class="sr-only">Filter world status</span><select id="world-filter"><option value="all">All statuses</option><option value="staged">Staged</option><option value="active">Active</option><option value="ready">Browser ready</option><option value="archived">Archived</option></select></label></div>
+          <div id="world-grid" class="world-grid" aria-live="polite"></div>
+          <div class="section-bar section-lower"><h2>PRODUCTION SHORTCUTS</h2></div>
+          <div class="shortcut-grid"><button type="button" data-jump="forge"><span class="shortcut-icon">⬡</span><span><b>MODEL FORGE</b><small>Source intake · 8-stage production</small></span><span class="arrow">↗</span></button><button type="button" data-jump="status"><span class="shortcut-icon">◎</span><span><b>S.I.R.E. CERTIFICATION</b><small>Ten evidence gates · subsystem doctor</small></span><span class="arrow">↗</span></button></div>
+        </section>
+        <section class="view" id="view-status" aria-label="System status and certification">
+          <div class="page-head"><div class="eyebrow"><span class="lozenge"></span> MODULE 02 <span class="divider">/</span> SOVEREIGN VERIFICATION</div><h1>System Status <span>&amp; Certification</span></h1><p>Evidence-bound telemetry. Unconnected subsystems cannot certify themselves.</p></div>
+          <div class="section-bar"><h2>10-GATE RELEASE MATRIX</h2><span class="badge badge-warning">HOLD / NOT VERIFIED</span></div>
+          <div class="panel matrix-panel"><div id="gate-grid" class="gate-grid"></div><p class="footnote">Gates require independently checked source, native-engine tests and owner-authorised release evidence. Uploaded receipts remain submissions, not automatic PASS results.</p></div>
+          <div class="section-bar section-lower"><h2>S.I.R.E. SUBSYSTEMS</h2></div><div id="systems-grid" class="systems-grid"></div>
+          <div class="panel explanation"><strong>AUTHORITY BOUNDARY</strong><p>S.I.R.E. can prepare evidence, verify source integrity and stage a release. External stores and distributors control their final publishing gates. This standalone PWA never marks Godot, Blender, GAISLINK or a real phone as online without a genuine check.</p></div>
+        </section>
+        <section class="view" id="view-forge" aria-label="Model Forge and GAISLINK Doctor">
+          <div class="page-head"><div class="eyebrow"><span class="lozenge"></span> MODULE 03 <span class="divider">/</span> SOURCE-TO-RUNTIME</div><h1>Model Forge <span>Live Workshop</span></h1><p>Track genuine source files and production evidence for 1P + 3P assets. A browser inspection does not prove a game-engine build.</p></div>
+          <div class="forge-layout"><div class="forge-left">
+            <div class="section-bar"><h2>ASSET INTAKE</h2></div>
+            <form class="panel asset-form" id="asset-form"><label>ASSET IDENTIFIER<input id="asset-id" name="asset-id" required maxlength="80" placeholder="CHR_Raven" autocomplete="off" pattern="[A-Za-z0-9_-]{3,80}"></label><label>PROJECT / WORLD<select id="asset-world" aria-label="Asset world"></select></label><label>RAW SOURCE FILE <span class="muted">.glb / .obj / .fbx</span><input id="asset-file" type="file" accept=".glb,.obj,.fbx" required></label><button class="primary" type="submit">INSPECT &amp; REGISTER SOURCE</button><span class="small muted">Source is hashed in this browser. File bytes are not uploaded or retained after reload.</span></form>
+            <div class="panel asset-list-panel"><div class="mini-head"><strong>REGISTERED SOURCE ASSETS</strong><span id="asset-count" class="mono">0</span></div><div id="asset-list" class="asset-list"></div></div>
+          </div><div class="forge-right"><div class="section-bar"><h2>8-STAGE PIPELINE <span class="mono small" id="pipeline-summary">0 / 8 SUBMITTED</span></h2></div><div class="panel"><div class="selection-line"><span>SELECTED ASSET</span><strong id="selected-asset-label">NONE — REGISTER A SOURCE</strong></div><div class="pipeline" id="pipeline"></div><input type="file" id="evidence-file" class="sr-only" aria-label="Choose evidence file"></div></div></div>
+          <div class="two-panel"><section class="panel viewer-panel"><div class="mini-head"><strong>SOURCE VIEWPORT / REAL BYTES ONLY</strong><span class="badge badge-muted" id="preview-state">NO SOURCE LOADED</span></div><canvas id="model-canvas" width="740" height="400" hidden aria-label="Local WebGL preview of uploaded source geometry"></canvas><div id="preview-empty" class="viewport-empty"><span>⬡</span><b>VIEWPORT LOCKED</b><small>Load a valid local GLB or OBJ mesh to render source geometry. No simulated frames.</small></div><div id="inspection-details" class="inspection-details">No model imported in this session.</div></section>
+            <section class="panel doctor-panel"><div class="mini-head"><strong>GAISLINK DOCTOR</strong><span class="badge badge-muted" id="doctor-state">NOT CONNECTED</span></div><div id="doctor-checks" class="doctor-checks"></div><label>LOCAL HEALTH ENDPOINT <span class="muted">same origin only</span><input id="doctor-path" placeholder="/gaislink/health" value="/gaislink/health" spellcheck="false"></label><button type="button" class="secondary full" id="doctor-run">RUN PREREQUISITE &amp; ENDPOINT CHECKS</button><p class="small muted" id="doctor-note">No endpoint has been contacted. Connectivity will not be inferred.</p></section></div>
+          <div class="section-bar section-lower"><h2>STAGING RECEIPT</h2></div><div class="panel receipt-panel"><div><strong>JSON MANIFEST / SOURCE-TRACED</strong><p>Exports registered worlds, intake hashes, evidence submissions, local capability checks and unverified release state. No simulated Blender/Godot screenshots or fake approvals.</p></div><div class="receipt-buttons"><button type="button" class="secondary" id="manifest-import">IMPORT RECEIPT</button><input type="file" id="manifest-file" accept=".json,application/json" class="sr-only"><button type="button" class="primary" id="manifest-export">EXPORT STAGING JSON</button></div></div>
+        </section>
+      </main>
+      <footer class="footer"><span>S.I.R.E. SOVEREIGN WORKSPACE</span><span>ART CANON LOCKED <span class="dotsep">·</span> SOURCE EVIDENCE REQUIRED <span class="dotsep">·</span> RELEASE HOLD</span></footer>
+    </div>
+  </div>
+  <dialog id="world-dialog" class="world-dialog" aria-labelledby="world-dialog-title"><form method="dialog" id="world-form"><div class="dialog-top"><div><div class="eyebrow">LOCAL WORLD REGISTRY</div><h2 id="world-dialog-title">Register a world</h2></div><button type="button" id="world-close" aria-label="Close">✕</button></div><label>WORLD NAME<input required id="world-name" maxlength="80" placeholder="AETHERFALL: REALMS COLLIDE"></label><label>BUILD ENTRY URL <small>(same-origin path, optional)</small><input id="world-url" placeholder="./builds/my-world/index.html" maxlength="500"></label><label>STATUS<select id="world-status"><option value="staged">Staged</option><option value="active">Active / in production</option><option value="archived">Archived</option></select></label><label>NOTES<textarea id="world-notes" maxlength="600" placeholder="Source path, platform or next task" rows="3"></textarea></label><p class="small muted">A local registry entry does not upload a game, verify code or mark it launchable.</p><button type="submit" class="primary full">SAVE LOCAL REGISTRY ENTRY</button></form></dialog>
+  <div role="status" id="toast" class="toast" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body></html>

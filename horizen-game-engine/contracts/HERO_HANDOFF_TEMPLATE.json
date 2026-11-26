@@ -1,0 +1,93 @@
+{
+  "schema": "sire.horizen.hero_handoff.v1",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "source": {
+    "assetId": "CHR_UNASSIGNED",
+    "role": "UNASSIGNED",
+    "subRoles": [],
+    "visualCanon": {
+      "approvedImagePath": null,
+      "approvedImageSha256": null,
+      "originalPresent": false,
+      "ownerApproval": "NOT_VERIFIED",
+      "silhouetteLock": [],
+      "paletteAndMaterialLock": [],
+      "uniqueWeaponAndPropLock": []
+    }
+  },
+  "board": {
+    "style": "Dark gothic-cosmic obsidian/amethyst infographic frame; character-specific accent, no reused hero identity",
+    "headerRoleBadge": "REQUIRED",
+    "splashPortrait": "REQUIRED",
+    "loreAndPlaystyle": "REQUIRED",
+    "turnaround": ["FRONT","SIDE","BACK","THREE_QUARTER_BACK"],
+    "silhouettes": "REQUIRED",
+    "expressionsMinimum": 4,
+    "materialsAndColorSwatches": "REQUIRED",
+    "onePAndThreePReadability": "REQUIRED",
+    "animationBeats": ["WIND_UP","ACTIVE","RECOVERY"],
+    "ultimateBeats": ["ACTIVATION","PEAK_RELEASE","AFTERMATH"],
+    "footer": "CONCEPT ART — NOT FINAL IN-GAME MODEL"
+  },
+  "mesh": {
+    "units": "METERS",
+    "unitScale": 1.0,
+    "up": "+Z",
+    "forward": "-Y",
+    "pose": "A_POSE_OR_SPECIES_NEUTRAL",
+    "pedestalPolicy": "REMOVE_FROM_EXPORT_PRESERVE_SOURCE",
+    "highPolySourcePreserved": false,
+    "quadRetopologyVerified": false,
+    "lod0ThreePTriangleBudget": [40000,70000],
+    "viewmodelOnePTriangleBudget": [20000,35000],
+    "lodsGenerated": false,
+    "nonManifoldChecked": false,
+    "normalsChecked": false,
+    "uvsPacked": false,
+    "bakes": ["NORMAL","AO","BASE_COLOR","ROUGHNESS","METALLIC","EMISSIVE"],
+    "nativeBlenderVerified": false,
+    "nativeGodotImportVerified": false
+  },
+  "rig": {
+    "sockets": ["Hand_R_Weapon","Hand_L_Shield","Chest_Core_VFX","Muzzle_Origin"],
+    "twistBonesChecked": false,
+    "weightBleedChecked": false,
+    "onePViewmodel": "NOT_VERIFIED",
+    "threePWorldModel": "NOT_VERIFIED"
+  },
+  "locomotion": [
+    "IDLE","WALK_CONTACT","WALK_DOWN","WALK_PASSING","WALK_PUSH_OFF",
+    "SPRINT_RUSH","STRAFE_DODGE","JUMP_AIRBORNE","CROUCH_SLIDE"
+  ],
+  "combat": {
+    "controls": ["LMB","RMB","E","Q","PASSIVE","ULTIMATE"],
+    "requiredPhases": ["WIND_UP_TELEGRAPH","ACTIVE_HITBOX_PROJECTILE_ZONE","RECOVERY","COOLDOWN_RESOURCE"],
+    "ultimatePhases": ["ACTIVATION_CALLOUT","PEAK_RELEASE","AFTERMATH"],
+    "hitsSeparateFromVFX": true,
+    "allyEnemyReadability": "REQUIRED",
+    "onePCenterSightlineClear": "REQUIRED",
+    "ai": {
+      "lineOfSight": "REQUIRED",
+      "navmeshAvoidance": "REQUIRED",
+      "targetPriority": "REQUIRED",
+      "rangeBands": "REQUIRED",
+      "movementSpeeds": "REQUIRED",
+      "turnRates": "REQUIRED",
+      "footIK": "REQUIRED",
+      "comboRules": "REQUIRED"
+    }
+  },
+  "evidence": {
+    "originalSha256": null,
+    "blendSha256": null,
+    "exportGLBSha256": null,
+    "nativeCaptureSha256": null,
+    "sourceCommit": null,
+    "realBlenderFourView": false,
+    "nativeGodotScreenshots": false,
+    "realAnimationVideo": false,
+    "deviceEvidence": false,
+    "review": "PENDING_INDEPENDENT_REVIEW"
+  },
+  "certification": "HOLD_NOT_VERIFIED"
+}

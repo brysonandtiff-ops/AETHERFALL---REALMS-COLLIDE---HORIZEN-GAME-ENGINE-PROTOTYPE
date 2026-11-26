@@ -1,0 +1,2 @@
+SYNTHETIC TEST RECEIPT — unit and browser smoke test only.
+Not native engine, gameplay, phone, art or release evidence.

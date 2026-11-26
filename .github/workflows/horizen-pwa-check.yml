@@ -1,0 +1,26 @@
+name: HORIZEN GAME ENGINE PWA source checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pwa-source-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source without stored credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Test governing contracts and local model parsers
+        run: node --test horizen-game-engine/tests/*.test.mjs
+      - name: Test loopback server responses and install assets
+        run: python3 horizen-game-engine/tests/server_smoke.py
+      - name: State evidence boundary
+        run: echo 'Source and HTTP tests only; no Android, service worker, engine, or game certification.'
