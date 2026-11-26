@@ -22,7 +22,7 @@ if [[ ! -f "$APPDIR/serve.py" ]]; then
     echo 'Run termux-setup-storage, answer y, and grant Android storage access.' >&2
     exit 1
   fi
-  SOURCE_FILE="$(find "$HOME/storage/shared" -maxdepth 8 -type f -path '*/horizen-game-engine/serve.py' -print -quit 2>/dev/null || true)"
+  SOURCE_FILE="$(find -L "$HOME/storage/shared" -maxdepth 8 -type f -path '*/horizen-game-engine/serve.py' -print -quit 2>/dev/null || true)"
   if [[ -z "$SOURCE_FILE" ]]; then
     echo 'No horizen-game-engine/serve.py found in Android shared storage.' >&2
     echo 'Check the PWA folder under AETHERFALL / 02_GAME_AND_ENGINE.' >&2
