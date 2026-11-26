@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "work_order": "AF-ART-BLENDER-001/<asset version or task>",
+  "asset_id": "CHR_REPLACE_WITH_REGISTERED_ID",
+  "production_status": "NOT_VERIFIED",
+  "executor": "AUTHORISATION_NOT_RECORDED",
+  "source_commit": null,
+  "provenance": {
+    "raw_sculpt_path": null,
+    "raw_sculpt_sha256": null,
+    "source_reference_path": null,
+    "source_reference_sha256": null,
+    "rights_cleared": false,
+    "owner_visual_reference_approved": false,
+    "canonical_comparison_report": null
+  },
+  "blender": {
+    "version": null,
+    "source_blend_path": null,
+    "source_blend_sha256": null,
+    "units": "METRIC",
+    "unit_scale": 1,
+    "forward_axis": "-Y",
+    "up_axis": "+Z",
+    "height_m": null,
+    "ground_contact_z_m": null
+  },
+  "mesh": {
+    "third_person_triangle_count": null,
+    "third_person_budget_tris": [
+      40000,
+      70000
+    ],
+    "first_person_triangle_count": null,
+    "first_person_budget_tris": [
+      20000,
+      35000
+    ],
+    "weapons_budget_scope": "SEPARATE",
+    "lod1_triangle_count": null,
+    "lod2_triangle_count": null,
+    "armature_name": null,
+    "weight_paint_reviewed": false,
+    "non_manifold_exceptions": []
+  },
+  "textures": {
+    "uv_nonoverlap_verified": false,
+    "texture_sizes_px": [],
+    "normal": null,
+    "ambient_occlusion": null,
+    "base_color": null,
+    "roughness": null,
+    "metallic": null,
+    "emission": null,
+    "all_maps_saved": false
+  },
+  "export": {
+    "third_person_glb_path": null,
+    "third_person_glb_sha256": null,
+    "first_person_glb_path": null,
+    "first_person_glb_sha256": null,
+    "separate_weapon_glb_paths": [],
+    "animation_clips": [],
+    "sockets": [],
+    "godot_version": null,
+    "import_project_commit": null
+  },
+  "stages": {
+    "reference_lock": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "import_scale_pedestal": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "mesh_repair_symmetry": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "retopo_3p_1p_lods": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "uv_pbr_bakes": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "rig_sockets_export": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "blender_native_review": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "godot_native_import": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "camera_animation_gameplay": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    },
+    "owner_review": {
+      "status": "NOT_RUN",
+      "evidence_path": null,
+      "evidence_sha256": null,
+      "notes": ""
+    }
+  },
+  "owner_signoff": {
+    "approved": false,
+    "reviewer": null,
+    "review_evidence_path": null
+  },
+  "blockers": [
+    "No real imported sculpt, canonical source or native Blender/Godot proof yet."
+  ],
+  "evidence_classification": "TEMPLATE_NOT_RUNTIME_EVIDENCE"
+}
