@@ -116,18 +116,13 @@ class SireSourceSealTests(unittest.TestCase):
         self.assertEqual(result["sire_agent_mcp_runtime"], "NOT_CONNECTED")
 
     def test_new_scene_addition_is_allowed_with_new_root(self):
+        old_root = self.receipt()["merkle_root_sha256"]
         path = self.root / "game/scenes/levels/realms/qa_new_scene.tscn"
         path.write_text('[gd_scene format=3]\n[node name="New" type="Node3D"]\n')
         next_sha = self.commit("add legal new scene")
         changed = seal.source_receipt(self.root, self.base, next_sha)
-        self.assertNotEqual(changed["merkle_root_sha256"], self.receipt_base_root)
+        self.assertNotEqual(changed["merkle_root_sha256"], old_root)
         self.assertEqual(changed["source_commit_sha"], next_sha)
-
-    @property
-    def receipt_base_root(self):
-        # The base's content root cannot be inferred from the newer HEAD.
-        # Create the independently comparable digest for the added entry only.
-        return "0" * 64
 
     def test_lfs_pointer_is_not_verified(self):
         path = self.root / "game/assets/characters/heroes/placeholder.glb"
@@ -189,6 +184,43 @@ class SireSourceSealTests(unittest.TestCase):
         with self.assertRaisesRegex(seal.IntegrityBlocked, "Refusing to overwrite"):
             seal._write_outside_repo(path, b"new contents", self.root)
         self.assertEqual(path.read_bytes(), b"original receipt")
+
+
+    def test_previous_source_path_lock_cannot_be_removed(self):
+        path = self.root / seal.POLICY_PATH
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["required_paths"].remove("docs/development/SIRE_SOURCE_SEAL.md")
+        path.write_text(json.dumps(data), encoding="utf-8")
+        self.commit("weaken earlier source file lock")
+        with self.assertRaisesRegex(seal.IntegrityBlocked, "Attempted weakening"):
+            self.receipt()
+
+    def test_previous_proof_gate_cannot_be_renamed_or_removed(self):
+        path = self.root / seal.POLICY_PATH
+        data = json.loads(path.read_text(encoding="utf-8"))
+        del data["evidence_gates"]["native_godot_headless"]
+        path.write_text(json.dumps(data), encoding="utf-8")
+        self.commit("remove native test requirement")
+        with self.assertRaisesRegex(seal.IntegrityBlocked, "inherited proof gate"):
+            self.receipt()
+
+    def test_oversize_receipt_file_fails_before_full_read(self):
+        path = self.path / "oversized-receipt.json"
+        with path.open("wb") as output:
+            output.seek(50 * 1024 * 1024)
+            output.write(b"X")
+        with self.assertRaisesRegex(seal.IntegrityBlocked, "oversize receipt"):
+            seal.check_saved_receipt(self.root, path, self.base, None)
+
+    def test_prior_commit_receipt_is_stale_after_new_commit(self):
+        before = self.receipt()
+        receipt = self.path / "older-source.json"
+        receipt.write_bytes(seal.canonical_json(before))
+        with (self.root / "README.md").open("a", encoding="utf-8") as output:
+            output.write("\nExtra documented scope\n")
+        new_sha = self.commit("new source commit invalidates old integrity proof")
+        with self.assertRaisesRegex(seal.IntegrityBlocked, "another Git commit"):
+            seal.check_saved_receipt(self.root, receipt, new_sha, None)
 
     def test_duplicate_json_key_is_blocked(self):
         with self.assertRaisesRegex(seal.IntegrityBlocked, "Repeated JSON key"):

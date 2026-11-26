@@ -60,3 +60,9 @@ Original phone folder remains **`Internal storage/AETHERFALL – REALMS COLIDE/D
 A subsequent S.I.R.E.-authorised reviewer would need source-pinned real Blender geometry/four views, original full animation videos, graphical Godot gameplay, physical device checks, recovery, security, externally held keys/independent signatures, and explicit owner release approval. Until then **RELEASE BLOCKED**.
 
 **Rollback:** Close this stacked draft PR. The previous S.I.R.E. integration, file layout and phone document code remain unchanged. No deleted or overwritten source was necessary.
+
+## Continuity and previous-seal hardening
+
+Once the source-seal policy exists on a trusted ancestor, future PRs cannot silently remove earlier required paths, loosen the maximum verified blob size or drop/change existing proof gates. A saved receipt is first size/symlink checked before digest validation, so untrusted oversized bytes fail closed. An earlier exact-SHA receipt cannot be replayed against a newer source commit.
+
+These are additional **integrity safeguards**, not independent signing or game-release certification.

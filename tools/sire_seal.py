@@ -134,6 +134,36 @@ def _assert_source(root: Path, base: str, expected_head: str):
     return actual
 
 
+def _monotonic_policy(root: Path, base: str, current: dict):
+    """Earlier source policy cannot be silently weakened in a later commit."""
+    try:
+        previous_entry = _git_bytes(
+            root, "ls-tree", "-r", "--name-only", base, "--", POLICY_PATH
+        ).decode("utf-8", "strict").strip()
+    except UnicodeError as exc:
+        raise IntegrityBlocked("Unparseable source policy path in base") from exc
+    if not previous_entry:
+        return  # This policy was introduced in the current review branch.
+    prior = strict_json(_git_bytes(root, "show", base + ":" + POLICY_PATH).decode("utf-8", "strict"))
+    if not isinstance(prior, dict):
+        raise IntegrityBlocked("Untrusted base policy structure")
+    old_paths, new_paths = prior.get("required_paths"), current.get("required_paths")
+    if not isinstance(old_paths, list) or not isinstance(new_paths, list):
+        raise IntegrityBlocked("Cannot compare required source paths")
+    if set(old_paths) - set(new_paths):
+        raise IntegrityBlocked("Attempted weakening of earlier S.I.R.E. source seal paths")
+    old_max = prior.get("max_blob_bytes")
+    new_max = current.get("max_blob_bytes")
+    if not isinstance(old_max, int) or new_max > old_max:
+        raise IntegrityBlocked("Attempted loosening of earlier source byte limit")
+    old_gates, new_gates = prior.get("evidence_gates"), current.get("evidence_gates")
+    if not isinstance(old_gates, dict) or not isinstance(new_gates, dict):
+        raise IntegrityBlocked("Cannot compare S.I.R.E. proof gates")
+    for name, status in old_gates.items():
+        if name not in new_gates or status != new_gates[name]:
+            raise IntegrityBlocked("Attempted modification of inherited proof gate: " + name)
+
+
 def _guard_existing(root: Path, base: str):
     tool = root / "tools/structure_guard.py"
     if not tool.is_file() or tool.is_symlink():
@@ -219,6 +249,7 @@ def source_receipt(root: Path, base: str, expected_head: str):
     root = Path(root).resolve()
     policy = policy_at(root)
     observed_sha = _assert_source(root, base, expected_head)
+    _monotonic_policy(root, base, policy)
     _guard_existing(root, base)
     inventory = _source_inventory(root, policy)
     tree_oid = _git_text(root, "rev-parse", "HEAD^{tree}")
@@ -289,10 +320,10 @@ def check_saved_receipt(root: Path, receipt_file: Path, expected_head: str, expe
         raise IntegrityBlocked("Expected Git SHA must be exact")
     if expected_digest is not None and (not isinstance(expected_digest, str) or not SHA64.fullmatch(expected_digest)):
         raise IntegrityBlocked("Independent receipt digest format invalid")
-    saved_bytes = receipt_file.read_bytes() if receipt_file.is_file() and not receipt_file.is_symlink() else b""
-    if expected_digest is not None and hashlib.sha256(saved_bytes).hexdigest() != expected_digest:
-        raise IntegrityBlocked("Saved receipt failed independently supplied digest anchor")
-    report = _parse_receipt_file(receipt_file)
+    report = _parse_receipt_file(receipt_file)  # Size/symlink check before reading bytes
+    if expected_digest is not None:
+        if hashlib.sha256(receipt_file.read_bytes()).hexdigest() != expected_digest:
+            raise IntegrityBlocked("Saved receipt failed independently supplied digest anchor")
     if not isinstance(report, dict) or report.get("schema") != "sire.aetherfall.source-integrity.v1":
         raise IntegrityBlocked("Saved receipt schema invalid")
     if report.get("release_status") != "BLOCKED" or report.get("artifact_status") != "UNANCHORED_INTEGRITY_ONLY":
