@@ -3,7 +3,7 @@
 **Project:** AETHERFALL: REALMS COLLIDE
 **Goal:** Build the game in this repository without changing approved visual canon or making false completion claims.
 **Authorised executor:** The owner and specifically authorised S.I.R.E. / GENESIS AI / HORIZON development tools with verified repository and runner access. This file does not grant a new agent or connection.
-**Current status:** Scaffold only. Gameplay, assets, native Godot/Blender execution and device evidence are NOT VERIFIED.
+**Current status:** Scaffold only. Real Godot 4.7.2 headless import/bootstrap has passed in GitHub CI, but gameplay, authored Blender model/runtime visuals, multiplayer and physical-device acceptance remain NOT VERIFIED.
 **Acceptance for this work order:** Versioned folder layout; Godot 4 project and startup scene; accurate asset registry; offline validator; linkable commit. Native-engine/gameplay verification remains a separate gate.
 
 ## Working rules
