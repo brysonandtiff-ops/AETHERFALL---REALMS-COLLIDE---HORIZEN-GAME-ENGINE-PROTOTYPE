@@ -26,6 +26,9 @@ def blender_export(args=None):
     asset_id = safe_asset_id(options.asset_id)
     import bpy  # Import ONLY in actual Blender; pure mesh helpers are unit-testable separately.
 
+    if not bpy.data.filepath or not Path(bpy.data.filepath).is_file():
+        raise ValueError("Save the canonical .blend source before generating a traceable export receipt")
+    source_digest = sha256_file(bpy.data.filepath)
     selected = list(bpy.context.selected_objects)
     if len(selected) != 1 or selected[0].type != "MESH":
         raise ValueError("Select exactly one genuine mesh object before export")
@@ -60,14 +63,17 @@ def blender_export(args=None):
         if "FINISHED" not in result or not glb.is_file():
             raise RuntimeError("Actual Blender glTF/GLB export failed")
         stl.write_bytes(binary_stl(vertices, faces, millimetres_per_metre=options.millimetres_per_metre))
-        if glb.stat().st_size < 20 or glb.read_bytes()[:4] != b"glTF":
+        with glb.open("rb") as stream:
+            glb_magic = stream.read(4)
+        if glb.stat().st_size < 20 or glb_magic != b"glTF":
             raise RuntimeError("GLB header invalid; export requires Blender reinspection")
         artifacts = {p.name: {"sha256": sha256_file(p), "bytes": p.stat().st_size} for p in (glb, stl)}
         receipt = {
             "schema_version": 1,
             "asset_id": asset_id,
             "tool": "HORIZEN Blender selected-mesh export",
-            "source_blend": bpy.data.filepath or None,
+            "source_blend_basename": Path(bpy.data.filepath).name,
+            "source_blend_sha256": source_digest,
             "source_object": obj.name,
             "blender_version": bpy.app.version_string,
             "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
