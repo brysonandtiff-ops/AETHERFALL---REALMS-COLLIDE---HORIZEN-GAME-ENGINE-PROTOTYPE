@@ -49,10 +49,10 @@ MAX_TEXT_SCAN_BYTES = 2 * 1024 * 1024
 # Only high-confidence credential signatures. Never print the matched token.
 SECRET_SIGNATURES = (
     ("private key header", re.compile(r"-----BEGIN (?:RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----")),
-    ("AWS access key", re.compile(r"\\b(?:AKIA|ASIA)[A-Z0-9]{16}\\b")),
-    ("GitHub access token", re.compile(r"\\b(?:gh[pousr]_[A-Za-z0-9_]{36,}|github_pat_[A-Za-z0-9_]{40,})\\b")),
-    ("OpenAI project key", re.compile(r"\\bsk-proj-[A-Za-z0-9_-]{30,}\\b")),
-    ("production payment key", re.compile(r"\\bsk_live_[A-Za-z0-9]{20,}\\b")),
+    ("AWS access key", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
+    ("GitHub access token", re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9_]{36,}|github_pat_[A-Za-z0-9_]{40,})\b")),
+    ("OpenAI project key", re.compile(r"\bsk-proj-[A-Za-z0-9_-]{30,}\b")),
+    ("production payment key", re.compile(r"\bsk_live_[A-Za-z0-9]{20,}\b")),
 )
 
 MAX_DIRECT_BINARY_BYTES = 50 * 1024 * 1024

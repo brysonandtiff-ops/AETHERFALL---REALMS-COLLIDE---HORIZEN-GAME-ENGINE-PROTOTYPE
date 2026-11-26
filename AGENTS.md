@@ -40,3 +40,10 @@ Before starting a work order, read `BUILD_HERE.md`, `docs/production/MASTER_BUIL
 After real work, record exact source commit, test commands/results, original engine/art/device evidence, reviewer decision, and next safe task using `docs/production/HANDOFF_AND_RECOVERY.md`. No task can become VERIFIED without real evidence and all dependencies verified. If a step fails, repair and retest. If owner approval, original art, rights, budget or authorised runner is missing, mark it BLOCKED with an actionable reason and move to **independent** unblocked work only. Never silently bypass a gate.
 
 The task queue is a **plan**, not an active autonomous execution system or permission to create new agents, spend, merge or deploy. Existing owner-authorised S.I.R.E. / AXIOM G.A.I.S. / HORIZON governance remains in force.
+
+## Hardened source history and review gates
+
+- Before promoting an item, check `docs/production/DEFINITION_OF_DONE.md`. A VERIFIED task requires `reviewed_by`, `assigned_executor`, a real commit SHA and authentic evidence references; its dependencies must already be VERIFIED. The checker can validate only their structure; reviewers inspect the actual proof.
+- Preserve committed work-order IDs and dependency contracts. CI audits new PR plans against the base branch once the plan is merged; do not delete past work, silently change accepted criteria or rewrite already-verified evidence.
+- `.github/CODEOWNERS` documents sensitive ownership, but **does not enforce approvals by itself**. Owner-controlled branch protection/rulesets must enforce required CI and appropriate independent review. See `docs/security/REPO_HARDENING.md`.
+- The source scanner checks high-confidence textual secret markers, tracked ignored caches, symlinks and unreviewed git submodules. No automated scanner can certify secret-free binaries, licensed art or connected services; do manual security review.

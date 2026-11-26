@@ -26,9 +26,9 @@ A task becomes **VERIFIED** in `WORK_QUEUE.json` only after review finds **every
 
 ## Before status promotion
 
-- `status=verified`: all `depends_on` tasks must already be VERIFIED, `verified_commit_sha` must be exactly a real 40-character Git SHA, and `evidence_refs` must contain real traceable references.
-- The task queue checker enforces *shape* and dependency order, **not authenticity**. Reviewer must check each link/hash, content rights and real runtime.
-- `status=review`: attach candidate evidence, do not treat as verified yet.
+- `status=verified`: all `depends_on` tasks must already be VERIFIED. Record `assigned_executor`, explicit `reviewed_by`, `verified_commit_sha` (full 40-character Git SHA), and real `evidence_refs`. These are claims requiring independent review, not proof by themselves.
+- The task queue checker enforces *shape*, dependency order and prior-commit transition rules, **not authenticity**. Reviewer must check each link/hash, content rights, real runtime and recorded reviewer identity. Existing task identity/acceptance/dependencies are append-only contracts by default; approved revisions require deliberate, separately reviewed migration of the guardrails, never silent rewrites.
+- `status=review`: attach candidate `evidence_refs` and actual `assigned_executor`. CI history audits reject planned→verified jumps; a previous reviewed task and separate review decision are required for VERIFIED.
 - `status=blocked`: give `blocked_reason`, preserve attempted work; other independent tasks may continue.
 - If evidence is later found incorrect or functionality regresses, reopen as PLANNED or BLOCKED and file a repair work order. Nothing inherits stale proof.
 

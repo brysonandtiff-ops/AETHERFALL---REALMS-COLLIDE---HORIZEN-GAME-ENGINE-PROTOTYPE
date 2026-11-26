@@ -10,6 +10,8 @@
 2. **Take one task as an actual work order:** Check its owner decision, dependencies, files, acceptance and proof; follow [docs/production/HANDOFF_AND_RECOVERY.md](docs/production/HANDOFF_AND_RECOVERY.md) and `AGENTS.md`.
 3. **Build, test, repair, retest and prove:** `python3 tools/validate_structure.py && python3 tools/production_queue.py --validate && python3 -m unittest discover -s tests -v`, then real native Godot/Blender/device tests appropriate to the task. Capture exact commit SHA and original evidence. Submit review and update the task status only with real proof.
 
+**Security first:** [docs/security/REPO_HARDENING.md](docs/security/REPO_HARDENING.md) explains credential scanning, protected source, required GitHub settings and truthful limits. PR CI compares the current task queue against the previous committed queue once it exists on the base branch.
+
 **See every milestone:** [MASTER BUILD ROADMAP](docs/production/MASTER_BUILD_ROADMAP.md) · [Definition of done](docs/production/DEFINITION_OF_DONE.md) · [Test matrix](docs/production/TEST_MATRIX.md) · [Decision and risk register](docs/production/DECISIONS_AND_RISKS.md) · [Release/operations](docs/production/RELEASE_AND_OPERATIONS.md).
 
 ## Current first work, not fake progress

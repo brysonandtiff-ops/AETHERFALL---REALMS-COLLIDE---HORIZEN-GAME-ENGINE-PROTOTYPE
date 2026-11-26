@@ -43,6 +43,10 @@ Blender source belongs in `art/blender/`. Exported `.glb` assets and supporting 
 
 No builds, deployments, merges, subscriptions or paid API calls are needed to use this foundation. Read `AGENTS.md` before modifying gameplay or locked art.
 
+## Protected reviews and safe continuation
+
+Read [the repository security and branch-review guide](docs/security/REPO_HARDENING.md) before changing gameplay contracts, task status, original art or CI. The new queue-history audit and credential-pattern checks are automated, but **CODEOWNERS does not enforce review on its own**. Actual main-branch ruleset/protection requires owner-controlled GitHub configuration; it has not been independently confirmed enabled. The review PR remains unmerged pending approval.
+
 ## Shadowspire design transfer and hardening
 
 Historical Shadowspire design notes and 10 owner-selected concept characters are documented at `docs/legacy/README.md` and `docs/characters/LEGACY_ROSTER.md`. The original Godot/Unreal source is **not connected or migrated**, and no Shadowspire repository has been deleted. Two AETHERFALL-approved character IDs are preserved; eight further characters are reserved as *legacy candidates*, not models.

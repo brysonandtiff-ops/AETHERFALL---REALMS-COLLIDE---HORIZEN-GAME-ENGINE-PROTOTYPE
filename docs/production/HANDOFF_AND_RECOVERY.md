@@ -19,7 +19,7 @@ Native Blender/Godot/multiplayer/device proof (or NOT RUN):
 Commit SHA, logs, screenshots/video, hashes:
 Errors or blockers, severity, last reproducible command:
 Rollback and recovery plan:
-Reviewer decision and status (planned/in_progress/review/blocked/verified):
+Reviewer identity, explicit approval and status (planned/in_progress/review/blocked/verified):
 Next unblocked item from python3 tools/production_queue.py --next:
 ```
 
@@ -39,6 +39,10 @@ Next unblocked item from python3 tools/production_queue.py --next:
 - Cross-boundary changes require asset ID/schema review. Avoid parallel writes to the same Godot `.tscn`, `.tres`, registry or source `.blend`.
 - PR reviews protect approval gates; CI detects breakage. A queued CI run or passing static test is not authorisation to merge.
 - Locked visual identity, paid infrastructure, external integrations, releases and destructive moves need specific owner authorisation; do not bypass to keep momentum.
+
+## Immutable history and review protection
+
+When a production queue exists on the PR base branch, CI runs `python3 tools/production_queue.py --audit-baseline <prior_plan.json>`. It rejects renamed/deleted/reordered old tasks, unreviewed additions marked done, rewritten contracts, erased proof and illegal status jumps. To revise a frozen requirement legitimately, propose a reviewed governance/tool migration with rationale and preserved audit history rather than silently editing existing task records. A blocked item may resume under its documented state-transition rules; verified work that regresses must be reopened explicitly. See [repo hardening](../security/REPO_HARDENING.md).
 
 ## Resume after interruption
 
