@@ -55,3 +55,7 @@ FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → P
 ## Absolute visual-drift gate
 
 First read VISUAL_CANON_LOCK.md and CANON_LOCKS.json. Use the exact source image as reference, never memory alone. Any new output is provisional until actual image comparison and owner signoff; protect both source-image hash and character-specific traits. Continue to use the AETHERFALL sheet hierarchy without copying Vellaris's character details to others. CI proves source integrity, not visual likeness.
+
+## Raw AI sculpt visual-quality appendix — 26 November 2026
+
+Owner-supplied Meshy/raw-sculpt screenshots for Razor, Raven and Vellaris, plus two unassigned candidate designs, are documented in [the screenshot reference seal](RAW_SCULPT_REFERENCE_SEAL_2026-11-26.md) and [SHA-256 register](RAW_SCULPT_REFERENCE_REGISTER_2026-11-26.json). Their intended modelling improvements and 1P/3P performance/animation evidence are specified in [the premium fidelity gate](../art/HIGH_FIDELITY_MODEL_STANDARD.md) and [per-hero work orders](../art/RAW_SCULPT_TO_PRODUCTION_WORK_ORDERS.md). This appendix **does not override CANON_LOCKS.json, alter approved appearance, grant source-archived status, or certify Blender/Godot runtime**; screenshot bytes are stored externally in the documented Library archive until original model/master sources are verified and separately approved.
