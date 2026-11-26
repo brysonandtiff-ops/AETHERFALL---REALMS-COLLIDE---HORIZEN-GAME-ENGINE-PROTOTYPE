@@ -57,7 +57,7 @@ class HardenedStructureTests(unittest.TestCase):
 
     def test_duplicate_id_case_insensitive_fails(self):
         def mut(data):
-            data["assets"].append({**data["assets"][0], "id": "chr_vellaris_bloodshield"})
+            data["assets"].append({**data["assets"][0], "id": "CHR_vellaris_bloodshield"})
         self.rewrite_registry(mut)
         self.assert_rejected("Duplicate asset ID")
 

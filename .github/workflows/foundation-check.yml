@@ -1,15 +1,8 @@
-name: AETHERFALL Source Foundation
+name: AETHERFALL Source Safety and Native Godot
 
 on:
   push:
     branches: [main]
-    paths:
-      - 'game/**'
-      - 'art/**'
-      - 'docs/**'
-      - 'tools/**'
-      - 'tests/**'
-      - '.github/workflows/foundation-check.yml'
   pull_request:
   workflow_dispatch:
 
@@ -17,13 +10,49 @@ permissions:
   contents: read
 
 jobs:
-  static-foundation:
+  static-source-security:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Checkout source
+      - name: Checkout read-only source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Verify repository paths and scene references
+        with:
+          persist-credentials: false
+      - name: Validate source and migration boundary
         run: python3 tools/validate_structure.py
-      - name: Run Python standard-library tests
+      - name: Run adversarial standard-library tests
         run: python3 -m unittest discover -s tests -v
+
+  native-godot-4-7-2-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout read-only source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Download and SHA256-verify official native Godot 4.7.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 \
+            -o /tmp/aetherfall-godot.zip \
+            'https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip'
+          echo 'cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  /tmp/aetherfall-godot.zip' | sha256sum --check
+          mkdir -p /tmp/aetherfall-godot
+          unzip -q /tmp/aetherfall-godot.zip -d /tmp/aetherfall-godot
+          chmod +x /tmp/aetherfall-godot/Godot_v4.7.2-stable_linux.x86_64
+      - name: Genuine headless import and five-frame project boot (not visual/gameplay proof)
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT=/tmp/aetherfall-godot/Godot_v4.7.2-stable_linux.x86_64
+          "$GODOT" --version | tee /tmp/aetherfall-version.log
+          grep -q '^4\.7\.2\.stable' /tmp/aetherfall-version.log
+          "$GODOT" --headless --path game --editor --import --quit 2>&1 | tee /tmp/aetherfall-import.log
+          "$GODOT" --headless --path game --quit-after 5 2>&1 | tee /tmp/aetherfall-boot.log
+          if grep -Eiq '(^|[[:space:]])(ERROR|FATAL):' /tmp/aetherfall-import.log /tmp/aetherfall-boot.log; then
+            echo 'Godot logged an error during real headless launch' >&2
+            exit 1
+          fi
+          echo 'PASS: exact-version native Godot import/boot; no graphic, animation, device or gameplay proof'
