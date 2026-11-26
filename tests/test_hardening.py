@@ -76,6 +76,10 @@ class HardenedStructureTests(unittest.TestCase):
         path.write_text(json.dumps(data))
         self.assert_rejected("Unverified deletion status promotion")
 
+    def test_missing_multiplayer_boundary_fails(self):
+        (self.root / "game/scripts/network").rmdir()
+        self.assert_rejected("Missing/unsafe directory: game/scripts/network")
+
     def test_secret_env_fails(self):
         (self.root / ".env.production").write_text("TEST_NOT_SECRET=123")
         self.assert_rejected("Private environment file")

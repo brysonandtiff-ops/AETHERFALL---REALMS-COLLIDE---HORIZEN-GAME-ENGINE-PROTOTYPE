@@ -12,6 +12,7 @@ REQUIRED_FILES = (
     "README.md", "AGENTS.md", ".gitignore", ".gitattributes",
     "game/project.godot", "game/scenes/bootstrap/main.tscn",
     "art/asset_registry.json", "docs/architecture/REPO_LAYOUT.md",
+    "docs/architecture/HERO_SHOOTER_TREE_RESEARCH.md",
     "docs/art/ASSET_PIPELINE.md", "docs/characters/CHARACTER_REGISTRY.md",
     "docs/legacy/shadowspire_migration.json", "docs/legacy/README.md",
     "docs/characters/LEGACY_ROSTER.md",
@@ -23,6 +24,10 @@ REQUIRED_DIRS = (
     "game/scripts/abilities", "game/assets/characters/heroes", "game/assets/weapons",
     "game/assets/worlds", "game/audio/music", "game/shaders",
     "art/blender/characters", "art/blender/weapons", "art/concepts/characters",
+    "game/data/heroes", "game/data/abilities", "game/data/modes",
+    "game/data/balance", "game/scenes/matches", "game/scenes/ui/hero_select",
+    "game/scenes/ui/hud", "game/scripts/match", "game/scripts/teams",
+    "game/scripts/network", "tests/gameplay", "tests/network",
     "evidence/godot", "evidence/blender", "evidence/device", "tests",
 )
 IGNORED_DIRS = {".git", ".godot", ".import", ".pytest_cache", "__pycache__", "build", "dist", ".venv"}
