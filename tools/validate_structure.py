@@ -17,6 +17,9 @@ REQUIRED_FILES = (
     "docs/legacy/shadowspire_migration.json", "docs/legacy/README.md",
     "docs/characters/LEGACY_ROSTER.md",
     "docs/characters/CHARACTER_WORKFLOW.md",
+    "docs/characters/CANON_LOCKS.json",
+    "docs/characters/VISUAL_CANON_LOCK.md",
+    "tools/verify_visual_canon.py",
     "docs/characters/CHARACTER_INTAKE.md",
     "docs/characters/templates/CHARACTER_PLAN_TEMPLATE.json",
     "docs/game-design/SHADOWSPIRE_LEGACY_DESIGN.md", "evidence/README.md",
@@ -439,6 +442,12 @@ def check(root=ROOT):
     scan_source_tree(root, errors)
     validate_registry(root, errors)
     validate_character_plans(root, errors)
+    import importlib.util
+    canon_file = Path(__file__).with_name("verify_visual_canon.py")
+    spec = importlib.util.spec_from_file_location("aetherfall_visual_canon", canon_file)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    errors.extend(module.check(root))
     validate_godot(root, errors)
     validate_legacy_hold(root, errors)
     return errors
