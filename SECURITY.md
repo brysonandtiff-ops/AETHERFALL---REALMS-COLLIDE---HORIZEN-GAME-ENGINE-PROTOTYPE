@@ -6,4 +6,4 @@ Report possible vulnerabilities to the repository owner **privately**, using Git
 
 The new `tools/git_preflight.py` catches only **obvious added patterns**, conflict debris and source hazards. It is not an independent security audit or full secrets scanner. Existing S.I.R.E. Git Stop and permission policies remain authoritative.
 
-The main GitHub branch protection is not verified active (see [Issue #11](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/issues/11)); green CI alone is not permission to merge or deploy.
+The main GitHub ruleset is now **active**, but it requires **zero independent reviewer approvals** and does not yet enforce the new preflight check ([Issue #11](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/issues/11)). Green CI alone is not permission to merge or deploy.

@@ -9,6 +9,6 @@
 5. Run `python3 tools/validate_structure.py` and `python3 -m unittest discover -s tests -v`. For clean committed work, check an exact SHA and trusted parent with `tools/git_preflight.py check`.
 6. Link the actual source SHA, CI run, genuine evidence and rollback. Obtain independent review before merge.
 
-**Hard blocker:** main has no verified GitHub protection. [Issue #11](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/issues/11) tracks server-enforced review and checks. Source tests cannot replace branch rules.
+**Remaining blocker:** main now has an active GitHub ruleset, but it requires **zero approving reviews** and does not yet require CODEOWNERS approval or the new Git preflight check. [Issue #11](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/issues/11) tracks those missing enforcement steps.
 
 This preflight supplements S.I.R.E. Git Stop; it does not fetch, push, merge, install an agent, charge an API or certify gameplay.

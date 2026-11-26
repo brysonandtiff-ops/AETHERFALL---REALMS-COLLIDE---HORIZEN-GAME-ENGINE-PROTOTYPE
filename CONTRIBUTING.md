@@ -8,4 +8,4 @@ Start at [GIT_HERE.md](GIT_HERE.md), [AGENTS.md](AGENTS.md) and the real [Godot 
 - Open a small **draft PR** identifying work order, exact source SHA, parent PR, changed assets, test evidence, risks and rollback. Request a separate qualified reviewer.
 - Do not force-push shared branches, bypass S.I.R.E. Git Stop, leak credentials, deploy services, add paid integrations or approve a release automatically.
 
-The repository-local `tools/git_preflight.py` is only a read-only supplement to existing S.I.R.E. Git authority. GitHub branch rules need separate owner setup; see [Issue #11](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/issues/11).
+The repository-local `tools/git_preflight.py` is only a read-only supplement to existing S.I.R.E. Git authority. The active main ruleset still requires no approving reviews; an owner-admin must complete independent review rules ([Issue #11](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/issues/11)).
