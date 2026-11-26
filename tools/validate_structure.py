@@ -14,6 +14,9 @@ REQUIRED_FILES = (
     "game/project.godot", "game/scenes/bootstrap/main.tscn",
     "art/asset_registry.json", "docs/architecture/REPO_LAYOUT.md",
     "docs/art/ASSET_PIPELINE.md", "docs/characters/CHARACTER_REGISTRY.md",
+    "docs/art/BLENDER_RAW_SCULPT_TO_GAME_READY.md",
+    "docs/art/templates/BLENDER_HANDOFF_TEMPLATE.json",
+    "tools/validate_blender_handoff.py",
     "docs/legacy/shadowspire_migration.json", "docs/legacy/README.md",
     "docs/characters/LEGACY_ROSTER.md",
     "docs/characters/CHARACTER_WORKFLOW.md",
@@ -450,6 +453,12 @@ def check(root=ROOT):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     errors.extend(module.check(root))
+    # Handoff guard checks only claim/evidence integrity; it cannot inspect native geometry.
+    handoff_file = Path(__file__).with_name("validate_blender_handoff.py")
+    handoff_spec = importlib.util.spec_from_file_location("aetherfall_blender_handoff", handoff_file)
+    handoff = importlib.util.module_from_spec(handoff_spec)
+    handoff_spec.loader.exec_module(handoff)
+    errors.extend(handoff.check(root))
     validate_godot(root, errors)
     validate_legacy_hold(root, errors)
     return errors
@@ -461,7 +470,7 @@ def main():
         for failure in failures:
             print("FAIL: " + failure, file=sys.stderr)
         return 1
-    print("PASS: source/asset paths, character source hashes/canon metadata, gate order, Godot references and migration safety (STATIC ONLY; NO VISUAL LIKENESS PROOF)")
+    print("PASS: structure, character/canon gates, Blender handoff claims, Godot refs and migration safety (STATIC ONLY; NO NATIVE ART OR GAMEPLAY PROOF)")
     return 0
 
 
