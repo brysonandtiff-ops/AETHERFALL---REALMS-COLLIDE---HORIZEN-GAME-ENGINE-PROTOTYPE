@@ -51,6 +51,11 @@
       "meaning": "HORIZON GAME ENGINE",
       "route": "gameplay",
       "action": "routes"
+    },
+    "S": {
+      "meaning": "Source-only S.I.R.E. integrity check; requires trusted base and expected SHA",
+      "route": "security",
+      "action": "seal"
     }
   }
 }

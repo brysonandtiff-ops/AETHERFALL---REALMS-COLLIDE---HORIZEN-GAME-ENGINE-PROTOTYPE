@@ -81,3 +81,13 @@ For a proposed change, CI also checks the pull-request base against the candidat
 Keep local downloads in the **existing** phone directory `Internal storage/AETHERFALL – REALMS COLIDE/Docs/Inbox` (the single-L **COLIDE** spelling matches your actual Android folder). Do not touch `korvex_blockout_v01`.
 
 See [Android local documents](docs/development/ANDROID_LOCAL_DOCUMENTS.md). A safe optional Termux script `tools/phone_docs.py` previews and copies selected documents after the owner grants storage access. It **does not** change Android/ChatGPT's download settings or claim to be installed/running on the phone.
+
+## S.I.R.E. source integrity seal (review-only)
+
+`tools/sire_seal.py` can generate an exact-SHA, clean-tree SHA-256/SHA3-256 inventory and deterministic Merkle root after the existing safety tests. See [S.I.R.E. Source Seal](docs/development/SIRE_SOURCE_SEAL.md).
+
+```sh
+python3 tools/aetherfall.py seal --base TRUSTED_40_HEX_ANCESTOR --expected-head ACTUAL_40_HEX_HEAD
+```
+
+**This is source-integrity evidence, not a signed S.I.R.E. release seal.** Independent original Godot/Blender/device evidence, reviewer signature and owner release authority remain blocked.

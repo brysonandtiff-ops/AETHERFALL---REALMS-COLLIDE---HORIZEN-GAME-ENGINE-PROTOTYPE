@@ -27,7 +27,7 @@ EXPECTED_REPO = "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-EN
 EXPECTED_ENGINE = "4.7.2.stable"
 ORDER_ID = re.compile(r"^AETHERFALL-[A-Z0-9-]{2,64}$")
 ROUTE_IDS = {"gameplay", "character_art", "runtime_qa", "git", "security", "integrations"}
-ACTIONS = {"doctor", "status", "routes", "skills", "calls", "check", "work list", "work new", "handoff"}
+ACTIONS = {"doctor", "status", "routes", "skills", "calls", "check", "work list", "work new", "handoff", "seal"}
 ALLOWED_ORDER_STATES = {"PLANNED", "STAGED_FOR_REVIEW", "IN_REVIEW", "BLOCKED"}
 
 
@@ -435,6 +435,10 @@ def main(argv: list[str] | None = None) -> int:
             option.add_argument("--json", action="store_true")
         if name == "native-smoke":
             option.add_argument("--godot", help="Path to already installed Godot 4.7.2 binary")
+    seal = sub.add_parser("seal", help="S.I.R.E. source integrity record, never a release certificate")
+    seal.add_argument("--base", required=True, help="Trusted 40-hex ancestor SHA")
+    seal.add_argument("--expected-head", required=True, help="Candidate 40-hex Git SHA")
+    seal.add_argument("--output", help="Optional absolute receipt file outside repository")
     work = sub.add_parser("work")
     work_sub = work.add_subparsers(dest="work_command", required=True)
     work_list = work_sub.add_parser("list")
@@ -500,6 +504,12 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "check":
             return run_checks()
+        if args.command == "seal":
+            command = [sys.executable, str(ROOT / "tools/sire_seal.py"), "source",
+                       "--base", args.base, "--expected-head", args.expected_head]
+            if args.output:
+                command.extend(["--output", args.output])
+            return subprocess.run(command, cwd=ROOT, check=False).returncode
         if args.command == "native-smoke":
             return native_smoke(args.godot)
     except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:

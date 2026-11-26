@@ -51,3 +51,7 @@ Owner and independent reviewers should check the change. GitHub CODEOWNERS is a 
 Once a binary source or exported model has been committed, save a **new filename** for updates (e.g. `CHR_Vellaris_v001.blend` → `CHR_Vellaris_v002.blend`). Never silently replace committed `.blend`, `.glb`, image, audio or genuine video capture files in `art/`, `game/assets/` or `evidence/`.
 
 Game scenes may be updated to reference new exported asset versions once those files exist and Godot imports them successfully. Original binaries remain available for rollback. Real captured video/screenshots are immutable archival evidence. Text files, scene scripts and developer docs can still be edited; previously issued Godot UIDs remain stable unless a separately authorised migration is reviewed.
+
+## Exact-source integrity inventory
+
+The parent file-structure rules remain the primary add/delete/UID/art guard. `config/sire-source-seal.json` and `tools/sire_seal.py` add a **read-only exact-commit content inventory** with SHA-256, SHA3-256 and Merkle root. A newer edit cannot retroactively certify an older receipt. See [S.I.R.E. Source Seal](../development/SIRE_SOURCE_SEAL.md). Integrity is not external signature or runtime proof.

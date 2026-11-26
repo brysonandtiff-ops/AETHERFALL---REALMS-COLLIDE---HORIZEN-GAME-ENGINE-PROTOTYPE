@@ -55,3 +55,11 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 - Downloaded, owner-approved text/PDF/Office documents go under `Docs/Inbox/` within that phone folder, per `config/local-documents.json` and `docs/development/ANDROID_LOCAL_DOCUMENTS.md`.
 - `tools/phone_docs.py` offers **preview-only by default**, then explicit `--apply` COPY + SHA256 check, no overwrite or deletion. `--watch` is owner-started foreground only; no installed service or automatic Android system setting.
 - GitHub/ChatGPT tools cannot set phone download destinations or claim the target exists after this repository edit. Phone-local use, permission and actual file-copy verification remain owner/device actions.
+
+## S.I.R.E. SOURCE integrity seal — not a release certificate
+
+- Reuse **S.I.R.E. LAW-104, LAW-105, LAW-106** and the LAW-108 game stage pipeline as independent authorities. The local `tools/sire_seal.py` does not implement a new master agent, signer or release decision.
+- On every proposed change, verify the exact Git SHA, clean tree, trusted ancestor, structural guard and SHA-256/SHA3-256 inventory. The generated receipt is outside Git source and describes **UNANCHORED_INTEGRITY_ONLY**.
+- Verify both `git rev-parse HEAD` and `--expected-head`; do not use a synthetic PR merge commit to claim the feature branch was tested. GitHub CI must independently capture real logs for actual Godot headless execution.
+- No forged signature, self-issued Gold Seal, automatic merge/deploy, skipped animation four-angle/full-clip proof or real-device acceptance. The release predicate remains BLOCKED.
+- The phone folder `AETHERFALL – REALMS COLIDE` is protected as a configured string, **not** as proof of live Android file access. Do not access, move or delete the local Korvex blockout or phone downloads without real authorised device access.

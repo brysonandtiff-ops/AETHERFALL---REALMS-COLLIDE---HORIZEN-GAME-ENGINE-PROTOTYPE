@@ -121,7 +121,7 @@ def _git_text(root: Path, *args: str) -> str:
 
 
 def _assert_source(root: Path, base: str, expected_head: str):
-    if not SHA40.fullmatch(base) or not SHA40.fullmatch(expected_head):
+    if not isinstance(base, str) or not isinstance(expected_head, str) or not SHA40.fullmatch(base) or not SHA40.fullmatch(expected_head):
         raise IntegrityBlocked("Base and expected HEAD must be independently provided 40-hex SHAs")
     actual = _git_text(root, "rev-parse", "--verify", "HEAD")
     if actual != expected_head:
@@ -285,9 +285,9 @@ def _parse_receipt_file(path: Path):
 
 
 def check_saved_receipt(root: Path, receipt_file: Path, expected_head: str, expected_digest: str | None):
-    if not SHA40.fullmatch(expected_head):
+    if not isinstance(expected_head, str) or not SHA40.fullmatch(expected_head):
         raise IntegrityBlocked("Expected Git SHA must be exact")
-    if expected_digest is not None and not SHA64.fullmatch(expected_digest):
+    if expected_digest is not None and (not isinstance(expected_digest, str) or not SHA64.fullmatch(expected_digest)):
         raise IntegrityBlocked("Independent receipt digest format invalid")
     saved_bytes = receipt_file.read_bytes() if receipt_file.is_file() and not receipt_file.is_symlink() else b""
     if expected_digest is not None and hashlib.sha256(saved_bytes).hexdigest() != expected_digest:
