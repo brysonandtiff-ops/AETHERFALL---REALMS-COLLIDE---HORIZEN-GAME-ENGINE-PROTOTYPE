@@ -180,7 +180,7 @@ def check(root=ROOT):
     except OSError:
         style_bytes = b""
     git_blob = hashlib.sha1(
-        b"blob " + str(len(style_bytes)).encode("ascii") + b"\\0" + style_bytes
+        b"blob " + str(len(style_bytes)).encode("ascii") + bytes([0]) + style_bytes
     ).hexdigest()
     if git_blob != STYLE_MANIFEST_BLOB:
         errors.append("AETHERFALL full style specification checksum drift")
