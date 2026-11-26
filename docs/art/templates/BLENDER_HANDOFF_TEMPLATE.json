@@ -13,7 +13,8 @@
     "source_reference_sha256": null,
     "rights_cleared": false,
     "owner_visual_reference_approved": false,
-    "canonical_comparison_report": null
+    "canonical_comparison_report": null,
+    "raw_source_policy": "Versioned unmodified sculpt under art/blender/characters/<REGISTERED_ID>/raw/; no runtime export here."
   },
   "blender": {
     "version": null,
@@ -71,70 +72,103 @@
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "import_scale_pedestal": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "mesh_repair_symmetry": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "retopo_3p_1p_lods": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "uv_pbr_bakes": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "rig_sockets_export": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "blender_native_review": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "godot_native_import": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "camera_animation_gameplay": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     },
     "owner_review": {
       "status": "NOT_RUN",
       "evidence_path": null,
       "evidence_sha256": null,
-      "notes": ""
+      "notes": "",
+      "capture_source": null,
+      "tool_version": null,
+      "source_commit": null
     }
   },
   "owner_signoff": {
     "approved": false,
     "reviewer": null,
-    "review_evidence_path": null
+    "review_evidence_path": null,
+    "review_evidence_sha256": null
   },
   "blockers": [
-    "No real imported sculpt, canonical source or native Blender/Godot proof yet."
+    "No real imported sculpt, canonical source or native Blender/Godot proof yet.",
+    "A stage PASS requires its real native media/report, registered hero identity, declared capture source/tool version and exact Git commit; evidence must be reviewed by a human."
   ],
-  "evidence_classification": "TEMPLATE_NOT_RUNTIME_EVIDENCE"
+  "evidence_classification": "TEMPLATE_NOT_RUNTIME_EVIDENCE",
+  "validation_boundary": "STATIC_MANIFEST_AND_FILE_HEADERS_ONLY_NOT_NATIVE_CAPTURE_VERIFICATION"
 }
