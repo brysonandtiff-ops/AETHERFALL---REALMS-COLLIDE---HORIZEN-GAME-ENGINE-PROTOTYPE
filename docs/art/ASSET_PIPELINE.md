@@ -24,3 +24,7 @@ Follow `docs/characters/CHARACTER_WORKFLOW.md` and keep `docs/characters/plans/<
 ## Reference-locked art pipeline
 
 Honor docs/characters/CANON_LOCKS.json and VISUAL_CANON_LOCK.md. Preserve exact master source bytes/MIME and owner-approved face, silhouette, palette, weapon and kit. Use Vellaris branded infographic layout but not her personal shield/appearance on other heroes. ThornDell must preserve antlers, green venom and Root Bulwark. No character image becomes canon without source-to-output owner review. Never claim a generated reference is native Blender/Godot evidence.
+
+## Mandatory raw sculpt → 1P/3P game-ready SOP
+
+Follow [AF-ART-BLENDER-001 — Raw AI sculpt to game-ready model](BLENDER_RAW_SCULPT_TO_GAME_READY.md) for every approved hero, gear or character conversion. It prescribes safe raw-input preservation, metres/ground alignment, pedestal removal, topology and canon-safe symmetry, high-poly → retopo, UV/PBR baking, 1P/3P LOD budgets, rigs, sockets, .glb exports and native Godot verification. The per-asset checklist starts at [BLENDER_HANDOFF_TEMPLATE.json](templates/BLENDER_HANDOFF_TEMPLATE.json); copy it next to the real versioned .blend as `handoff.json` only for a registered character. Run `python3 tools/validate_blender_handoff.py`; the offline structural checker also rejects unsupported PASS/GAME_READY claims. **This is static integrity checking only**: no script can substitute for genuine Blender screenshots, Godot runtime, physical-device tests, source comparison and owner signoff.
