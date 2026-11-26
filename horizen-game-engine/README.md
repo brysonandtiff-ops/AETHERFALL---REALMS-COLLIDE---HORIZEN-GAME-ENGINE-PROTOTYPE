@@ -40,23 +40,23 @@ Original assets should remain in the approved **AETHERFALL** source folders. Ref
 
 ## Video 40292 — Blender and HORIZEN model pipeline intake
 
-Owner upload \`40292.mp4\` is a 22-second screen recording of *proposed code in a chat*, SHA-256 \`9539f1ab23bd250d1d91b008a13144666d8b0967a7eee537df55c67b3aae0782\`. It is **not** a working Blender/Three.js demonstration. The full original 19 MB video has not been committed to Git; the evidence identity and media facts are in \`../evidence/intake/40292_CODE_REFERENCE_2026-11-26.json\`.
+Owner upload `40292.mp4` is a 22-second screen recording of *proposed code in a chat*, SHA-256 `9539f1ab23bd250d1d91b008a13144666d8b0967a7eee537df55c67b3aae0782`. It is **not** a working Blender/Three.js demonstration. The full original 19 MB video has not been committed to Git; the evidence identity and media facts are in `../evidence/intake/40292_CODE_REFERENCE_2026-11-26.json`.
 
 ### Export from an actual saved Blender file
 Set Blender scene units to **Metric**, unit scale **1.0**, and select **exactly one mesh**. In a real Blender environment run:
 
-\`\`\`sh
+```sh
 blender /path/to/canonical-character.blend --background \
   --python tools/horizen_blender_export.py -- \
   --asset-id CHR_Example --output-dir /path/to/versioned-exports
-\`\`\`
+```
 
-The exporter writes a **new versioned directory** containing one selected-mesh GLB, a **metres-to-millimetres** binary STL and \`export_receipt.json\` with source object name, Blender version, mesh-edge audit, file lengths and SHA-256s. It does not re-scale or thicken your canonical Blender mesh. **STL wall thickness, manifold quality and printer/slicer acceptance are NOT proved**; perform explicit native repair and slicer validation before printing. It never copies to a phone or publishes anything.
+The exporter writes a **new versioned directory** containing one selected-mesh GLB, a **metres-to-millimetres** binary STL and `export_receipt.json` with source object name, Blender version, mesh-edge audit, file lengths and SHA-256s. It does not re-scale or thicken your canonical Blender mesh. **STL wall thickness, manifold quality and printer/slicer acceptance are NOT proved**; perform explicit native repair and slicer validation before printing. It never copies to a phone or publishes anything.
 
-Run the dependency-free tests first: \`python3 -m unittest tests/test_horizen_mesh_io.py -v\`. A real Blender execution/test and real Godot import must still be completed by an authorised native runner.
+Run the dependency-free tests first: `python3 -m unittest tests/test_horizen_mesh_io.py -v`. A real Blender execution/test and real Godot import must still be completed by an authorised native runner.
 
 ### Local model vault
 
 On the HORIZEN Model Forge asset form, choose a real GLB/embedded glTF/OBJ/STL file. Tick **Save the original file in this browser** only if you want optional on-device retention. On a later reload, selecting the asset can restore the original from IndexedDB after verifying the same SHA-256. The **Forget saved original** action removes the stored file. If IndexedDB is missing, full or cleared, choose the source again; **a JSON receipt by itself does not restore geometry**. No automatic device scan or remote upload is implemented. Real Android offline/reload/device acceptance remains pending.
 
-Full production state: \`../docs/characters/MODEL_STEP_CHECKLIST_2026-11-26.md\`. AETHERFALL game name and art-source locks apply; HORIZEN is the tool/app name, not the game.
+Full production state: `../docs/characters/MODEL_STEP_CHECKLIST_2026-11-26.md`. AETHERFALL game name and art-source locks apply; HORIZEN is the tool/app name, not the game.
