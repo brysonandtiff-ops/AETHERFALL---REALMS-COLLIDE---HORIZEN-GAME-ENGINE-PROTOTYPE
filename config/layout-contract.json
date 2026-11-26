@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "policy": "additive_changes_by_default_breaking_moves_require_review",
+  "godot_project": "game/project.godot",
+  "asset_registry": "art/asset_registry.json",
+  "protected_paths": [
+    ".github/workflows/foundation-check.yml",
+    ".sire/integration.json",
+    "AGENTS.md",
+    "art/asset_registry.json",
+    "config/layout-contract.json",
+    "game/project.godot",
+    "game/scenes/bootstrap/main.tscn",
+    "tools/aetherfall.py",
+    "tools/structure_guard.py",
+    "tools/validate_structure.py"
+  ],
+  "preserved_roots": [
+    "art/",
+    "game/assets/",
+    "game/scenes/",
+    "game/scripts/",
+    "game/autoload/",
+    "evidence/",
+    ".sire/work-orders/"
+  ],
+  "identity_fields": [
+    "type",
+    "concept_dir",
+    "source_dir",
+    "runtime_dir",
+    "concept_status",
+    "legacy_alias"
+  ],
+  "max_relative_path": 240,
+  "max_component": 120,
+  "ignore_generated_dirs": [
+    ".git",
+    ".godot",
+    ".import",
+    ".pytest_cache",
+    "__pycache__",
+    ".mypy_cache",
+    ".venv",
+    "build",
+    "dist",
+    "node_modules"
+  ],
+  "notes": "This policy locks file identity and removal safety, not content hashes. New characters, scenes, scripts and versions are allowed. Existing source relocation or deletion must be separately reviewed and verified before changing policy. Previously committed binary originals are immutable in-place: commit a new versioned source/export/media file instead.",
+  "immutable_binary_roots": [
+    "art/",
+    "game/assets/",
+    "evidence/"
+  ],
+  "immutable_binary_extensions": [
+    ".blend",
+    ".glb",
+    ".fbx",
+    ".psd",
+    ".kra",
+    ".spp",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+    ".tif",
+    ".tiff",
+    ".exr",
+    ".wav",
+    ".ogg",
+    ".mp4",
+    ".mov"
+  ]
+}

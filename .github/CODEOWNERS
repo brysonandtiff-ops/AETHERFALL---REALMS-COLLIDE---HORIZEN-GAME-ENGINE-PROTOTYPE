@@ -1,0 +1,8 @@
+# Review signals only; GitHub branch rules must enforce required approval separately.
+/game/ @brysonandtiff-ops
+/art/ @brysonandtiff-ops
+/evidence/ @brysonandtiff-ops
+/config/layout-contract.json @brysonandtiff-ops
+/.sire/ @brysonandtiff-ops
+/.github/workflows/ @brysonandtiff-ops
+/tools/structure_guard.py @brysonandtiff-ops

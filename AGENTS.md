@@ -33,6 +33,13 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 - `tools/validate_structure.py`, adversarial tests and actual Godot headless CI are mandatory source-level gates. Only genuine graphical/native engine and actual device captures can establish visual acceptance. Never claim a playable game from a headless placeholder.
 - No new paid APIs, merges, deployments or destructive repository operations without the relevant independent evidence and owner authorisation.
 
+## Safe file layout and breaking-change gate
+
+- `config/layout-contract.json` defines paths and base-to-head invariants. Run `python3 tools/structure_guard.py check` and `python3 tools/structure_guard.py diff --base <actual-trusted-ancestor-SHA>` before promoting work. CI does so for PRs.
+- New scenes/scripts/assets are additive; do not silently delete/rename originals, move Godot entry scenes, change registered character IDs or weaken the base version of the layout policy.
+- Keep original `.blend` art in `art/`, exported `.glb` in `game/assets/`, unchanged genuine media in `evidence/`. The guardian checks Godot literal `res://` references, UIDs and Windows/Linux file portability.
+- Breaking changes need a separately reviewed migration work order, original source backup, reference patch plan, native engine regression and exact-SHA proof. CODEOWNERS is only a review signal until repository branch rules enforce it.
+
 ## AETHERFALL continual development and S.I.R.E. team routing
 
 - Master is the **existing S.I.R.E AI**; gameplay/art route to **GENESIS AI / HORIZON**, Git to S.I.R.E. Git Team, security/plugins to the existing stewards. No local definition is a new running AI.

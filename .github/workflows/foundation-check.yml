@@ -18,8 +18,19 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0 # Needed for exact PR base-to-head change detection
       - name: Validate source and migration boundary
         run: python3 tools/validate_structure.py
+      - name: Verify portable file layout and Godot references
+        run: python3 tools/structure_guard.py check
+      - name: Protect pre-existing files and asset IDs against PR base
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          AETHERFALL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          python3 tools/structure_guard.py diff --base "$AETHERFALL_BASE_SHA"
       - name: Check S.I.R.E. contract, command routing and work-order honesty
         run: python3 tools/aetherfall.py doctor --json
       - name: Run adversarial standard-library tests
