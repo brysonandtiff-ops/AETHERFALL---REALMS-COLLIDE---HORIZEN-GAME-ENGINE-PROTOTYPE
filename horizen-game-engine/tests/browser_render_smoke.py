@@ -14,7 +14,7 @@ html=re.sub(r'<link[^>]+(?:manifest|stylesheet|icon)[^>]+>','',html)
 html=re.sub(r'<script type="module"[^>]+></script>','',html)
 css=(ROOT/'styles.css').read_text()
 modules=[]
-for path in ('core.js','model-inspect.js','viewer.js','app.js'):
+for path in ('core.js','model-extra.js','model-vault.js','model-inspect.js','viewer.js','app.js'):
     text=(ROOT/path).read_text()
     text=re.sub(r'^import .*? from .*?;\s*','',text,flags=re.M)
     text=re.sub(r'\bexport (?=(?:const|let|class|function|async)\b)','',text)
@@ -65,6 +65,6 @@ files={f.name:{'bytes':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).
  'runtime':'Chromium headless + Playwright real DOM + real click interactions',
  'method':'Real app HTML+CSS+JS in-memory; ES module imports flattened solely to run in an administrator URL-blocked browser',
  'notTested':['HTTP navigation','service worker','offline reload','GLB renderer','WebGL2 renderer','user-file-upload journey','real Android','Blender','Godot','GAISLINK'],
- 'sourcePaths':['index.html','styles.css','core.js','model-inspect.js','viewer.js','app.js'],
+ 'sourcePaths':['index.html','styles.css','core.js','model-extra.js','model-vault.js','model-inspect.js','viewer.js','app.js'],
  'errors':errors,'result':'PASS_FOR_DOM_RENDER_ONLY','files':files},indent=2)+'\n')
 print('PASS: real Chromium DOM rendered three views, navigated, filtered, registered world, and displayed 10 + 8 gates. HTTP/SW/native tests NOT RUN.')
