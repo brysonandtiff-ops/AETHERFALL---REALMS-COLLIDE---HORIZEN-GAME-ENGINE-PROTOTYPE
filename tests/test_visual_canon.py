@@ -45,6 +45,25 @@ class VisualCanonTests(unittest.TestCase):
     def test_valid_missing_source_stays_pending_not_approved(self):
         self.assertEqual(guard.check(self.root), [])
 
+
+    def test_new_owner_approved_character_requires_own_canon_lock(self):
+        def approve(d):
+            template = {**d["assets"][0]}
+            template["id"] = "CHR_Razor"
+            template["concept_status"] = "aetherfall_approved"
+            template["concept_dir"] = "art/concepts/characters/CHR_Razor"
+            template["source_dir"] = "art/blender/characters/CHR_Razor"
+            template["runtime_dir"] = "game/assets/characters/heroes/CHR_Razor"
+            d["assets"].append(template)
+        self.change("art/asset_registry.json", approve)
+        self.rejected("Approved character missing visual lock")
+
+    def test_extra_lock_cannot_approve_unregistered_hero(self):
+        def add(d):
+            d["locked_characters"]["CHR_Unregistered"] = d["locked_characters"]["CHR_Vellaris_Bloodshield"]
+        self.change("docs/characters/CANON_LOCKS.json", add)
+        self.rejected("Unregistered/unapproved extra visual lock")
+
     def test_original_webp_filename_and_format_are_pinned(self):
         self.change("docs/characters/CANON_LOCKS.json",
                     lambda d: d["locked_characters"]["CHR_Vellaris_Bloodshield"]["source"].update(path="art/concepts/characters/CHR_Vellaris_Bloodshield/fake.png"))

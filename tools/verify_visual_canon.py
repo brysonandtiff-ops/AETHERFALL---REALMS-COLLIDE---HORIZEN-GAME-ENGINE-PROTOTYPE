@@ -160,8 +160,8 @@ def check(root=ROOT):
             or "purple" not in present.get("frame_style", "").lower()):
         errors.append("Character infographic presentation identity drift")
     locks = manifest.get("locked_characters")
-    if not isinstance(locks, dict) or set(locks) != set(PINNED):
-        errors.append("Character visual-canon lock set changed")
+    if not isinstance(locks, dict) or not set(PINNED).issubset(set(locks)):
+        errors.append("Pinned owner-approved character canon lock missing")
         locks = {}
     allowlisted = set(EXTRA_KNOWN)
     for identifier, pinned in PINNED.items():
@@ -251,10 +251,85 @@ def check(root=ROOT):
         ids = {entry.get("id") for entry in registry["assets"] if isinstance(entry, dict)}
         if "CHR_Corvex" in ids and "CHR_Korvex" in ids:
             errors.append("Unresolved Corvex/Korvex alias collision")
+
+        # Every newly approved hero MUST also have a source-backed canon lock.
+        # Legacy concepts and provisional designs cannot get an approved lock
+        # merely by adding a JSON record. Human owner review is separate.
+        approved = {
+            entry["id"]: entry for entry in registry["assets"]
+            if isinstance(entry, dict) and entry.get("type") == "character"
+            and entry.get("concept_status") == "aetherfall_approved"
+            and isinstance(entry.get("id"), str)
+        }
+        for identifier in sorted(set(approved) - set(locks)):
+            errors.append("Approved character missing visual lock: " + identifier)
+        for identifier in sorted(set(locks) - set(PINNED)):
+            if identifier not in approved:
+                errors.append("Unregistered/unapproved extra visual lock: " + identifier)
+                continue
+            entry = approved[identifier]
+            extra = locks[identifier]
+            if not isinstance(extra, dict):
+                errors.append("Malformed approved character extra visual lock: " + identifier)
+                continue
+            media = extra.get("source")
+            ident = extra.get("identity")
+            plan = _json(root / "docs/characters/plans" / (identifier + ".json"))
+            if not isinstance(media, dict) or not isinstance(ident, dict) or not isinstance(plan, dict):
+                errors.append("Approved character extra lock missing source/plan: " + identifier)
+                continue
+            prefix = entry.get("concept_dir", "") + "/"
+            raw = media.get("path")
+            img = _safe(root, raw)
+            expected_ext = {"PNG": ".png", "WEBP": ".webp"}.get(media.get("format"))
+            if (img is None or not isinstance(raw, str) or not raw.startswith(prefix)
+                    or img.parent != root / entry.get("concept_dir", "")
+                    or img.suffix.lower() != expected_ext
+                    or not isinstance(media.get("width"), int) or media["width"] < 1
+                    or not isinstance(media.get("height"), int) or media["height"] < 1
+                    or not isinstance(media.get("bytes"), int) or media["bytes"] < 1
+                    or not isinstance(media.get("sha256"), str)
+                    or not DIGEST.fullmatch(media["sha256"])):
+                errors.append("Approved character extra lock malformed master source: " + identifier)
+                continue
+            allowlisted.add(raw)
+            if (extra.get("approval") != "owner_approved_aetherfall_concept"
+                    or extra.get("evidence_class") != "CONCEPT_ONLY"
+                    or ident.get("display_name") != plan.get("display_name")
+                    or ident.get("epithet") != plan.get("epithet")
+                    or ident.get("role_class") != (plan.get("identity") or {}).get("role_class")
+                    or ident.get("signature_focus") != (plan.get("design") or {}).get("signature_prop")
+                    or ident.get("active_ability_names") != [
+                        a.get("name") for a in (plan.get("design") or {}).get("active_abilities", [])
+                        if isinstance(a, dict)
+                    ]
+                    or ident.get("passive_ability_name") != (
+                        (plan.get("design") or {}).get("passive") or {}
+                    ).get("name")
+                    or not isinstance(extra.get("visual_lock"), list)
+                    or len(extra["visual_lock"]) < 6
+                    or not isinstance(extra.get("forbidden_drift"), list)
+                    or len(extra["forbidden_drift"]) < 3):
+                errors.append("Approved character extra lock identity/review incomplete: " + identifier)
+            cref = plan.get("concept_reference") or {}
+            if cref.get("repo_path") != raw or cref.get("sha256") != media["sha256"]:
+                errors.append("Approved character extra lock not linked to plan: " + identifier)
+            archived = img.is_file() and not img.is_symlink()
+            if archived:
+                _check_bytes(img, media, errors, identifier)
+                if (media.get("state") != "source_verified"
+                        or cref.get("archive_status") != "source_verified"
+                        or not (plan.get("gates") or {}).get("source_archived")):
+                    errors.append("New approved character source arrived without verification: " + identifier)
+            else:
+                if (media.get("state") != "pending_binary_checkin"
+                        or cref.get("archive_status") != "pending_source_upload"
+                        or (plan.get("gates") or {}).get("source_archived")):
+                    errors.append("New approved character falsely promoted without image: " + identifier)
     base = root / "art/concepts/characters"
     if base.is_dir():
         for character_folder in base.iterdir():
-            if not character_folder.is_dir() or character_folder.name not in PINNED:
+            if not character_folder.is_dir() or character_folder.name not in locks:
                 continue
             for img in character_folder.rglob("*"):
                 if not img.is_file() or img.suffix.lower() not in IMAGE_EXTS:
@@ -264,7 +339,7 @@ def check(root=ROOT):
                     continue
                 subpath = img.relative_to(character_folder)
                 if subpath.parts[0] == "proposals" and len(subpath.parts) >= 2:
-                    _validate_proposal(root, img, character_folder.name, PINNED[character_folder.name]["sha256"], errors)
+                    _validate_proposal(root, img, character_folder.name, locks[character_folder.name]["source"]["sha256"], errors)
                 else:
                     errors.append("Unregistered art in approved character master folder: " + rel)
     return errors
