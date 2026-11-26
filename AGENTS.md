@@ -1,5 +1,12 @@
 # AETHERFALL — Agent and Contributor Work Order
 
+## ABSOLUTE AETHERFALL ART STYLE LOCK — owner's THIRD picture
+
+Before designing ANY new AETHERFALL character, weapon, faction, scene, mood board or visual plan, inspect the **actual** third owner-uploaded image `39403.png` (real WebP 1536×1152, SHA-256 `4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939`) AND the individual character's actual approved image.
+Read `docs/art/AETHERFALL_STYLE_CANON.md`, `docs/art/AETHERFALL_STYLE_CANON.json` and `docs/art/STYLE_DESIGN_BRIEF_TEMPLATE.md`. Their gothic-fantasy **art quality, black-violet/magenta sheet framing, detailed multi-panel layout and review gate** are mandatory. Other heroes retain their own face, silhouette, props, abilities and palette; never clone Vellaris.
+New owner-facing title: **AETHERFALL – REALMS COLIDE**. Prohibit MIDNIGHT, SHADOWSPIRE and NEXUSFALL branding on new AETHERFALL output. Existing internal `AETHERFALL: REALMS COLLIDE` IDs are unchanged, not renamed.
+If either primary style image or a character's locked source is unavailable, do not claim canonical fidelity; propose pending review. Do not promote generated art or offline blockout renders to real Godot/Blender gameplay evidence.
+
 ## CANON HARD STOP — run before ALL character artwork or model tasks
 
 **Do not begin a canonical Vellaris, ThornDell or other approved character render unless the exact owner-approved reference image is supplied to that run and the lock file has been checked.** Read docs/characters/VISUAL_CANON_LOCK.md and CANON_LOCKS.json before generating, describing, converting, modelling or accepting output. New render = PROPOSAL_PENDING_OWNER_REVIEW until original-to-candidate evidence and explicit owner signoff. Never replace approved images, assume missing references, copy Vellaris character details to another hero, or silently resolve Korvex/Corvex or Razor/Raven variants.
