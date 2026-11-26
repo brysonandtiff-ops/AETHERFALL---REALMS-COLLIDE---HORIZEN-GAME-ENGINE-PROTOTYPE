@@ -3,6 +3,12 @@
 **Evidence class: ART COMPARISON ONLY.** Filling this form cannot certify Blender, Godot or gameplay. Attach genuine original/candidate image files and their SHA-256 hashes; describe whether artwork comes from AI, offline GLB render, Blender or real Godot capture.
 
 Project: AETHERFALL: REALMS COLLIDE
+Owner-facing display title: AETHERFALL – REALMS COLIDE (internal repository ID above is unchanged)
+Canonical art style: AF-STYLE-39403-V1 / docs/art/AETHERFALL_STYLE_CANON.json
+Mandatory style source: owner's third image 39403.png (actual WebP, 1536x1152)
+Style source SHA-256: 4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939
+External branding absent (MIDNIGHT / SHADOWSPIRE / NEXUSFALL): [PASS / FAIL / NOT TESTED]
+Exact third image + individual original approved image supplied: [YES / NO]
 Work order: [ID / PR URL]
 Character ID: [exact CHR_...]
 Source reference path: [real file path]
