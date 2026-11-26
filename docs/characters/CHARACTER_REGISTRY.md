@@ -7,3 +7,7 @@ Machine-readable asset locations and truthful source status live in `art/asset_r
 - **Historic alias:** Thorndell corresponds to existing `CHR_ThornDell`; never rename the existing ID silently.
 
 The ten character concepts reflect older owner roster selections, but the eight new entries need AETHERFALL-specific design approval before production. Every asset remains `reserved_no_source`; nothing is an imported rig, model or playable character. See `LEGACY_ROSTER.md` and `../legacy/README.md`.
+
+## First DPS designs — awaiting canon approval
+
+The owner requested two original DPS blockouts on 26 November 2026: **Razor** (dual-talons melee DPS) and **Raven** (feather-mantled precision ranged DPS), plus standalone proposed weapons. These four IDs are reserved as `aetherfall_design_brief` and `reserved_no_source` because reviewed mesh binaries have not been checked into the repo. See [DPS_RAZOR_RAVEN_V01.md](DPS_RAZOR_RAVEN_V01.md). Local VTK mesh previews and GLB exports do not prove native Blender, Godot or gameplay.

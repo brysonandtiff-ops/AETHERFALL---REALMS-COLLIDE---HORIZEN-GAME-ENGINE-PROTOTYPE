@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AETHERFALL: REALMS COLLIDE",
-  "note": "Character IDs reserve storage only. Concept approval is not 3D/gameplay verification. Every asset currently lacks actual source/export data.",
+  "note": "Character and weapon IDs reserve repository storage only. Razor and Raven V0.1 blockout binaries are supplied as external review handoff, not in this branch. Concept briefs are not art canon or engine verification. All assets in this registry currently lack checked-in verified source.",
   "assets": [
     {
       "id": "CHR_Vellaris_Bloodshield",
@@ -113,6 +113,46 @@
       "concept_dir": "art/concepts/characters/CHR_Symbion",
       "source_dir": "art/blender/characters/CHR_Symbion",
       "runtime_dir": "game/assets/characters/heroes/CHR_Symbion"
+    },
+    {
+      "id": "CHR_Razor",
+      "type": "character",
+      "role": "melee_dps_flanker",
+      "status": "reserved_no_source",
+      "concept_status": "aetherfall_design_brief",
+      "concept_dir": "art/concepts/characters/CHR_Razor",
+      "source_dir": "art/blender/characters/CHR_Razor",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Razor"
+    },
+    {
+      "id": "CHR_Raven",
+      "type": "character",
+      "role": "ranged_dps_precision_marksman",
+      "status": "reserved_no_source",
+      "concept_status": "aetherfall_design_brief",
+      "concept_dir": "art/concepts/characters/CHR_Raven",
+      "source_dir": "art/blender/characters/CHR_Raven",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Raven"
+    },
+    {
+      "id": "WPN_Razor_RiftTalons",
+      "type": "weapon",
+      "role": "dual_wrist_blades",
+      "status": "reserved_no_source",
+      "concept_status": "aetherfall_design_brief",
+      "concept_dir": "art/concepts/weapons/WPN_Razor_RiftTalons",
+      "source_dir": "art/blender/weapons/WPN_Razor_RiftTalons",
+      "runtime_dir": "game/assets/weapons/WPN_Razor_RiftTalons"
+    },
+    {
+      "id": "WPN_Raven_Nightpiercer",
+      "type": "weapon",
+      "role": "precision_long_range_rifle",
+      "status": "reserved_no_source",
+      "concept_status": "aetherfall_design_brief",
+      "concept_dir": "art/concepts/weapons/WPN_Raven_Nightpiercer",
+      "source_dir": "art/blender/weapons/WPN_Raven_Nightpiercer",
+      "runtime_dir": "game/assets/weapons/WPN_Raven_Nightpiercer"
     }
   ]
 }
