@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "AETHERFALL: REALMS COLLIDE",
-  "note": "Character IDs reserve storage only. Concept approval is not 3D/gameplay verification. Every asset currently lacks actual source/export data.",
+  "note": "Asset IDs reserve storage. Vellaris, ThornDell and Korvex have approved concept identities; no .blend/.glb asset has yet been checked into this repository. Local Korvex V01 GLB handoff is not native-engine evidence.",
   "assets": [
     {
       "id": "CHR_Vellaris_Bloodshield",
@@ -39,10 +39,23 @@
       "type": "character",
       "role": "tank_attrition_zone_control",
       "status": "reserved_no_source",
-      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_status": "aetherfall_approved",
       "concept_dir": "art/concepts/characters/CHR_Korvex",
       "source_dir": "art/blender/characters/CHR_Korvex",
-      "runtime_dir": "game/assets/characters/heroes/CHR_Korvex"
+      "runtime_dir": "game/assets/characters/heroes/CHR_Korvex",
+      "approval_note": "Owner lock 2026-11-26; see docs/characters/KORVEX_CANON_V01.md. External exported V01 blockout has not been checked into repository.",
+      "concept_sha256": "697796f1da2a4561c19671ee20e44f38e830634e61f803a71206204f5d615ec6"
+    },
+    {
+      "id": "WPN_Korvex_GraveMaul",
+      "type": "weapon",
+      "role": "standalone_grave_maul_two_handed",
+      "status": "reserved_no_source",
+      "concept_status": "aetherfall_approved",
+      "concept_dir": "art/concepts/weapons/WPN_Korvex_GraveMaul",
+      "source_dir": "art/blender/weapons/WPN_Korvex_GraveMaul",
+      "runtime_dir": "game/assets/weapons/WPN_Korvex_GraveMaul",
+      "approval_note": "Owner-approved Korvex weapon, no handheld shield; GLB local handoff only, not in repo."
     },
     {
       "id": "CHR_Dreadhull",
