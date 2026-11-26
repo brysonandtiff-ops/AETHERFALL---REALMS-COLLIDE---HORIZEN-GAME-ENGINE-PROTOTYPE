@@ -1,0 +1,1273 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository_target": "Godot 4.x (Godot 4.7.2 headless CI)",
+  "work_order_rule": "Authorised S.I.R.E. / HORIZON / GENESIS tools may act only with real access and existing permissions; no new agents are created.",
+  "truth": "No work item is verified initially. A folder or plan is not runtime proof.",
+  "phases": [
+    {
+      "id": "M0",
+      "name": "Decide and secure the foundation",
+      "gate": "Owner records gameplay scope, authorised toolchain, rights and canonical roster decisions."
+    },
+    {
+      "id": "M1",
+      "name": "Build a functional local combat prototype",
+      "gate": "One player can move, aim, use abilities and interact with a greybox arena in a real Godot build."
+    },
+    {
+      "id": "M2",
+      "name": "Complete a local three-role vertical slice",
+      "gate": "Tank, DPS and support prototypes complete a match with observable objectives, score, HUD and regression proof."
+    },
+    {
+      "id": "M3",
+      "name": "Prove real multiplayer",
+      "gate": "Two or more separate clients complete a match with server-authoritative validation and failure recovery."
+    },
+    {
+      "id": "M4",
+      "name": "Replace approved placeholders with production-quality art and content",
+      "gate": "Approved models, animations, VFX and at least one polished arena pass Blender-to-Godot import and visual review."
+    },
+    {
+      "id": "M5",
+      "name": "Reach stable alpha",
+      "gate": "Feature slice is stable, accessible, measurable, reproducible and securely testable on selected targets."
+    },
+    {
+      "id": "M6",
+      "name": "Qualify beta candidates",
+      "gate": "Release candidates pass platform, security, performance, load, user acceptance and rollback gates."
+    },
+    {
+      "id": "M7",
+      "name": "Release only with explicit owner approval",
+      "gate": "Approved, signed, reproducible release and validated rollback/operations runbook."
+    },
+    {
+      "id": "M8",
+      "name": "Operate, fix and grow safely",
+      "gate": "Live issues, hotfixes, balance changes and content updates follow evidence-backed controlled releases."
+    }
+  ],
+  "work_items": [
+    {
+      "id": "AF-001",
+      "phase": "M0",
+      "title": "Lock core genre, player camera, team size, match rules and supported target platforms",
+      "depends_on": [],
+      "responsible_discipline": "Game design + owner",
+      "status": "planned",
+      "acceptance": [
+        "Owner-approved design decision record names the game loop, local/online MVP, control/camera mode, team size, win condition, target devices and performance budget."
+      ],
+      "required_evidence": [
+        "Signed decision record and owner approval link."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-002",
+      "phase": "M0",
+      "title": "Establish asset permissions, licensing and protection policy",
+      "depends_on": [],
+      "responsible_discipline": "Art direction + owner",
+      "status": "planned",
+      "acceptance": [
+        "Document source provenance, third-party asset licence review, canonical art lock authority, credits and protected photographs; retain approved original work."
+      ],
+      "required_evidence": [
+        "Rights ledger with approvals and traceable source references."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-003",
+      "phase": "M0",
+      "title": "Reconcile character roster and aliases",
+      "depends_on": [],
+      "responsible_discipline": "Character design + owner",
+      "status": "planned",
+      "acceptance": [
+        "Confirm exact canonical hero names, roles and approval status, including ThornDell, Korvex/Corvex, Razor and Raven; never silently create or rename IDs."
+      ],
+      "required_evidence": [
+        "Approved character register diff and canonical reference links."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-004",
+      "phase": "M0",
+      "title": "Reproduce development environment and backup",
+      "depends_on": [],
+      "responsible_discipline": "Godot/Blender engineering",
+      "status": "planned",
+      "acceptance": [
+        "Pin Godot 4.7.2 workflow and approved Blender version, verify clone/import/boot, clean caches, Git LFS decision and restoration instructions."
+      ],
+      "required_evidence": [
+        "Version outputs, successful actual engine log and backup restoration notes."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-005",
+      "phase": "M0",
+      "title": "Extend CI and preflight checks",
+      "depends_on": [
+        "AF-004"
+      ],
+      "responsible_discipline": "Build/CI engineering",
+      "status": "planned",
+      "acceptance": [
+        "Every PR runs structure, task-plan, Python adversarial and genuine native Godot headless tests; failures prevent claiming verification."
+      ],
+      "required_evidence": [
+        "Workflow run and exact commit SHA."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-006",
+      "phase": "M0",
+      "title": "Define data contracts, version rules and safe migrations",
+      "depends_on": [
+        "AF-001",
+        "AF-003",
+        "AF-004"
+      ],
+      "responsible_discipline": "Gameplay architecture",
+      "status": "planned",
+      "acceptance": [
+        "Write schemas for stable hero IDs, abilities, modes and balance and how to migrate resources without breaking Godot UIDs or saved data."
+      ],
+      "required_evidence": [
+        "Reviewed schema plus invalid/upgrade fixture tests."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-010",
+      "phase": "M1",
+      "title": "Implement device input and camera controller",
+      "depends_on": [
+        "AF-001",
+        "AF-004"
+      ],
+      "responsible_discipline": "Gameplay/Godot",
+      "status": "planned",
+      "acceptance": [
+        "Real playable controller reads configured input, handles camera movement and input focus loss; scripted tests cover key binding paths."
+      ],
+      "required_evidence": [
+        "Actual Godot movement/camera video and input test log."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-011",
+      "phase": "M1",
+      "title": "Implement player movement, collision and navigation basics",
+      "depends_on": [
+        "AF-010"
+      ],
+      "responsible_discipline": "Gameplay/Godot",
+      "status": "planned",
+      "acceptance": [
+        "Gravity, ground movement, obstacles, slopes, jump/dash if approved and respawn placement work within a real Godot scene."
+      ],
+      "required_evidence": [
+        "Gameplay test footage and collision regression results."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-012",
+      "phase": "M1",
+      "title": "Implement damage, health, shields and death state",
+      "depends_on": [
+        "AF-011",
+        "AF-006"
+      ],
+      "responsible_discipline": "Gameplay/Godot",
+      "status": "planned",
+      "acceptance": [
+        "Damage types and friendly-fire policy use validated values; death and health restoration never double-trigger."
+      ],
+      "required_evidence": [
+        "Automated state-machine tests and native engine run."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-013",
+      "phase": "M1",
+      "title": "Implement aiming, hit detection and primary attacks",
+      "depends_on": [
+        "AF-012"
+      ],
+      "responsible_discipline": "Gameplay/Godot",
+      "status": "planned",
+      "acceptance": [
+        "Aiming, cooldowns, collision and hit reporting are deterministic enough for defined test cases; no unvalidated client damage path."
+      ],
+      "required_evidence": [
+        "Hit/miss test cases and native combat capture."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-014",
+      "phase": "M1",
+      "title": "Implement versioned hero/ability Resources",
+      "depends_on": [
+        "AF-006"
+      ],
+      "responsible_discipline": "Gameplay systems",
+      "status": "planned",
+      "acceptance": [
+        "Godot editor can load approved typed hero and ability definitions; unknown IDs and invalid data fail clearly."
+      ],
+      "required_evidence": [
+        "Godot import log and malformed-resource tests."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-015",
+      "phase": "M1",
+      "title": "Implement reusable ability execution, targeting and cooldowns",
+      "depends_on": [
+        "AF-012",
+        "AF-014"
+      ],
+      "responsible_discipline": "Gameplay systems",
+      "status": "planned",
+      "acceptance": [
+        "Ability runtime applies cost, cooldown, range and interruption rules and rejects invalid targets."
+      ],
+      "required_evidence": [
+        "Ability unit/integration logs and native capture."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-016",
+      "phase": "M1",
+      "title": "Build a collision-safe greybox arena and spawn points",
+      "depends_on": [
+        "AF-001",
+        "AF-004"
+      ],
+      "responsible_discipline": "Level engineering",
+      "status": "planned",
+      "acceptance": [
+        "One greybox arena has navigable routes, team spawns, collision, camera-safe sight lines and a measurable performance baseline."
+      ],
+      "required_evidence": [
+        "Actual Godot arena screenshots and collision validation."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-017",
+      "phase": "M1",
+      "title": "Build basic debug HUD and combat telemetry",
+      "depends_on": [
+        "AF-012",
+        "AF-013",
+        "AF-015"
+      ],
+      "responsible_discipline": "UI/QA engineering",
+      "status": "planned",
+      "acceptance": [
+        "In-engine debug display shows health, cooldown, hits, errors and frame time without exposing private data."
+      ],
+      "required_evidence": [
+        "Real HUD screenshot and test logs."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-018",
+      "phase": "M1",
+      "title": "Make deterministic smoke/regression scenes",
+      "depends_on": [
+        "AF-011",
+        "AF-013",
+        "AF-015",
+        "AF-016"
+      ],
+      "responsible_discipline": "QA automation",
+      "status": "planned",
+      "acceptance": [
+        "An actual Godot test harness reproduces movement, damage, cooldown and win/loss primitive assertions on CI."
+      ],
+      "required_evidence": [
+        "Genuine Godot test output tied to a commit."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-020",
+      "phase": "M2",
+      "title": "Build one approved tank gameplay kit",
+      "depends_on": [
+        "AF-015",
+        "AF-016",
+        "AF-003"
+      ],
+      "responsible_discipline": "Character/gameplay",
+      "status": "planned",
+      "acceptance": [
+        "A selected approved tank has its own movement, survivability, ability identity and counterplay; no unapproved shield duplication."
+      ],
+      "required_evidence": [
+        "Godot gameplay capture, unique kit specification and automated hit/ability tests."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-021",
+      "phase": "M2",
+      "title": "Build one approved DPS gameplay kit",
+      "depends_on": [
+        "AF-015",
+        "AF-016",
+        "AF-003"
+      ],
+      "responsible_discipline": "Character/gameplay",
+      "status": "planned",
+      "acceptance": [
+        "An approved DPS prototype has defined pressure, mobility and unique cooldowns; design brief is not mislabelled as a production model."
+      ],
+      "required_evidence": [
+        "Godot gameplay capture and ability balance test results."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-022",
+      "phase": "M2",
+      "title": "Build one approved support gameplay kit",
+      "depends_on": [
+        "AF-015",
+        "AF-016",
+        "AF-003"
+      ],
+      "responsible_discipline": "Character/gameplay",
+      "status": "planned",
+      "acceptance": [
+        "An approved support prototype heals/buffs/controls as signed off, targets allies/enemies correctly and has meaningful counters."
+      ],
+      "required_evidence": [
+        "Godot gameplay capture and ally-target/effect regression tests."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-023",
+      "phase": "M2",
+      "title": "Build hero-selection and in-match HUD",
+      "depends_on": [
+        "AF-020",
+        "AF-021",
+        "AF-022"
+      ],
+      "responsible_discipline": "UI/UX engineering",
+      "status": "planned",
+      "acceptance": [
+        "Player can select each permitted hero and see health, abilities, cooldown, team markers, clear feedback and focus navigation."
+      ],
+      "required_evidence": [
+        "Native UI interaction video and accessibility checks."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-024",
+      "phase": "M2",
+      "title": "Implement team assignments and friendly/hostile rules",
+      "depends_on": [
+        "AF-020",
+        "AF-021",
+        "AF-022"
+      ],
+      "responsible_discipline": "Gameplay systems",
+      "status": "planned",
+      "acceptance": [
+        "Two team assignments drive alliance, target, healing, spawning and damage rules; no cross-team leakage."
+      ],
+      "required_evidence": [
+        "Team rule unit/integration tests."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-025",
+      "phase": "M2",
+      "title": "Implement one playable match mode and scoreboard",
+      "depends_on": [
+        "AF-016",
+        "AF-024",
+        "AF-001"
+      ],
+      "responsible_discipline": "Gameplay/match",
+      "status": "planned",
+      "acceptance": [
+        "Match transitions warmup, active play, scoring, win/loss, restart and clean scene exit without orphaned state."
+      ],
+      "required_evidence": [
+        "Full genuine local match video and reproducible rules tests."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-026",
+      "phase": "M2",
+      "title": "Build repeatable local bot/test harness",
+      "depends_on": [
+        "AF-025",
+        "AF-018"
+      ],
+      "responsible_discipline": "QA/gameplay",
+      "status": "planned",
+      "acceptance": [
+        "Basic test agents or scripted inputs execute a complete match repeatably and flag crashes/invalid scores."
+      ],
+      "required_evidence": [
+        "Replay trace and CI integration log."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-027",
+      "phase": "M2",
+      "title": "Complete first-play tutorial and control discoverability",
+      "depends_on": [
+        "AF-023",
+        "AF-025"
+      ],
+      "responsible_discipline": "UX/accessibility",
+      "status": "planned",
+      "acceptance": [
+        "New player can learn objectives, inputs, hero role and quit/retry using keyboard/controller path where approved."
+      ],
+      "required_evidence": [
+        "Moderated local test notes and genuine UI capture."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-028",
+      "phase": "M2",
+      "title": "Accept local vertical-slice gate",
+      "depends_on": [
+        "AF-023",
+        "AF-025",
+        "AF-026",
+        "AF-027"
+      ],
+      "responsible_discipline": "Game lead + QA",
+      "status": "planned",
+      "acceptance": [
+        "Three role prototypes, one mode, one arena, HUD and match end-to-end work on native Godot with blockers recorded."
+      ],
+      "required_evidence": [
+        "Exact commit, independent full match video, regression report and review approval."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-030",
+      "phase": "M3",
+      "title": "Approve networking and trust model",
+      "depends_on": [
+        "AF-001",
+        "AF-028"
+      ],
+      "responsible_discipline": "Network/security architecture",
+      "status": "planned",
+      "acceptance": [
+        "Owner-approved dedicated/server-host choice, authority rules, replication budget, region/ping targets and privacy/data-handling decisions are documented."
+      ],
+      "required_evidence": [
+        "Threat model, protocol decision record and workload budget approval."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-031",
+      "phase": "M3",
+      "title": "Implement authoritative server and state replication",
+      "depends_on": [
+        "AF-030",
+        "AF-024"
+      ],
+      "responsible_discipline": "Multiplayer engineering",
+      "status": "planned",
+      "acceptance": [
+        "Server validates damage, abilities, movement and match outcomes; two clients observe consistent state; no client-trusted rewards."
+      ],
+      "required_evidence": [
+        "Two-client trace with server logs and invalid-client test."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-032",
+      "phase": "M3",
+      "title": "Implement interpolation, prediction and latency policy",
+      "depends_on": [
+        "AF-031"
+      ],
+      "responsible_discipline": "Multiplayer engineering",
+      "status": "planned",
+      "acceptance": [
+        "Measured latency/jitter cases handle interpolation and correction without allowing advantage from invalid clients."
+      ],
+      "required_evidence": [
+        "Network simulation measurements and native two-client video."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-033",
+      "phase": "M3",
+      "title": "Implement join, leave, reconnect and match recovery",
+      "depends_on": [
+        "AF-031"
+      ],
+      "responsible_discipline": "Multiplayer engineering",
+      "status": "planned",
+      "acceptance": [
+        "Disconnect/rejoin/timeout/host loss scenarios resolve without duplicated actors, score corruption or stuck lobby."
+      ],
+      "required_evidence": [
+        "Real disconnect/reconnect scenario log and screenshot/video."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-034",
+      "phase": "M3",
+      "title": "Test authority, malicious packets and anti-abuse boundaries",
+      "depends_on": [
+        "AF-032",
+        "AF-033"
+      ],
+      "responsible_discipline": "Security/QA",
+      "status": "planned",
+      "acceptance": [
+        "Invalid input, replay, rate abuse, impossible damage and unauthenticated requests fail safely and are logged without exposing secrets."
+      ],
+      "required_evidence": [
+        "Adversarial test report and redacted server logs."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-035",
+      "phase": "M3",
+      "title": "Accept genuine multiplayer vertical slice",
+      "depends_on": [
+        "AF-032",
+        "AF-033",
+        "AF-034"
+      ],
+      "responsible_discipline": "Game lead + network QA",
+      "status": "planned",
+      "acceptance": [
+        "Two independent clients complete a match at configured latency with server authority, join/quit recovery and protected secrets."
+      ],
+      "required_evidence": [
+        "Native real multi-client recording, server traces, CI log and signed acceptance."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-036",
+      "phase": "M3",
+      "title": "Evaluate deployment, hosting and matchmaking costs",
+      "depends_on": [
+        "AF-030"
+      ],
+      "responsible_discipline": "Operations + owner",
+      "status": "planned",
+      "acceptance": [
+        "Provide capacity model, server costs, regional/data options and matchmaking proposal; no paid service or deployment without owner approval."
+      ],
+      "required_evidence": [
+        "Cost estimate, privacy review and approval decision."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-040",
+      "phase": "M4",
+      "title": "Ingest and lock authorised original concept sources",
+      "depends_on": [
+        "AF-002",
+        "AF-003"
+      ],
+      "responsible_discipline": "Art direction",
+      "status": "planned",
+      "acceptance": [
+        "All approved visual source references have provenance/version, file hash and exact canonical sheet; source paths are not overwritten."
+      ],
+      "required_evidence": [
+        "Source manifest, rights/approval record and hashes."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-041",
+      "phase": "M4",
+      "title": "Model blockouts and approved hero meshes in Blender",
+      "depends_on": [
+        "AF-040",
+        "AF-020",
+        "AF-021",
+        "AF-022"
+      ],
+      "responsible_discipline": "3D art/Blender",
+      "status": "planned",
+      "acceptance": [
+        "One tank, DPS and support have editable Blender models, topology and distinct silhouette conforming to approved art."
+      ],
+      "required_evidence": [
+        "Real Blender four-angle renders, topology images, .blend source hashes."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-042",
+      "phase": "M4",
+      "title": "Rig, skin and animate approved character models",
+      "depends_on": [
+        "AF-041"
+      ],
+      "responsible_discipline": "3D animation",
+      "status": "planned",
+      "acceptance": [
+        "Selected hero rigs, blend trees and animation clips have verified pose range, clipping, root motion decisions and transitions."
+      ],
+      "required_evidence": [
+        "Actual Blender animation video plus rig/skin checks."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-043",
+      "phase": "M4",
+      "title": "Author licensed textures, materials, VFX and audio sources",
+      "depends_on": [
+        "AF-041",
+        "AF-002"
+      ],
+      "responsible_discipline": "Art/VFX/audio",
+      "status": "planned",
+      "acceptance": [
+        "Materials, texture sets, VFX/audio follow art locks, budgets, attribution and rights; sources remain separated from exports."
+      ],
+      "required_evidence": [
+        "Asset provenance ledger and original editor captures."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-044",
+      "phase": "M4",
+      "title": "Build tested Blender-to-Godot asset import pipeline",
+      "depends_on": [
+        "AF-042",
+        "AF-043",
+        "AF-004"
+      ],
+      "responsible_discipline": "3D pipeline engineering",
+      "status": "planned",
+      "acceptance": [
+        "Reproducible GLB exports preserve scale, orientation, materials, skeleton, clips, LOD plan and dependencies."
+      ],
+      "required_evidence": [
+        "Actual fresh Godot import log, checksum, screenshots and animation playback."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-045",
+      "phase": "M4",
+      "title": "Integrate approved hero visuals without changing gameplay IDs",
+      "depends_on": [
+        "AF-044",
+        "AF-028"
+      ],
+      "responsible_discipline": "Character integration",
+      "status": "planned",
+      "acceptance": [
+        "Tank, DPS, support runtime scenes use imported approved models/animations/VFX and maintain hitbox/gameplay correctness."
+      ],
+      "required_evidence": [
+        "Genuine before/after engine comparison and gameplay capture."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-046",
+      "phase": "M4",
+      "title": "Produce one optimised arena art and lighting pass",
+      "depends_on": [
+        "AF-016",
+        "AF-044"
+      ],
+      "responsible_discipline": "Environment art/level design",
+      "status": "planned",
+      "acceptance": [
+        "Playable arena maintains sight lines, readability, collision, navigational clarity, frame budget and visual identity."
+      ],
+      "required_evidence": [
+        "Godot environment screenshots, navigation test and frame-time measurements."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-047",
+      "phase": "M4",
+      "title": "Expand roster and maps by approved, tested increments",
+      "depends_on": [
+        "AF-045",
+        "AF-035"
+      ],
+      "responsible_discipline": "Character/level production",
+      "status": "planned",
+      "acceptance": [
+        "Every added character and arena has its own spec, provenance, animation/import, balance and multiplayer regression tests."
+      ],
+      "required_evidence": [
+        "Per-asset manifest and independent live gameplay evidence."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-048",
+      "phase": "M4",
+      "title": "Balance heroes and match metrics across roles",
+      "depends_on": [
+        "AF-047",
+        "AF-025"
+      ],
+      "responsible_discipline": "Game balance + QA",
+      "status": "planned",
+      "acceptance": [
+        "Defined health, cooldowns, mobility and objective contribution receive instrumented matches and documented adjustments."
+      ],
+      "required_evidence": [
+        "Balance test matrix, match results and approved change log."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-050",
+      "phase": "M5",
+      "title": "Define and test save/settings persistence contracts",
+      "depends_on": [
+        "AF-006",
+        "AF-035"
+      ],
+      "responsible_discipline": "Gameplay/data engineering",
+      "status": "planned",
+      "acceptance": [
+        "Settings and any selected progression save under Godot user:// with version migration, corruption recovery and no sensitive data in source."
+      ],
+      "required_evidence": [
+        "Real save/load/restart tests on selected platforms."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-051",
+      "phase": "M5",
+      "title": "Complete accessibility, controller support and settings UI",
+      "depends_on": [
+        "AF-027",
+        "AF-035"
+      ],
+      "responsible_discipline": "UI/accessibility",
+      "status": "planned",
+      "acceptance": [
+        "Approved platforms support remapping, contrast, readable HUD, scalable text, captions/feedback and controller/focus navigation."
+      ],
+      "required_evidence": [
+        "Accessibility matrix, real control tests and device captures."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-052",
+      "phase": "M5",
+      "title": "Profile target devices, streaming, memory and frame pacing",
+      "depends_on": [
+        "AF-045",
+        "AF-046",
+        "AF-051"
+      ],
+      "responsible_discipline": "Performance engineering",
+      "status": "planned",
+      "acceptance": [
+        "Measured representative scenes meet owner-approved performance targets without hidden quality regressions."
+      ],
+      "required_evidence": [
+        "Profiler trace, exact hardware/OS and frame-time/memory report."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-053",
+      "phase": "M5",
+      "title": "Run cross-system gameplay regression and soak tests",
+      "depends_on": [
+        "AF-035",
+        "AF-047",
+        "AF-050"
+      ],
+      "responsible_discipline": "QA automation",
+      "status": "planned",
+      "acceptance": [
+        "Match, hero abilities, networking, save/load and state recovery survive repeated tests with failing cases triaged."
+      ],
+      "required_evidence": [
+        "CI evidence, long-run logs, failure/repair links."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-054",
+      "phase": "M5",
+      "title": "Run first-player UX and objective clarity playtests",
+      "depends_on": [
+        "AF-051",
+        "AF-052"
+      ],
+      "responsible_discipline": "UX research",
+      "status": "planned",
+      "acceptance": [
+        "Observed users can complete onboarding, select heroes, understand roles/objectives and report accessibility issues."
+      ],
+      "required_evidence": [
+        "Consent-aware playtest report with unresolved findings."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-055",
+      "phase": "M5",
+      "title": "Approve privacy-safe crash reporting and operational telemetry",
+      "depends_on": [
+        "AF-002",
+        "AF-035"
+      ],
+      "responsible_discipline": "Security/operations",
+      "status": "planned",
+      "acceptance": [
+        "Data minimisation, consent, log retention, access control, crash recovery and alerting are approved before real-user collection."
+      ],
+      "required_evidence": [
+        "Privacy decision, data flow diagram and redacted simulated logs."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-056",
+      "phase": "M5",
+      "title": "Pass alpha exit gate",
+      "depends_on": [
+        "AF-048",
+        "AF-050",
+        "AF-052",
+        "AF-053",
+        "AF-054",
+        "AF-055"
+      ],
+      "responsible_discipline": "Game lead + QA",
+      "status": "planned",
+      "acceptance": [
+        "No unresolved release-blocking crashes/exploits; current scope, screenshots, performance and functional evidence reviewed."
+      ],
+      "required_evidence": [
+        "Alpha test report, known issues, native demo and owner gate sign-off."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-060",
+      "phase": "M6",
+      "title": "Prepare reproducible platform builds and protected signing",
+      "depends_on": [
+        "AF-056"
+      ],
+      "responsible_discipline": "Build/release engineering",
+      "status": "planned",
+      "acceptance": [
+        "Target exports produce reproducible artefacts with version metadata; signing credentials are external to Git and narrowly authorised."
+      ],
+      "required_evidence": [
+        "Build hashes, package installation logs and credential-safety report."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-061",
+      "phase": "M6",
+      "title": "Run multi-device, latency, load and endurance qualification",
+      "depends_on": [
+        "AF-056"
+      ],
+      "responsible_discipline": "QA/performance/network",
+      "status": "planned",
+      "acceptance": [
+        "Actual selected devices, network failure cases and load tests meet agreed frame-time, server and recovery budgets."
+      ],
+      "required_evidence": [
+        "Device matrix, latency/load graphs, real play footage and issues."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-062",
+      "phase": "M6",
+      "title": "Test upgrades, recovery, storage and backward compatibility",
+      "depends_on": [
+        "AF-056",
+        "AF-050"
+      ],
+      "responsible_discipline": "QA/data engineering",
+      "status": "planned",
+      "acceptance": [
+        "Update/reinstall, resume, corrupted user saves and version migration preserve authorised data safely."
+      ],
+      "required_evidence": [
+        "Version-to-version install/upgrade logs and recovery tests."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-063",
+      "phase": "M6",
+      "title": "Complete security, privacy, content/IP and distribution review",
+      "depends_on": [
+        "AF-056",
+        "AF-002"
+      ],
+      "responsible_discipline": "Security/legal + owner",
+      "status": "planned",
+      "acceptance": [
+        "Threat modelling, licensing, content ratings, privacy disclosures, credits, account/child-safety obligations and platform rules reviewed."
+      ],
+      "required_evidence": [
+        "Signed review checklist and remediation proof."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-064",
+      "phase": "M6",
+      "title": "Pass beta/release candidate gate",
+      "depends_on": [
+        "AF-060",
+        "AF-061",
+        "AF-062",
+        "AF-063"
+      ],
+      "responsible_discipline": "Game lead + QA",
+      "status": "planned",
+      "acceptance": [
+        "Candidate commit passes regression and real target test matrix, has rollback readiness and open issues are classified."
+      ],
+      "required_evidence": [
+        "Candidate evidence manifest, risk register and approval record."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-070",
+      "phase": "M7",
+      "title": "Exercise rollback, monitoring and incident procedures",
+      "depends_on": [
+        "AF-064"
+      ],
+      "responsible_discipline": "Release/SRE",
+      "status": "planned",
+      "acceptance": [
+        "A reversible release rehearsal validates alerting, rollback, backup, server safety and versioned builds; do not deploy paid services unapproved."
+      ],
+      "required_evidence": [
+        "Dry-run incident record and rollback demonstration."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-071",
+      "phase": "M7",
+      "title": "Prepare accurate store, community and support materials",
+      "depends_on": [
+        "AF-064"
+      ],
+      "responsible_discipline": "Product/comms",
+      "status": "planned",
+      "acceptance": [
+        "Screenshots and trailers are actual captures or marked concepts; installation, accessibility, known limits and support contacts are correct."
+      ],
+      "required_evidence": [
+        "Approved asset/source ledger and store-content review."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-072",
+      "phase": "M7",
+      "title": "Release approved build to authorised channels",
+      "depends_on": [
+        "AF-070",
+        "AF-071"
+      ],
+      "responsible_discipline": "Owner + release engineering",
+      "status": "planned",
+      "acceptance": [
+        "Explicit owner go/no-go, target checks, signing, rollout and rollback owner documented; only then distribute build."
+      ],
+      "required_evidence": [
+        "Owner authorisation, release commit/build hash, deployment proof and launch checklist."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-080",
+      "phase": "M8",
+      "title": "Triage incidents and ship tested hotfixes",
+      "depends_on": [
+        "AF-072"
+      ],
+      "responsible_discipline": "Live operations/QA",
+      "status": "planned",
+      "acceptance": [
+        "Every incident has severity, reproduction, fix, regression, capture, rollback and owner communication."
+      ],
+      "required_evidence": [
+        "Issue timeline, corrected CI logs, signed patch and incident review."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-081",
+      "phase": "M8",
+      "title": "Operate balance, new content and upgrade pipeline",
+      "depends_on": [
+        "AF-072",
+        "AF-048"
+      ],
+      "responsible_discipline": "Game production/QA",
+      "status": "planned",
+      "acceptance": [
+        "Content/hero/realm updates reuse model/ability/network QA and approved art locks, staged rollout and monitored rollback."
+      ],
+      "required_evidence": [
+        "Content change manifests, genuine live tests and release logs."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    },
+    {
+      "id": "AF-082",
+      "phase": "M8",
+      "title": "Review observability, maintenance and continuity",
+      "depends_on": [
+        "AF-072",
+        "AF-055"
+      ],
+      "responsible_discipline": "Operations + owner",
+      "status": "planned",
+      "acceptance": [
+        "Recurring audit of uptime, errors, moderation/safety needs, platform changes, backup restore and incident drills is scheduled by authorised team."
+      ],
+      "required_evidence": [
+        "Dated maintenance reports and fresh acceptance results."
+      ],
+      "evidence_refs": [],
+      "verified_commit_sha": null,
+      "blocked_reason": null,
+      "assigned_executor": null
+    }
+  ]
+}
