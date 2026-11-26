@@ -1,0 +1,32 @@
+{
+  "vertices": 74342,
+  "triangles": 148756,
+  "non_triangles": 0,
+  "connected_components": 1,
+  "non_manifold_edges": 0,
+  "non_manifold_vertices": 0,
+  "inconsistent_edges": 0,
+  "degenerate_faces": 0,
+  "volume_mm3": 60795.258,
+  "dimensions_mm": [
+    62.997,
+    63.48,
+    119.218
+  ],
+  "min_z_mm": 0.0,
+  "stl_sha256": "59a4498238ab9c4a307d6e51fc4eb2f9d762e5d6c13037a004c3de06124317d9",
+  "3mf_sha256": "fb8d74aed4ae2de6f33a21d9e5cb131593638c2f451c21d67aea39a89bcb7fce",
+  "discarded_remesh_component_vertices": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+  ],
+  "blender": "4.3.2"
+}
