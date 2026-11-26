@@ -101,6 +101,27 @@ class HardenedStructureTests(unittest.TestCase):
         (self.root / "game/Scenes").mkdir(parents=True)
         self.assert_rejected("Case collision")
 
+    def test_embedded_token_is_rejected_without_leaking_value(self):
+        marker = "gh" + "p_" + ("A" * 41)
+        (self.root / "game/scripts/core/token_test.gd").write_text("var example = '" + marker + "'")
+        errors = validator.check(self.root)
+        self.assertTrue(any("Possible embedded credential (GitHub access token)" in e for e in errors), errors)
+        self.assertTrue(all(marker not in e for e in errors))
+
+    def test_embedded_private_key_header_is_rejected(self):
+        marker = "-----BEGIN " + "PRIVATE KEY-----"
+        (self.root / "README.md").write_text("Not a secret: " + marker)
+        self.assert_rejected("Possible embedded credential (private key header)")
+
+    def test_build_directory_is_scanned_not_blindly_excluded(self):
+        directory = self.root / "build"
+        directory.mkdir()
+        (directory / "credentials.json").write_text("do not ship")
+        self.assert_rejected("Possible key/credential file: build/credentials.json")
+
+    def test_generated_git_cache_is_not_required(self):
+        self.assertEqual(validator.check(self.root), [])
+
     def test_large_binary_without_policy_fails(self):
         path = self.root / "art/blender/unreviewed.blend"
         with path.open("wb") as fh:
