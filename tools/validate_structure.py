@@ -62,6 +62,16 @@ def safe_path(root, raw):
 
 def scan_source_tree(root, errors):
     """Reject obvious private key files, symlinks, oversized art and case collisions."""
+    # Read-only registry lookup: no unregistered hero can archive raw GLBs under art/.
+    try:
+        registry_data = json.loads((root / "art/asset_registry.json").read_text(encoding="utf-8"))
+        allowed_raw_ids = {
+            item.get("id") for item in registry_data.get("assets", [])
+            if isinstance(item, dict) and item.get("type") == "character"
+            and isinstance(item.get("id"), str) and ID_PATTERN.fullmatch(item["id"])
+        }
+    except (OSError, UnicodeError, ValueError, AttributeError, TypeError):
+        allowed_raw_ids = set()
     seen = {}
     for current, dirs, filenames in os.walk(root, followlinks=False):
         dirs[:] = sorted(name for name in dirs if name not in IGNORED_DIRS)
@@ -87,10 +97,11 @@ def scan_source_tree(root, errors):
             # Preserve original AI sculpt GLBs only in scoped registered character raw/ archives.
             # Runtime exports elsewhere in art/ still fail the structural safety check.
             raw_source_glb = re.fullmatch(
-                r"art/blender/characters/CHR_[A-Za-z][A-Za-z0-9_]*/raw/[A-Za-z0-9_.-]+\.glb",
+                r"art/blender/characters/(CHR_[A-Za-z][A-Za-z0-9_]*)/raw/[A-Za-z0-9_.-]+\.glb",
                 rel,
             )
-            if rel.startswith("art/") and item.suffix.casefold() == ".glb" and not raw_source_glb:
+            is_authorized_raw_source = bool(raw_source_glb and raw_source_glb.group(1) in allowed_raw_ids)
+            if rel.startswith("art/") and item.suffix.casefold() == ".glb" and not is_authorized_raw_source:
                 errors.append("GLB outside approved character raw source archive: " + rel)
             if item.suffix.lower() in BINARY_ART_EXTENSIONS and item.stat().st_size > MAX_DIRECT_BINARY_BYTES:
                 errors.append("Binary exceeds 50 MiB without reviewed LFS/storage plan: " + rel)
