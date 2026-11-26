@@ -32,3 +32,7 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 - Protect original art, model versions, file paths, local saves and reference history. Do not fabricate assets or runtime media to fill missing source.
 - `tools/validate_structure.py`, adversarial tests and actual Godot headless CI are mandatory source-level gates. Only genuine graphical/native engine and actual device captures can establish visual acceptance. Never claim a playable game from a headless placeholder.
 - No new paid APIs, merges, deployments or destructive repository operations without the relevant independent evidence and owner authorisation.
+
+## Owner-approved local Android storage rule (AF-LOCAL-STORAGE-001)
+
+For **all AETHERFALL game artifacts delivered to the owner's phone**, route the versioned files beneath the **existing** Internal storage `AETHERFALL – REALMS COLIDE` folder visible in the owner's screenshot. Preserve existing spelling, `korvex_blockout_v01/`, and all owner data. Do not create duplicate root folders, mistake GitHub or sandbox storage for a phone save, or claim Android delivery without a read-back. If no authorised Android filesystem access is available, deliver a transfer-ready ZIP with relative paths, checksum manifest, and `TRANSFER_REQUIRED / NOT_ON_PHONE` status. Full project rule: [`docs/governance/AF-LOCAL-STORAGE-001.md`](docs/governance/AF-LOCAL-STORAGE-001.md). This supplements rather than replaces canonical repository source control and the existing S.I.R.E. law hierarchy.
