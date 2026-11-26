@@ -50,6 +50,10 @@ Run `python3 tools/validate_structure.py` and `python3 -m unittest discover -s t
 
 See `docs/characters/CHARACTER_WORKFLOW.md` for the owner-specified Vellaris-plus sheet, `docs/characters/plans/` for every registered character and `docs/characters/CHARACTER_INTAKE.md` for unresolved Razor, Raven, Corvex/Korvex and support briefs. The Vellaris uploaded PNG is **not yet committed in GitHub**, so its source-archive/production gates remain pending. An admin must enable required CI and CODEOWNERS branch protection after review.
 
+## Infographic-first visual planning — all asset types (proposed)
+
+Every new character, weapon, object, level, realm, building, creature, vehicle, environment, HUD or other visual design starts with the owner-approved Vellaris-format **infographic development sheet** as a *presentation template*, adapted to the asset type. See `docs/art/UNIVERSAL_INFOGRAPHIC_STANDARD.md` and `docs/art/INFOGRAPHIC_POLICY.json`. Visuals cannot silently alter locked character art, and generated sheets never count as tested runtime. Adoption requires owner review of the policy branch.
+
 ## Approved art: no-silent-drift policy
 
 Read docs/characters/VISUAL_CANON_LOCK.md and CANON_LOCKS.json before character work. The approved Vellaris upload (39403.png) is **actually WebP**, not PNG: archive at art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp, with exact source SHA. Do not overwrite master art; all new art remains an owner-review proposal. Automatic gates verify source identity and manifest integrity; only genuine source-to-output review can verify visual fidelity.
