@@ -16,3 +16,9 @@
 ## Large files
 
 Binary `.blend`, `.glb`, textures and audio remain binary. Git LFS is not enabled here. Before committing large art, agree storage limits and enable an approved approach to prevent expensive repository growth.
+
+## Studio-scale technical art handoff
+
+Use [studio content handoff](../production/CONTENT_HANDOFF.md) for named discipline ownership, approved input licences, original source integrity, mesh/rig/UV/LOD and budget checks, export manifest hashes, versioned GLBs, real Godot imports and actual screenshots/video. `pipeline/asset_ingest/` is reserved—not an automated exporter—and `art/ui/`, `art/vfx/`, `art/storyboards/` are source-editable future categories. Godot `game/assets/` is *not* the Blender master repository.
+
+Binary files need an owner-approved storage and file-locking strategy; this repository does not claim Git LFS or Perforce are configured. Never bulk-rename existing `CHR_*` IDs or source masters, or treat owner photographs and unlicensed third-party content as public assets by default.

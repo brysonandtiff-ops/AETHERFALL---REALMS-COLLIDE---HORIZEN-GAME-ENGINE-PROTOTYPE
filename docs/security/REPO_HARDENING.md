@@ -48,3 +48,9 @@ Review this branch's latest GitHub Actions run for actual exit codes, test count
 ## Files to inspect for continuity
 
 `BUILD_HERE.md`, `AGENTS.md`, `docs/production/WORK_QUEUE.json`, `docs/production/DEFINITION_OF_DONE.md`, `docs/production/HANDOFF_AND_RECOVERY.md`, `docs/architecture/HARDENING_POLICY.md`, `.github/workflows/foundation-check.yml`, `.github/CODEOWNERS` and `tests/`.
+
+## AAA layout, plugin and toolchain isolation
+
+`studio/layout_manifest.json` defines ten ownership zones and thirteen runtime module boundaries. The new `tools/validate_studio_layout.py` detects removals, misrouted future modules, dangerous paths, contradictory Godot/Blender/Perforce claims, dropped art-root protections and suspicious Unreal-only cooked assets inside the Godot source tree. CI executes this validator as a separate step.
+
+The hierarchy is **not** proof of a running commercial build farm or a Blender/render pipeline. All future plugins under `game/addons/` must have local `AETHERFALL_PROVENANCE.md` evidence of source, licence, hash, Godot compatibility and owner review. External secrets, expensive infrastructure, LFS/Perforce changes and public release require separate approval.

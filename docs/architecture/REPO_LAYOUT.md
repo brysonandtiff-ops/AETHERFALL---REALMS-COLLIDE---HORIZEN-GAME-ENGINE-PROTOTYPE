@@ -41,3 +41,11 @@ Keep saved-game data in Godot `user://`, not under the repository. Preserve mode
 - `game/scenes/characters/heroes/` owns eventual assembled hero scenes; `game/scripts/abilities/` and `game/data/abilities/` keep behavior and tuning definitions separate.
 - `game/scripts/network/` is the future boundary for authoritative multiplayer code; never store tokens, matchmaking credentials or real player records in Git.
 - All new folders are **reserved paths only**, not claims of hero implementations, networking, UI, builds or runtime test passes. Use PR review and the required native tests before linking features.
+
+## AAA studio organisation — additive architecture only
+
+See [AAA_STUDIO_ARCHITECTURE.md](AAA_STUDIO_ARCHITECTURE.md) and the machine-owned `../../studio/layout_manifest.json`. Native Godot `game/` remains the **only** runtime project; `game/scripts/` replaces Unreal's conceptual Source responsibility, `game/scenes/`+`data/`+`assets/` replace Content, `game/addons/` corresponds to approved Plugins, and `config/`+`pipeline/`+`tools/` cover nonsecret configuration and build/QA/release automation. None of those folders implies Unreal was installed.
+
+`art/` holds canonical editable masters and references; `game/assets/` holds tested exports only. New `art/ui/`, `art/vfx/`, `art/storyboards/`, `game/localization/`, `game/scripts/ai/`, `input/`, `save/`, `telemetry/`, and `game/scenes/cinematics/` are reserved domains, not completed features.
+
+Generated caches (`game/.godot/`, `game/.import/`, `build/`, `dist/`, `pipeline/.cache/`) are never a source-of-truth. Team asset handoffs follow `../production/CONTENT_HANDOFF.md` and real PR/build lanes follow `../production/BUILD_TRAINS.md`. All existing `CHR_*`, Godot UIDs, canonical original art and existing game paths remain unchanged.

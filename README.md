@@ -6,12 +6,16 @@
 
 AETHERFALL is a 3D game project intended for **Godot 4.x**, with editable character and world source art created in **Blender**. It follows the existing S.I.R.E. / HORIZON GAME ENGINE / GENESIS AI workflow; those systems are external integrations, not additional agents inside this repository.
 
+## Professional AAA-style studio organisation
+
+The current **native Godot** game is separated from editable original art, source-controlled toolchain configuration, module ownership, asset/build/QA/release lanes and real test evidence. See [the AAA studio architecture](docs/architecture/AAA_STUDIO_ARCHITECTURE.md), [machine-readable layout](studio/layout_manifest.json) and [content handoff policy](docs/production/CONTENT_HANDOFF.md). This is **not** a move to Unreal or a claim to have proprietary Blizzard source code.
+
 ## Open the game project
 
 1. Clone this repository.
 2. In Godot 4.x, choose **Import** and select `game/project.godot`.
 3. Run the project (F5) to see the **placeholder bootstrap screen**. It confirms only that the starter scene loads; it is **not gameplay evidence**.
-4. Run `python3 tools/validate_structure.py && python3 tools/production_queue.py --validate && python3 -m unittest discover -s tests -v` from the repository root.
+4. Run `python3 tools/validate_structure.py && python3 tools/validate_studio_layout.py && python3 tools/production_queue.py --validate && python3 -m unittest discover -s tests -v` from the repository root.
 5. Run `python3 tools/production_queue.py --next` and select an unblocked work order from the actual queue.
 
 Engine target for the wider S.I.R.E. workflow: **Godot 4.7.2**. An actual GitHub Actions job confirmed headless Godot 4.7.2 import/start for the scaffold on [PR #8](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/pull/8). That is **native headless smoke only**, not rendered gameplay, Blender model, physical-device or multiplayer verification. The latest change still requires its own CI validation.
@@ -20,7 +24,9 @@ Engine target for the wider S.I.R.E. workflow: **Godot 4.7.2**. An actual GitHub
 
 | Path | Purpose |
 | --- | --- |
-| `game/` | Standalone Godot project, scenes, GDScript, imported runtime assets, audio, shaders. |
+| `game/` | Native Godot project, modular scripts, authored scenes, licensed runtime exports, audio and shaders. |
+| `config/` + `studio/` | Nonsecret pinned toolchain, studio ownership and validated source/art boundaries. |
+| `pipeline/` | Explicit asset ingest, build, QA and release stages (reserved; not a running build service). |
 | `art/` | Editable original Blender files, concepts, high-resolution texture/audio sources. |
 | `docs/` | Game design, worldbuilding, character register, **master roadmap, work queue**, technical and asset handoff guides. |
 | `tools/` | Offline validation and future deterministic art/build utilities. |

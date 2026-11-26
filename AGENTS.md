@@ -47,3 +47,11 @@ The task queue is a **plan**, not an active autonomous execution system or permi
 - Preserve committed work-order IDs and dependency contracts. CI audits new PR plans against the base branch once the plan is merged; do not delete past work, silently change accepted criteria or rewrite already-verified evidence.
 - `.github/CODEOWNERS` documents sensitive ownership, but **does not enforce approvals by itself**. Owner-controlled branch protection/rulesets must enforce required CI and appropriate independent review. See `docs/security/REPO_HARDENING.md`.
 - The source scanner checks high-confidence textual secret markers, tracked ignored caches, symlinks and unreviewed git submodules. No automated scanner can certify secret-free binaries, licensed art or connected services; do manual security review.
+
+## AAA studio layout and content change authority
+
+The native Godot project remains `game/project.godot`. Treat `studio/layout_manifest.json` and `config/toolchain.json` as required source-controlled architecture; no fake Unreal project trees or new agents. Before changing folders, review `docs/architecture/AAA_STUDIO_ARCHITECTURE.md`; run `python3 tools/validate_studio_layout.py` and the existing source/queue tests.
+
+Never create a second hero identity register. Follow `docs/production/CONTENT_HANDOFF.md`: canonical concept → editable Blender master → independently versioned engine GLB/export → native Godot scene → test and genuine evidence. Plugin imports must include license/provenance reviews and actual engine tests. Build/QA/release lanes are **reserved organisational boundaries**, not operating automation or permission to provision external servers.
+
+A requested engine migration, source-art renaming, new licensed dependency, LFS/Perforce transition or paid build farm requires a separately scoped owner decision and safe migration tests.

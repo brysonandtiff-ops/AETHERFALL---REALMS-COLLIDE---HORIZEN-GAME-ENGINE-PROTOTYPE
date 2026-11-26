@@ -14,3 +14,9 @@
 /docs/legacy/ @brysonandtiff-ops
 /tools/ @brysonandtiff-ops
 /tests/ @brysonandtiff-ops
+
+/studio/ @brysonandtiff-ops
+/config/ @brysonandtiff-ops
+/pipeline/ @brysonandtiff-ops
+/game/addons/ @brysonandtiff-ops
+/game/localization/ @brysonandtiff-ops

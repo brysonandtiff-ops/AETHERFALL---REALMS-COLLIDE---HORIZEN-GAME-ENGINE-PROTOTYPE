@@ -12,6 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
     "README.md", "BUILD_HERE.md", "AGENTS.md", ".gitignore", ".gitattributes",
     ".github/CODEOWNERS", "docs/security/REPO_HARDENING.md",
+    "studio/layout_manifest.json", "config/toolchain.json",
+    "docs/architecture/AAA_STUDIO_ARCHITECTURE.md",
+    "docs/production/CONTENT_HANDOFF.md", "docs/production/BUILD_TRAINS.md",
+    "pipeline/README.md", "game/addons/README.md",
+    "tools/validate_studio_layout.py", "tests/test_studio_layout.py",
     "tools/production_queue.py", "docs/production/WORK_QUEUE.json",
     "docs/production/README.md", "docs/production/MASTER_BUILD_ROADMAP.md",
     "docs/production/DEFINITION_OF_DONE.md",
@@ -37,6 +42,11 @@ REQUIRED_DIRS = (
     "game/data/balance", "game/scenes/matches", "game/scenes/ui/hero_select",
     "game/scenes/ui/hud", "game/scripts/match", "game/scripts/teams",
     "game/scripts/network", "tests/gameplay", "tests/network",
+    "studio", "config", "pipeline/asset_ingest", "pipeline/build",
+    "pipeline/qa", "pipeline/release", "game/addons", "game/localization",
+    "game/scripts/ai", "game/scripts/input", "game/scripts/save",
+    "game/scripts/telemetry", "game/scenes/cinematics",
+    "art/storyboards", "art/ui", "art/vfx",
     "evidence/godot", "evidence/blender", "evidence/device", "tests",
 )
 IGNORED_DIRS = {".git", ".godot", ".import", ".pytest_cache", "__pycache__", ".venv"}

@@ -8,7 +8,9 @@
 
 1. **Find the next safe work:** `python3 tools/production_queue.py --next`. This prints unblocked tasks whose prerequisites are VERIFIED. Never assume a task is completed because its folder exists.
 2. **Take one task as an actual work order:** Check its owner decision, dependencies, files, acceptance and proof; follow [docs/production/HANDOFF_AND_RECOVERY.md](docs/production/HANDOFF_AND_RECOVERY.md) and `AGENTS.md`.
-3. **Build, test, repair, retest and prove:** `python3 tools/validate_structure.py && python3 tools/production_queue.py --validate && python3 -m unittest discover -s tests -v`, then real native Godot/Blender/device tests appropriate to the task. Capture exact commit SHA and original evidence. Submit review and update the task status only with real proof.
+3. **Build, test, repair, retest and prove:** `python3 tools/validate_structure.py && python3 tools/validate_studio_layout.py && python3 tools/production_queue.py --validate && python3 -m unittest discover -s tests -v`, then real native Godot/Blender/device tests appropriate to the task. Capture exact commit SHA and original evidence. Submit review and update the task status only with real proof.
+
+**Studio architecture:** [docs/architecture/AAA_STUDIO_ARCHITECTURE.md](docs/architecture/AAA_STUDIO_ARCHITECTURE.md) maps professional Source/Content/Config/Plugins/Build responsibilities onto the existing Godot project. Run `python3 tools/validate_studio_layout.py` alongside other source tests; use [content handoffs](docs/production/CONTENT_HANDOFF.md) before accepting art, and [build lanes](docs/production/BUILD_TRAINS.md) for branch/integration/release gates.
 
 **Security first:** [docs/security/REPO_HARDENING.md](docs/security/REPO_HARDENING.md) explains credential scanning, protected source, required GitHub settings and truthful limits. PR CI compares the current task queue against the previous committed queue once it exists on the base branch.
 

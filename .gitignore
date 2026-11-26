@@ -36,3 +36,11 @@ dist/
 *.apk
 *.aab
 *.exe
+
+# Studio pipeline generated scratch and local quality tools
+pipeline/.cache/
+*.log
+*.cache
+# Do not commit locally generated build/test outputs
+.coverage
+htmlcov/
