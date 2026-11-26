@@ -22,6 +22,12 @@ jobs:
         run: python3 tools/validate_structure.py
       - name: Validate studio-grade modular Godot source and art ownership
         run: python3 tools/validate_studio_layout.py
+      - name: Validate asset handoffs and show source readiness
+        run: |
+          python3 tools/validate_asset_handoffs.py --validate
+          python3 tools/validate_asset_handoffs.py --report
+      - name: Exercise single-command studio quick preflight
+        run: python3 tools/studio_preflight.py --quick
       - name: Validate ordered production work queue and truth gates
         run: |
           python3 tools/production_queue.py --validate

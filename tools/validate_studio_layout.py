@@ -47,7 +47,7 @@ MINIMUM_DIRS = frozenset({
     "game/scripts/ai", "game/scripts/save", "game/scripts/telemetry",
     "game/scenes/cinematics", "art/storyboards", "art/ui", "art/vfx",
     "pipeline/asset_ingest", "pipeline/build", "pipeline/qa",
-    "pipeline/release", "studio", "config",
+    "pipeline/release", "studio", "config", "art/handoffs",
 })
 MINIMUM_FILES = frozenset({
     "game/project.godot", "art/asset_registry.json",
@@ -56,6 +56,9 @@ MINIMUM_FILES = frozenset({
     "docs/production/CONTENT_HANDOFF.md", "docs/production/BUILD_TRAINS.md",
     "pipeline/README.md", "game/addons/README.md",
     "tools/validate_studio_layout.py", "tests/test_studio_layout.py",
+    "art/handoffs/README.md", "tools/validate_asset_handoffs.py",
+    "tests/test_asset_handoffs.py", "tools/studio_preflight.py",
+    "tests/test_studio_preflight.py",
 })
 EXPECTED_FLOW = {
     "character_concept": "art/concepts/characters",

@@ -64,6 +64,14 @@ class StudioLayoutTests(unittest.TestCase):
         self.manifest_copy["required_directories"].remove("game/scripts/network")
         self.assert_bad("Required studio required_directories omitted")
 
+    def test_cannot_remove_asset_handoff_contract_dir(self):
+        self.manifest_copy["required_directories"].remove("art/handoffs")
+        self.assert_bad("Required studio required_directories omitted")
+
+    def test_cannot_remove_preflight_from_studio_contract(self):
+        self.manifest_copy["required_files"].remove("tools/studio_preflight.py")
+        self.assert_bad("Required studio required_files omitted")
+
     def test_missing_protected_file_fails(self):
         self.manifest_copy["required_files"].remove("art/asset_registry.json")
         self.assert_bad("Required studio required_files omitted")

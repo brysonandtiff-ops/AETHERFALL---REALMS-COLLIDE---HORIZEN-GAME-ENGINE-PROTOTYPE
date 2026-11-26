@@ -155,6 +155,7 @@
     "art/blender/characters",
     "art/blender/environments",
     "art/concepts/characters",
+    "art/handoffs",
     "art/storyboards",
     "art/textures/source",
     "art/ui",
@@ -218,7 +219,12 @@
     "pipeline/README.md",
     "game/addons/README.md",
     "tools/validate_studio_layout.py",
-    "tests/test_studio_layout.py"
+    "tests/test_studio_layout.py",
+    "art/handoffs/README.md",
+    "tools/validate_asset_handoffs.py",
+    "tools/studio_preflight.py",
+    "tests/test_asset_handoffs.py",
+    "tests/test_studio_preflight.py"
   ],
   "generated_paths": [
     "game/.godot",

@@ -15,7 +15,7 @@ The current **native Godot** game is separated from editable original art, sourc
 1. Clone this repository.
 2. In Godot 4.x, choose **Import** and select `game/project.godot`.
 3. Run the project (F5) to see the **placeholder bootstrap screen**. It confirms only that the starter scene loads; it is **not gameplay evidence**.
-4. Run `python3 tools/validate_structure.py && python3 tools/validate_studio_layout.py && python3 tools/production_queue.py --validate && python3 -m unittest discover -s tests -v` from the repository root.
+4. Run **`python3 tools/studio_preflight.py`** from the repository root. This runs actual source safety, layout, asset custody, task dependency and Python regression checks in one command (not native graphics proof).
 5. Run `python3 tools/production_queue.py --next` and select an unblocked work order from the actual queue.
 
 Engine target for the wider S.I.R.E. workflow: **Godot 4.7.2**. An actual GitHub Actions job confirmed headless Godot 4.7.2 import/start for the scaffold on [PR #8](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/pull/8). That is **native headless smoke only**, not rendered gameplay, Blender model, physical-device or multiplayer verification. The latest change still requires its own CI validation.
@@ -37,7 +37,7 @@ Engine target for the wider S.I.R.E. workflow: **Godot 4.7.2**. An actual GitHub
 
 Reserve asset IDs before importing finished models. Planned starter entries are **CHR_Vellaris_Bloodshield**, **CHR_ThornDell**, and **WPN_Vellaris_Bloodshield**. Existing reference imagery and approved artwork must be added from their real sources; folders are not proof that an asset exists.
 
-Blender source belongs in `art/blender/`. Exported `.glb` assets and supporting textures belong in `game/assets/`. Do not overwrite source art or use generated images as game-engine evidence. See `docs/art/ASSET_PIPELINE.md`.
+Blender source belongs in `art/blender/`. Exported `.glb` assets and supporting textures belong in `game/assets/`. Actual rights-reviewed files advance with checksum-backed receipts under `art/handoffs/`; inspect their stage using `python3 tools/validate_asset_handoffs.py --report`. Do not overwrite source art or use generated images as game-engine evidence. See `docs/art/ASSET_PIPELINE.md`.
 
 ## Completion truth
 
