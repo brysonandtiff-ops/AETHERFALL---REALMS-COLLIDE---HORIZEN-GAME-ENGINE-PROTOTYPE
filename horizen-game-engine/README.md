@@ -1,6 +1,6 @@
 # S.I.R.E. // HORIZEN GAME ENGINE
 
-A self-contained, offline-capable **local PWA shell**, distinct from the unverified Godot game-engine binary. Official app title: **HORIZEN GAME ENGINE**. Featured game: **AETHERFALL: REALMS COLLIDE**.
+A self-contained, offline-capable **local PWA shell**, distinct from the unverified Godot game-engine binary. Official app title: **HORIZEN GAME ENGINE**. Featured game: **AETHERFALL – REALMS COLIDE** (owner-facing name; internal legacy project IDs remain unchanged).
 
 ## What actually works
 
