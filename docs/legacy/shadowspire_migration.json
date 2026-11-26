@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "legacy_project": "Shadowspire",
+  "migration_date": "2026-11-26",
+  "source_repository": null,
+  "source_repo_status": "NOT_FOUND_IN_OWNER_GITHUB_INSTALLATION",
+  "source_code_available": false,
+  "original_godot_source_migrated": false,
+  "original_unreal_source_migrated": false,
+  "deletion_requested": true,
+  "deletion_status": "BLOCKED_NO_VERIFIED_OWNED_REPOSITORY_OR_TRANSFER",
+  "source_refs": [
+    {
+      "name": "Shadowspire concept brief",
+      "file": "Shadowspire_NotebookLM.pdf",
+      "source_type": "saved_owner_design",
+      "status": "design_only"
+    },
+    {
+      "name": "Owner-selected tank canon",
+      "file": "SHADOWSPIRE_TANK_CANON_LOCK_2026-11-26.md",
+      "source_type": "saved_owner_decision",
+      "status": "legacy_concept_only"
+    },
+    {
+      "name": "Owner-selected support canon",
+      "file": "SHADOWSPIRE_SUPPORT_CANON_LOCK_2026-11-26.md",
+      "source_type": "saved_owner_decision",
+      "status": "legacy_concept_only"
+    },
+    {
+      "name": "GitHub source blocked issue",
+      "url": "https://github.com/brysonandtiff-ops/SIRE/issues/275",
+      "status": "source_unavailable"
+    },
+    {
+      "name": "S.I.R.E. draft documentation import",
+      "url": "https://github.com/brysonandtiff-ops/SIRE/pull/746",
+      "status": "unmerged_design_files"
+    },
+    {
+      "name": "Source recovery branch",
+      "url": "https://github.com/brysonandtiff-ops/SIRE/tree/feat/shadowspire-sovereign-source-recovery-20261024",
+      "status": "discovery_only"
+    }
+  ],
+  "derived_content": [
+    "courtyard-Wraith-anchor-relic extraction acceptance proposal",
+    "gothic environments and realm candidates",
+    "living-weapon and pet ideas",
+    "five legacy-approved tank concepts",
+    "five legacy-approved support concepts"
+  ],
+  "not_transferred": [
+    "original Unreal/Godot source",
+    "3D models/rigs/animations",
+    "original authored reference images",
+    "saves and compiled games",
+    "runtime screenshots/video treated as current evidence"
+  ],
+  "preservation_policy": "Keep original source/Unreal artwork intact; never delete a similarly named third-party repository or inaccessible local files. Require exact source identity, independent archive and transfer verification before deletion."
+}

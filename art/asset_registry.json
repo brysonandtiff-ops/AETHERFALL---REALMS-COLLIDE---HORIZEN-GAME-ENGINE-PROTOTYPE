@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
   "project": "AETHERFALL: REALMS COLLIDE",
-  "note": "Reserved paths only. No completed 3D assets are present in this scaffold.",
+  "note": "Character IDs reserve storage only. Concept approval is not 3D/gameplay verification. Every asset currently lacks actual source/export data.",
   "assets": [
     {
       "id": "CHR_Vellaris_Bloodshield",
       "type": "character",
       "role": "hero_tank",
       "status": "reserved_no_source",
+      "concept_status": "aetherfall_approved",
       "concept_dir": "art/concepts/characters/CHR_Vellaris_Bloodshield",
       "source_dir": "art/blender/characters/CHR_Vellaris_Bloodshield",
       "runtime_dir": "game/assets/characters/heroes/CHR_Vellaris_Bloodshield"
@@ -15,8 +16,10 @@
     {
       "id": "CHR_ThornDell",
       "type": "character",
-      "role": "unconfirmed",
+      "role": "venom_tank_disruptor",
       "status": "reserved_no_source",
+      "concept_status": "aetherfall_approved",
+      "legacy_alias": "Thorndell",
       "concept_dir": "art/concepts/characters/CHR_ThornDell",
       "source_dir": "art/blender/characters/CHR_ThornDell",
       "runtime_dir": "game/assets/characters/heroes/CHR_ThornDell"
@@ -26,9 +29,90 @@
       "type": "weapon",
       "role": "standalone_weapon_focus",
       "status": "reserved_no_source",
+      "concept_status": "aetherfall_design_brief",
       "concept_dir": "art/concepts/weapons/WPN_Vellaris_Bloodshield",
       "source_dir": "art/blender/weapons/WPN_Vellaris_Bloodshield",
       "runtime_dir": "game/assets/weapons/WPN_Vellaris_Bloodshield"
+    },
+    {
+      "id": "CHR_Korvex",
+      "type": "character",
+      "role": "tank_attrition_zone_control",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Korvex",
+      "source_dir": "art/blender/characters/CHR_Korvex",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Korvex"
+    },
+    {
+      "id": "CHR_Dreadhull",
+      "type": "character",
+      "role": "tank_denial_disruption",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Dreadhull",
+      "source_dir": "art/blender/characters/CHR_Dreadhull",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Dreadhull"
+    },
+    {
+      "id": "CHR_Morrigan",
+      "type": "character",
+      "role": "tank_area_control",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Morrigan",
+      "source_dir": "art/blender/characters/CHR_Morrigan",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Morrigan"
+    },
+    {
+      "id": "CHR_Pixi",
+      "type": "character",
+      "role": "support_mobile_utility",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Pixi",
+      "source_dir": "art/blender/characters/CHR_Pixi",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Pixi"
+    },
+    {
+      "id": "CHR_Noxis",
+      "type": "character",
+      "role": "support_blood_alchemy",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Noxis",
+      "source_dir": "art/blender/characters/CHR_Noxis",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Noxis"
+    },
+    {
+      "id": "CHR_Orion",
+      "type": "character",
+      "role": "support_arcane_engineering",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Orion",
+      "source_dir": "art/blender/characters/CHR_Orion",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Orion"
+    },
+    {
+      "id": "CHR_Temporis",
+      "type": "character",
+      "role": "support_time_control",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Temporis",
+      "source_dir": "art/blender/characters/CHR_Temporis",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Temporis"
+    },
+    {
+      "id": "CHR_Symbion",
+      "type": "character",
+      "role": "support_symbiotic_link",
+      "status": "reserved_no_source",
+      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_dir": "art/concepts/characters/CHR_Symbion",
+      "source_dir": "art/blender/characters/CHR_Symbion",
+      "runtime_dir": "game/assets/characters/heroes/CHR_Symbion"
     }
   ]
 }
