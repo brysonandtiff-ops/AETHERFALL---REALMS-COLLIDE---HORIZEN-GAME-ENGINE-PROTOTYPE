@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "AETHERFALL-LOCAL-DOCS-003",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository": "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE",
+  "goal": "Safely route user-selected AETHERFALL documents downloaded on Android to the existing local project folder without overwriting originals.",
+  "authorised_executor": {
+    "master": "S.I.R.E AI",
+    "specialist": "S.I.R.E. Plugin Steward",
+    "team": "integrations",
+    "execution_status": "NOT_CONNECTED"
+  },
+  "requirements": [
+    "Use exact existing phone folder 'AETHERFALL – REALMS COLIDE'; do not rename or create parallel project roots",
+    "Place copied documents under Docs/Inbox, preserving korvex_blockout_v01",
+    "Preview by default, explicit owner permission and --apply for copying, no silent Android settings changes",
+    "Only allowed document types, top-level Download, file-name scoping and no secret/private mass scanning",
+    "Verify SHA-256 and preserve original Download; never overwrite document or original game art"
+  ],
+  "status": "STAGED_FOR_REVIEW",
+  "completion_criteria": [
+    "Phone destination policy exact and human-readable",
+    "One file and project-labeled batch intake supported",
+    "Non-destructive preview, duplicate skip, collision versioning and checksums unit-tested",
+    "Optional foreground watcher explicitly owner-started; no background installation",
+    "Existing source guard and native Godot headless CI remain passing on PR head",
+    "Physical Android access/move remains NOT_RUN until actual owner phone execution"
+  ],
+  "evidence": {
+    "source_tests": "NOT_RUN_ON_CANDIDATE",
+    "native_godot": "NOT_RUN_ON_CANDIDATE",
+    "graphical_proof": "NOT_RUN",
+    "device": "NOT_RUN"
+  },
+  "rollback": "Close draft PR; no Android phone files modified remotely. Delete only manually added Docs/Inbox copies if owner explicitly chooses; originals in Download remain."
+}
