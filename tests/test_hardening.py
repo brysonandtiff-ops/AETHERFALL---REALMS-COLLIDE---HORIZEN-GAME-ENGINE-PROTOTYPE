@@ -122,6 +122,21 @@ class HardenedStructureTests(unittest.TestCase):
     def test_generated_git_cache_is_not_required(self):
         self.assertEqual(validator.check(self.root), [])
 
+
+    def test_tracked_cache_hidden_from_walk_is_detected_by_git(self):
+        import subprocess
+        if shutil.which("git") is None:
+            self.skipTest("git unavailable, index integration test cannot run")
+        commands = (["git", "init", "-q"],)
+        for command in commands:
+            subprocess.run(command, cwd=self.root, check=True, capture_output=True)
+        private = self.root / ".venv" / "cache"
+        private.mkdir(parents=True)
+        (private / "trace.txt").write_text("fixture")
+        subprocess.run(["git", "add", "-f", ".venv/cache/trace.txt"],
+                       cwd=self.root, check=True, capture_output=True)
+        self.assert_rejected("Generated/cache directory committed to Git")
+
     def test_large_binary_without_policy_fails(self):
         path = self.root / "art/blender/unreviewed.blend"
         with path.open("wb") as fh:

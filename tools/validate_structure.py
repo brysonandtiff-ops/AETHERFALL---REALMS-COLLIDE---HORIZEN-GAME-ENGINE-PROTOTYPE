@@ -129,11 +129,11 @@ def validate_git_index(root, errors):
     except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
         errors.append("Cannot inspect tracked Git source index")
         return
-    for record in result.stdout.split(b"\\x00"):
+    for record in result.stdout.split(b"\x00"):
         if not record:
             continue
         try:
-            meta, path = record.split(b"\\t", 1)
+            meta, path = record.split(b"\t", 1)
             mode = meta.split(b" ", 1)[0]
             rel = path.decode("utf-8")
         except (ValueError, UnicodeDecodeError):
