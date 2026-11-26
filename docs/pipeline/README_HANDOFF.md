@@ -1,8 +1,8 @@
 # AETHERFALL — S.I.R.E. 1P/3P Hero Asset + Gameplay Pipeline v0.1.0
 
-**Status: SPEC_VALIDATED_ONLY · NO NATIVE MODEL/GAMEPLAY CERTIFICATION**  
-**Date:** 26 November 2026 · **Work order:** `AF-PIPELINE-3D-COMBAT-001`  
-**Repository:** `brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE`  
+**Status: SPEC_VALIDATED_ONLY · NO NATIVE MODEL/GAMEPLAY CERTIFICATION**
+**Date:** 26 November 2026 · **Work order:** `AF-PIPELINE-3D-COMBAT-001`
+**Repository:** `brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE`
 **Reviewed repository base commit (read-only):** `c11443f01213aaea1b6e86e4f9bed303051135dd` (recheck before branch promotion).
 
 ## Deliverables
