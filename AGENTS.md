@@ -1,5 +1,10 @@
 # AETHERFALL — Agent and Contributor Work Order
 
+## CANON HARD STOP — run before ALL character artwork or model tasks
+
+**Do not begin a canonical Vellaris, ThornDell or other approved character render unless the exact owner-approved reference image is supplied to that run and the lock file has been checked.** Read docs/characters/VISUAL_CANON_LOCK.md and CANON_LOCKS.json before generating, describing, converting, modelling or accepting output. New render = PROPOSAL_PENDING_OWNER_REVIEW until original-to-candidate evidence and explicit owner signoff. Never replace approved images, assume missing references, copy Vellaris character details to another hero, or silently resolve Korvex/Corvex or Razor/Raven variants.
+
+
 **Project:** AETHERFALL: REALMS COLLIDE
 **Goal:** Build the game in this repository without changing approved visual canon or making false completion claims.
 **Authorised executor:** The owner and specifically authorised S.I.R.E. / GENESIS AI / HORIZON development tools with verified repository and runner access. This file does not grant a new agent or connection.

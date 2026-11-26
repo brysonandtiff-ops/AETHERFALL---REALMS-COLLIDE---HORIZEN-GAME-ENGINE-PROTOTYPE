@@ -20,6 +20,8 @@ REQUIRED_FILES = (
     "docs/characters/CANON_LOCKS.json",
     "docs/characters/VISUAL_CANON_LOCK.md",
     "tools/verify_visual_canon.py",
+    "docs/characters/DRIFT_REVIEW_TEMPLATE.md",
+    "docs/architecture/MAIN_BRANCH_LOCK_SETUP.md",
     "docs/characters/CHARACTER_INTAKE.md",
     "docs/characters/templates/CHARACTER_PLAN_TEMPLATE.json",
     "docs/game-design/SHADOWSPIRE_LEGACY_DESIGN.md", "evidence/README.md",
