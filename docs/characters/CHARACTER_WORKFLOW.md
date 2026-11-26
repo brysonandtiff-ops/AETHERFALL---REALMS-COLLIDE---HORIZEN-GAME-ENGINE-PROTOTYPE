@@ -50,4 +50,8 @@ Any true downstream gate requires all earlier gates, evidence-file path + SHA-25
 
 FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH. In the PR/work order state project, ID, goal, owner-approved executor, source path, tests, gate status, genuine proof and remaining blockers. Run `python3 tools/validate_structure.py` and `python3 -m unittest discover -s tests -v`. Existing GitHub Actions runs these and the Godot bootstrap smoke. Enable required CI + CODEOWNERS review on `main` in repo branch settings to make the approved standard a hard merge lock.
 
-**Unarchived Vellaris reference:** original owner upload is a 1536×1152 PNG, SHA-256 `4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939`. Destination: `art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Master_Concept_2026-11-26.png`. It is visible in conversation, **not yet in GitHub**. Treat it as a character development concept sheet, never as native proof.
+**Unarchived Vellaris reference:** original owner upload is a 1536×1152 WebP (uploaded as 39403.png), SHA-256 `4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939`. Destination: `art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp`. It is visible in conversation, **not yet in GitHub**. Treat it as a character development concept sheet, never as native proof.
+
+## Absolute visual-drift gate
+
+First read VISUAL_CANON_LOCK.md and CANON_LOCKS.json. Use the exact source image as reference, never memory alone. Any new output is provisional until actual image comparison and owner signoff; protect both source-image hash and character-specific traits. Continue to use the AETHERFALL sheet hierarchy without copying Vellaris's character details to others. CI proves source integrity, not visual likeness.

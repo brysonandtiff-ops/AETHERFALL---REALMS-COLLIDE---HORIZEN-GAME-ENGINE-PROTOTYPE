@@ -36,3 +36,7 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 ## Character standard and non-negotiable review
 
 Every future AETHERFALL character (including DPS, support, enemy, boss and NPC) requires a registered asset ID and matching plan under `docs/characters/plans/`. Follow `docs/characters/CHARACTER_WORKFLOW.md` (Vellaris completeness plus proof), preserve owner-locked visual identity and hero-unique kits, and never clone shields across tanks. A concept image is not a model or engine proof. New role/approval or Corvex/Korvex alias changes require owner review. CI and code-owner review must not be bypassed.
+
+## HARD STOP: visual canon and drift protection
+
+Before every approved character generation, illustration, blockout, model, import or update, inspect the exact owner-approved source image and read docs/characters/VISUAL_CANON_LOCK.md plus CANON_LOCKS.json. Never generate an alleged canonical image from memory or a paraphrase. New images are unapproved proposals until owner source-to-output comparison. Preserve original image bytes/hash, approved silhouettes, unique weapon/focus and hero role/kit. Use Vellaris board layout as the presentation style, not as a universal bloodshield or hero template. Never silently resolve Corvex/Korvex or conflicting Razor/Raven weapon variants. Source-level CI tests are not artistic similarity or engine proof.

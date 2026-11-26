@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "lock_id": "AF-VISUAL-CANON-V1",
+  "policy": "OWNER_REFERENCE_FIRST_FAIL_CLOSED",
+  "provenance_status": "Original owner-approved image bytes currently external to GitHub; SHA-256 catalogued. Native model/gameplay proof absent.",
+  "presentation_standard": {
+    "reference_character": "CHR_Vellaris_Bloodshield",
+    "master_ratio": "4:3",
+    "reference_size": [
+      1536,
+      1152
+    ],
+    "frame_style": "Dark black-purple gothic fantasy; luminous magenta and lavender panel outlines, clean silver-lavender typography and AETHERFALL mark; character-specific art palette is separate from sheet frame.",
+    "required_panel_order": [
+      "brand_and_character_title_header",
+      "large_hero_portrait_left",
+      "four_view_turnaround_top_centre",
+      "silhouette_explorations_top_right",
+      "expressions_middle_centre",
+      "palette_and_material_detail_middle_right",
+      "hero_role_identity_lower_left",
+      "unique_weapon_or_focus_lower_centre",
+      "gameplay_role_lower_right",
+      "ability_icons_and_descriptions_bottom",
+      "concept_art_disclaimer_footer"
+    ],
+    "variation_policy": "Maintain panel completeness and brand style for all character sheets, never copy Vellaris character features/colors/props onto other characters. Only owner-approved improvement to layout."
+  },
+  "locked_characters": {
+    "CHR_Vellaris_Bloodshield": {
+      "approval": "owner_approved_aetherfall_concept",
+      "evidence_class": "CONCEPT_ONLY",
+      "source": {
+        "path": "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp",
+        "uploaded_filename": "39403.png",
+        "format": "WEBP",
+        "media_type": "image/webp",
+        "width": 1536,
+        "height": 1152,
+        "bytes": 340668,
+        "sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+        "state": "pending_binary_checkin"
+      },
+      "identity": {
+        "display_name": "Vellaris",
+        "epithet": "The Bloodshield",
+        "role_class": "tank",
+        "signature_focus": "regal gold and crimson bloodshield",
+        "active_ability_names": [
+          "Blood Barrier",
+          "Crimson Riposte",
+          "Sanguine Pact",
+          "Hemorrhage Veil"
+        ],
+        "passive_ability_name": "Royal Ichor"
+      },
+      "visual_lock": [
+        "Same distinct regal vampiric-elven female face, pointed ears and red eyes",
+        "Long flowing pale lavender-white hair with same hairline",
+        "Black-purple polished fitted plate and ornate antique gold borders",
+        "Very large jagged layered crimson enamel shoulder spikes",
+        "Deep crimson long split cape, matching original layered drape",
+        "Crimson-magenta blood magic shield, crescent halos and glowing ichor"
+      ],
+      "forbidden_drift": [
+        "Generic male knight, hood, face or hairstyle replacement",
+        "Removal of bloodshield, crimson spikes, crimson cape or regal motif",
+        "Red-black-purple-gold palette arbitrarily swapped",
+        "Named ability kit or frontline tank/protection/sustain identity changed",
+        "Replacement reference or generated variation silently approved"
+      ]
+    },
+    "CHR_ThornDell": {
+      "approval": "owner_approved_aetherfall_concept",
+      "evidence_class": "CONCEPT_ONLY",
+      "source": {
+        "path": "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_APPROVED_v1.png",
+        "uploaded_filename": "a_highly_detailed_cinematic_fantasy_game_concept.png",
+        "format": "PNG",
+        "media_type": "image/png",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 3219162,
+        "sha256": "34056a337ebfa67f413375a757f837a247938a3897aabf5e06b0683b48ba89d5",
+        "state": "pending_binary_checkin"
+      },
+      "identity": {
+        "display_name": "ThornDell",
+        "epithet": "The Venomroot",
+        "role_class": "tank",
+        "signature_focus": "thorn-wrapped root-grown Root Bulwark",
+        "active_ability_names": [],
+        "passive_ability_name": null
+      },
+      "visual_lock": [
+        "Enormous humanlike forest guardian with asymmetrical branching antlers",
+        "Monumental shoulders, beard, bark and fractured basalt armour",
+        "Weathered bronze, bound roots, fungi and poison-sap vials",
+        "Bright lime-green venom pathways and poison/disruption identity",
+        "Signature massive thorn-wrapped root-grown Root Bulwark",
+        "Keep canonical CHR_ThornDell ID; Thorndell is legacy alias"
+      ],
+      "forbidden_drift": [
+        "Generic knight or ordinary nature tank substitution",
+        "Antler asymmetry, bark/basalt, venom motif or Root Bulwark removed",
+        "Shield silently replaced with an unrelated weapon",
+        "Concept promoted to playable/rigged Godot character without proof"
+      ]
+    }
+  },
+  "alternate_references": {
+    "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_chat_copy.webp": {
+      "role": "noncanonical_secondary_conversation_upload",
+      "owner_lock": false,
+      "sha256": "3ca49cb4b1aa4f13ae79e38250eff5fc7dce6a0f22afea1f3b57984495badfaf",
+      "bytes": 375978,
+      "format": "WEBP",
+      "width": 1536,
+      "height": 1024,
+      "source": "39406.png"
+    }
+  },
+  "collision_hold": {
+    "new_id": "CHR_Corvex",
+    "existing_id": "CHR_Korvex",
+    "state": "requires_explicit_owner_identity_resolution"
+  }
+}

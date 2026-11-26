@@ -3,22 +3,22 @@
   "project": "AETHERFALL: REALMS COLLIDE",
   "character_id": "CHR_ThornDell",
   "display_name": "ThornDell",
-  "epithet": "Venomroot (working)",
+  "epithet": "The Venomroot",
   "registry_role": "venom_tank_disruptor",
   "registry_concept_status": "aetherfall_approved",
   "standard": "VELLARIS_V1_PLUS",
   "identity": {
     "role_class": "tank",
     "archetype": "Venom / root disruption",
-    "one_of_one_hook": "Antlered forest titan with venom and organic root disruption instead of a standard shield",
-    "silhouette_read": "Organic antlers and forest-titan mass; precise design pending master source",
+    "one_of_one_hook": "Antlered forest Venomroot titan with enormous thorn-wrapped Root Bulwark and venom/root disruption instead of generic tank mechanics.",
+    "silhouette_read": "Owner-approved monumental forest guardian: asymmetric stag antlers, beard, bark/basalt/bronze armour, fungus, roots and a huge thorn-wrapped Root Bulwark.",
     "gameplay_promise": "Deny routes with poison and roots",
     "counterplay": "Still to design and test"
   },
   "design": {
     "owner_status": "approved_concept_only",
-    "visual_identity": "Owner-approved concept described as antlered forest titan; full master pending",
-    "signature_prop": "Living antlers and roots, not a generic shield",
+    "visual_identity": "Approved antlered forest titan: asymmetrical stag antlers, monumental shoulders, beard, living bark, fractured basalt, aged bronze, fungi, poison-sap vials and bright lime venom pathways.",
+    "signature_prop": "The unique thorn-wrapped root-grown Root Bulwark; never silently replace it with unrelated weapon.",
     "palette": [],
     "materials": [],
     "accessibility_notes": "Check contrast, gameplay-distance silhouette, VFX obstruction, color-blind readability, sound alternatives and safe flashes in real tests.",
@@ -27,10 +27,10 @@
     "passive": null
   },
   "concept_reference": {
-    "repo_path": "art/concepts/characters/CHR_ThornDell/MASTER_CONCEPT_PENDING.png",
+    "repo_path": "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_APPROVED_v1.png",
     "archive_status": "pending_source_upload",
-    "sha256": null,
-    "origin_note": "Owner approved the concept in earlier project discussion; exact sheet file not yet archived."
+    "sha256": "34056a337ebfa67f413375a757f837a247938a3897aabf5e06b0683b48ba89d5",
+    "origin_note": "Owner-approved original true 1536x1024 PNG (3219162 bytes) from prior concept, inventoried PR #7; exact binary not yet archived in this GitHub repo; concept only."
   },
   "sheet_sections": {
     "hero_portrait": "pending",

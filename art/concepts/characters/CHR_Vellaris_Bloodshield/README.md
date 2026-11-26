@@ -1,7 +1,7 @@
-# Master Vellaris reference
+# Vellaris — protected owner-approved original
 
-Archive the **unaltered** owner-uploaded PNG to `Vellaris_Master_Concept_2026-11-26.png` in this folder.
+The uploaded 39403.png contains actual WebP bytes (1536x1152, 340668 bytes), not PNG.
+Canonical destination: art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp
+SHA-256: 4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939
 
-SHA-256: `4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939`.
-
-**Current state:** upload in chat only, source binary not committed to GitHub. When uploaded and checksum verified, update `docs/characters/plans/CHR_Vellaris_Bloodshield.json`; do not claim model/gameplay evidence.
+Binary source is NOT yet in GitHub. Do not fake a PNG extension, crop, re-encode, generate a replacement or promote to 3D/gameplay. See docs/characters/VISUAL_CANON_LOCK.md.

@@ -62,10 +62,10 @@
     }
   },
   "concept_reference": {
-    "repo_path": "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Master_Concept_2026-11-26.png",
+    "repo_path": "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp",
     "archive_status": "pending_source_upload",
     "sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
-    "origin_note": "Owner-supplied Vellaris master concept sheet 2026-11-26, seen in conversation. Exact original PNG is not yet in the GitHub repo."
+    "origin_note": "Owner-uploaded 39403.png is actually WEBP, 1536x1152 and 340668 bytes, SHA-256 verified locally. Exact source binary not yet archived in GitHub; never transcode or rename to fake PNG."
   },
   "sheet_sections": {
     "hero_portrait": "visible_in_unarchived_reference",

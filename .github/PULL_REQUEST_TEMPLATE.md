@@ -27,3 +27,12 @@ State known limitations and exact revert instructions. No auto-deploy or merge.
 - [ ] Original concept binary, hash and provenance committed, **or gate honestly pending**.
 - [ ] Genuine Blender/Godot/device evidence for any production status claims, or explicitly not run.
 - [ ] No legacy character silently promoted; Corvex/Korvex spelling checked.
+
+## Visual canon drift gate (for character art)
+
+- [ ] Viewed exact source media and locked manifest, not merely a remembered text prompt.
+- [ ] Verified actual file signature/extension, SHA-256 and pinned source identity; did not replace original.
+- [ ] Provided genuine side-by-side source-to-output comparison: face, hair, shape, silhouette, materials, props, four views, infographic layout and role/kit.
+- [ ] Owner approval explicitly recorded; until then saved as proposal, not new canon.
+- [ ] Cross-PR conflict (including Razor/Raven weapons) and alias (including Corvex/Korvex) reconciled.
+- [ ] Native engine/model/device status reported accurately.
