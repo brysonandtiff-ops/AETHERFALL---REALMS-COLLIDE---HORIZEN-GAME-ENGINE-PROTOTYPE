@@ -1,22 +1,35 @@
 {
-  "vertices": 74342,
-  "triangles": 148756,
+  "vertices": 107288,
+  "triangles": 214680,
   "non_triangles": 0,
   "connected_components": 1,
   "non_manifold_edges": 0,
   "non_manifold_vertices": 0,
   "inconsistent_edges": 0,
   "degenerate_faces": 0,
-  "volume_mm3": 60795.258,
+  "volume_mm3": 62148.703,
   "dimensions_mm": [
-    62.997,
-    63.48,
-    119.218
+    64.885,
+    63.488,
+    119.234
   ],
   "min_z_mm": 0.0,
-  "stl_sha256": "59a4498238ab9c4a307d6e51fc4eb2f9d762e5d6c13037a004c3de06124317d9",
-  "3mf_sha256": "fb8d74aed4ae2de6f33a21d9e5cb131593638c2f451c21d67aea39a89bcb7fce",
+  "stl_sha256": "7cd46a219728edb671bde1e089a076c3b1dfcd9a07313ccd871044fff738be0a",
+  "3mf_sha256": "0be12b0cc3327279f29e19d62a5a59b2da428bfebcf65064dd9f978b42edf3ee",
   "discarded_remesh_component_vertices": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
     8,
     8,
     8,
@@ -28,5 +41,27 @@
     8,
     8
   ],
-  "blender": "4.3.2"
+  "blender": "4.3.2",
+  "review_artifact_sha256": {
+    "astral-sentinel.blend": "64788bcd12509977856d81351b8a151aea9506850c04a878d92d1668bd9cc328",
+    "clay-detail.jpg": "8fb6785513fced57c47763bd7dd6430214e0b4e66741e72081f1326986ad19e8",
+    "preview.jpg": "3722767f680e8416fe87f26b4c7067a271e28a6b1e69bb8270961059fd064647",
+    "turnaround.jpg": "f09a735e45885d1928acba9cc990209f7ed1d6a0b24aa47bb43a078fa82dfa7f",
+    "views/back.png": "e42b90521c8dbce0dbc58728103fea65cbe7f4520b10a5f26ebbb41391eab8b8",
+    "views/front.png": "dc5c8f9bf85e002d00750834b24ad93cb94ff24f329575e54ef57d393d5d0aa7",
+    "views/left-side.png": "a95657a24271434f637953f0ca540116a0e7191c9d7e024d3cd35bf31bb10eb0",
+    "views/right-side.png": "c94143c2ba9a259d95b04cc076f04054bd9a6a4d9290a13e3ad7f9d436ebb74e"
+  },
+  "slicer_verification": {
+    "engine": "CuraEngine 5.0.0",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "initial_layer_height_mm": 0.2,
+    "supports": "everywhere",
+    "adhesion": "skirt",
+    "layers": 745,
+    "support_toolpath_sections": 739,
+    "gcode_sha256": "2ede8cd558075ba78a5a357cd38cfa78f1aa28fecc57d834495907ee9010c88f",
+    "physical_print": "untested"
+  }
 }

@@ -40,11 +40,11 @@ class Sculpture:
         self.silver = material("Moonsteel | polished plate", (.61, .67, .78), .72, .24)
         self.gold = material("Electrum | raised trim", (.80, .43, .105), .73, .24)
         self.gold_dark = material("Bronze | recessed metal", (.25, .095, .039), .62, .33)
-        self.blue = material("Aether | cyan crystal", (.025, .49, .90), .28, .21, .65)
-        self.light = material("Aether | inner light", (.26, .77, 1.0), .12, .21, 1.25)
+        self.blue = material("Aether | cyan crystal", (.012, .31, .82), .36, .22, .44)
+        self.light = material("Aether | inner light", (.12, .56, 1.0), .28, .23, .78)
         self.violet = material("Mantle | midnight violet", (.078, .024, .16), .44, .34)
         self.purple = material("Mantle | amethyst", (.23, .074, .36), .50, .30)
-        self.lavender = material("Mantle | polished ridges", (.37, .18, .54), .53, .27)
+        self.lavender = material("Mantle | polished ridges", (.29, .13, .52), .51, .32)
         self.stone = material("Plinth | basalt", (.035, .029, .059), .24, .50)
         self.stone_light = material("Plinth | raised carving", (.12, .084, .16), .48, .39)
         self.palette = [self.dark, self.iron, self.silver, self.gold, self.gold_dark,
@@ -148,6 +148,30 @@ class Sculpture:
                     face.material_index = 1
         return obj
 
+    def feather(self, name, controls, mat, edge, normal=(0, 1, 0)):
+        """A curved feather with a raised rachis molded into the front surface."""
+        controls = [(*position, width, relief) for position, width, relief in controls]
+        path = []
+        for i, (start, end) in enumerate(zip(controls, controls[1:])):
+            before = controls[max(i-1, 0)]
+            after = controls[min(i+2, len(controls)-1)]
+            for t in (0, 1/3, 2/3):
+                point = [.5*(2*a + (b-p)*t + (2*p-5*a+4*b-q)*t*t +
+                             (3*a-p-3*b+q)*t*t*t)
+                         for p, a, b, q in zip(before, start, end, after)]
+                path.append((Vector(point[:3]), point[3], point[4]))
+        last = controls[-1]
+        path.append((Vector(last[:3]), last[3], last[4]))
+        self.blade(name, path, mat, normal, edge)
+
+        spine = []
+        forward = Vector(normal)
+        for i, (point, width, relief) in enumerate(path[1:-3], 1):
+            tangent = (path[i+1][0] - path[i-1][0]).normalized()
+            outward = tangent.cross(forward.cross(tangent).normalized())
+            spine.append((point + outward*(relief-.11), min(.45, .20+width*.067)))
+        self.tube(name+" raised rachis", spine, edge, sides=8)
+
     def plate(self, name, outline, crown, mat, trim=None, face=(0, -1, 0)):
         """Build a thick armor plate with a beveled outline and a raised crest."""
         outline = [Vector(p) for p in outline]
@@ -234,13 +258,25 @@ def build_base(s):
                                          relief(1.65, 3.2)], .50, s.stone_light)
             s.line("Rune stem", [relief(0, 3.13), relief(0, 5.36)], .45, s.gold_dark)
 
-    # Broken altar blocks form shallow relief and broaden the cloak's footing.
+    # Damaged radial masonry and intact engraved spokes on the eclipse disc.
     for i in range(12):
         a = i*2*pi/12 + .09
-        r = 17.7 + (i % 3)*1.25
-        x, y = r*cos(a), r*sin(a)
-        s.ellipsoid("Broken altar stone", (x, y, 8.85), (3.7, 2.35, 1.5+(i%3)*.28),
-                    s.stone_light, (cos(a), sin(a), 1), detail=2)
+        r = 19.2 + 1.65*cos(i*1.94)
+        radial = Vector((cos(a), sin(a), 0))
+        tangent = Vector((-sin(a), cos(a), 0))
+        if i in (2, 3, 4, 5, 6, 8, 10):
+            width = 2.4 + .9*sin(i*1.7)**2
+            rise = 1.25 + .65*cos(i*2.23)**2
+            outline = [radial*(r+u) + tangent*v + Vector((0, 0, z)) for u, v, z in [
+                (-2.45, -width, 9.1), (.8, -width-.5, 9.25), (2.65, -width*.23, 9.2),
+                (2.45, width*.71, 9.15), (.15, width, 9.14), (-1.6, width*.61, 9.2)]]
+            apex = radial*(r-.42) + tangent*(width*.3) + Vector((0, 0, 9.4+rise))
+            s.plate("Fractured altar flagstone", outline, apex, s.stone_light,
+                    face=(0, 0, 1))
+        else:
+            detail = [radial*r0 + tangent*u + Vector((0, 0, 9.08))
+                      for r0, u in [(15.2, 0), (19.2, -.65), (22.7, 0), (19.2, .65), (15.2, 0)]]
+            s.line("Raised radial eclipse engraving", detail, .32, s.gold_dark)
 
 
 def build_body(s):
@@ -305,22 +341,24 @@ def build_mantle(s):
             for j in range(5):
                 u = (j+.35)/5
                 x0 = 2.0 + j*(2.6 + row*.36)
-                x1 = x0 + 2.25 + j*(.48 + row*.045)
+                wave = sin(j*1.3 + row*.82 + side*.57)
+                stagger = .9*sin(row*2.0 + j*1.8 + side*.7)
+                x1 = x0 + 2.0 + j*(.48 + row*.045) + .95*wave
                 y0 = root_y - 6.2*u**2.25
-                y1 = tip_y - 11.3*u**2.5
-                z0 = anchor_z - j*(.35 + row*.21)
-                z1 = max(9.35, z0 - (13.2 + row*1.8 + j*.85))
+                y1 = tip_y - 11.3*u**2.5 + 1.35*wave
+                z0 = anchor_z - j*(.35 + row*.21) + stagger
+                z1 = max(9.35, z0 - (13.2 + row*1.8 + j*.85 + 2.4*wave))
                 if row == 4:
                     z1 += 1.5*abs(j-2)
                 feather = [((x0, y0, z0), width*.53, 1.3),
-                           ((x0+1.0, y0+1.25, z0-3.3), width, 2.15),
-                           ((x0*.48+x1*.52, y0*.50+y1*.50+1.25, z0*.52+z1*.48),
-                            width*.79, 1.85),
-                           ((x1-.6, y1+.30, z1+3.8), width*.33, 1.05),
+                           ((x0+1.15, y0+1.3, z0-3.3), width*(.90+.09*wave), 2.15),
+                           ((x0*.48+x1*.52+.48*wave, y0*.50+y1*.50+1.25,
+                             z0*.52+z1*.48), width*.76, 1.85),
+                           ((x1-.6, y1+.30, z1+3.8), width*.38, 1.05),
                            ((x1, y1, z1), .36, .41)]
-                s.blade("Overlapping mantle feather", mirrored_blade(feather, side),
-                        s.purple if (j+row) % 3 else s.violet,
-                        normal=(0, 1, 0), edge=s.lavender if row < 4 else s.purple)
+                s.feather("Overlapping mantle feather", mirrored_blade(feather, side),
+                          s.purple if (j+row) % 3 else s.violet,
+                          s.lavender if row < 4 else s.purple)
         for i in range(4):
             x = 9.5 + i*3.3
             mantle_edge = [((x, 3.95, 79.0-i*2), 2.5, 1.45),
@@ -330,8 +368,20 @@ def build_mantle(s):
             if i == 3:
                 mantle_edge[2] = ((24.3, 8.2, 55.8), 1.55, 1.4)
                 mantle_edge[3] = ((25.0, 8.9, 52.7), .54, .62)
-            s.blade("Overhanging mantle feather", mirrored_blade(mantle_edge, side),
-                    s.purple, edge=s.lavender)
+            s.feather("Overhanging mantle feather", mirrored_blade(mantle_edge, side),
+                      s.purple, s.lavender, normal=(0, -1, 0))
+        for index, (x_tip, y_tip, z_tip) in enumerate(
+                [(25, 6.5, 20), (29, 8.9, 16), (30.4, 12.7, 24)] if side < 0
+                else [(26.5, 6.3, 16.2), (30.8, 8.7, 17.5), (33, 12, 27.3)]):
+            root = 15.1 + index*1.9
+            tail = [((root, 5.9+index*.65, 58.4-index*2.9), 2.4, 1.4),
+                    ((root+2, 6.4+index*.6, 52.0-index*2), 2.9, 2.0),
+                    ((root+4.4, 7.2+index*.72, 40.3-index), 3.2, 1.9),
+                    ((x_tip-2.3, y_tip-.35, z_tip+8.0), 1.7, 1.52),
+                    ((x_tip, y_tip, z_tip), .48, .52)]
+            s.feather("Swept mantle hem", mirrored_blade(tail, side),
+                      s.purple if index != 1 else s.violet, s.lavender,
+                      normal=(side*.34, -.94, 0))
     s.blade("Mantle spine ridge", [((0, 7, 82), 1.8, 1.7), ((0, 11, 65), 2.5, 1.8),
             ((0, 16, 39), 2, 1.8), ((0, 20.4, 21), 1.4, 1.4), ((0, 21.1, 12), .4, .5)],
             s.violet, normal=(0, 1, 0), edge=s.gold_dark)
@@ -362,6 +412,17 @@ def build_chest(s):
                                           (12.75, -5.4, 76.2), (11.5, -5.15, 69.7),
                                           (6.15, -7, 64.7), (4.7, -7.3, 68.2)],
               (7.6, -8.3, 69.8), s.iron)
+        s.blade("Breastplate starburst relief", mirrored_blade([
+            ((3.1, -10.07, 76.0), .68, .65),
+            ((6.4, -10.02, 77.6), .88, .66),
+            ((8.45, -9.91, 78.88), .9, .56),
+            ((10.62, -8.81, 80.16), .43, .45),
+            ((12.63, -7.34, 81.47), .36, .39)], side), s.gold)
+        s.blade("Secondary chest engraving", mirrored_blade([
+            ((4.95, -9.61, 74.65), .39, .47),
+            ((7.6, -9.46, 75.0), .55, .55),
+            ((9.65, -8.97, 75.94), .43, .47),
+            ((10.97, -7.75, 77.05), .33, .37)], side), s.gold_dark)
         for i in range(3):
             z = 65.5 - i*3.9
             plate("Overlapping abdominal lame",
@@ -377,6 +438,10 @@ def build_chest(s):
                                   (24.3, 1.6, 86.05), (20.7, -1.2, 83.55),
                                   (16.4, -4.85, 82.65)],
               (19.9, -4.05, 88.65), s.silver, s.gold, (.14, -.73, .67))
+        plate("Overlapping pauldron blade", [(15.2, -4.47, 85.15), (19.95, -4.18, 88.28),
+                 (24.2, -2.22, 87.7), (22.8, -4.15, 83.53), (22.41, -3.72, 79.33),
+                 (19.28, -5.57, 80.97)],
+              (20.05, -6.12, 84.23), s.iron, s.gold)
         plate("Rear pauldron feather socket", [(12.5, 3.8, 84.8), (18, 4.6, 90.1),
                                                (25, 5.9, 89.3), (23.2, 6.35, 84.3),
                                                (18.0, 7.15, 79.5)],
@@ -404,11 +469,20 @@ def build_chest(s):
     s.plate("Waist buckle shield", [(-4.6, -5.45, 56.6), (0, -6.15, 58.4),
                          (4.5, -5.5, 56.55), (3, -6.15, 52.6), (0, -6.7, 49),
                          (-3, -5.9, 52.5)], (0, -8.0, 54), s.gold_dark, s.gold)
+    for z in (62.15, 66.25):
+        s.plate("Central abdominal keel", [(-2.24, -5.69, z+1.55), (0, -6.3, z+2.52),
+                (2.24, -5.69, z+1.56), (1.18, -6.38, z-.72),
+                (0, -6.57, z-1.9), (-1.18, -6.38, z-.73)],
+                (0, -7.31, z+.45), s.iron, s.gold_dark)
     s.ellipsoid("Buckle crystal", (0, -7.65, 54.4), (1.08, .97, 1.65), s.blue, detail=2)
     s.ellipsoid("Chest core housing", (0, -7.9, 77.1), (4.55, 2.85, 4.55), s.gold_dark)
     s.bezel("Chest core electrum bezel", (0, -9.8, 77.1), 3.25, .74, s.gold)
     s.ellipsoid("Chest core", (0, -9.75, 77.1), (2.9, 1.68, 2.9), s.blue, detail=2)
     s.ellipsoid("Chest core inner detail", (0, -11.0, 77.1), (1.4, .62, 1.4), s.light, detail=2)
+    for i in range(8):
+        a = pi*(i+.5)/4
+        s.ellipsoid("Chest bezel rivet", (3.48*cos(a), -10.04, 77.1+3.48*sin(a)),
+                    (.48, .47, .48), s.gold, detail=2)
     for a in (0, pi/2, pi, 3*pi/2):
         dx, dz = cos(a), sin(a)
         s.blade("Eclipse bezel ray", [((2.42*dx, -10.04, 77.1+2.42*dz), .58, .59),
@@ -428,6 +502,11 @@ def build_limbs(s, legs, arms):
                     (1.0, -4.0, 6.35), (4.75, -2.95, 4.45), (4.1, -3.9, -.4),
                     (1.05, -5.1, -4.05), (-2.65, -4.45, -2.55)]),
                 knee_points([(1.15, -6.1, .9)])[0], s.silver, s.gold)
+        s.plate("Knee crest relief", knee_points([(-1.35, -5.31, 1.35),
+                (1.12, -5.36, 3.8), (3.0, -4.91, 1.42), (1.22, -5.67, -1.44)]),
+                knee_points([(1.22, -6.42, 1.26)])[0], s.gold_dark, s.gold)
+        s.ellipsoid("Knee crest crystal", knee_points([(1.18, -6.17, 1.37)])[0],
+                    (.70, .45, .94), s.blue, detail=2)
         ax, ay, _ = ankle
 
         def shin_points(points):
@@ -437,6 +516,8 @@ def build_limbs(s, legs, arms):
                 (-.8, -4.1, 13.2), (2.95, -3.6, 12), (3.9, -2.1, 14.5),
                 (3.45, -3.15, 5.3), (1.25, -4.75, -1.08), (-2.3, -3.9, 2.8)]),
                 shin_points([(.8, -5.75, 6.65)])[0], s.silver, s.gold)
+        s.line("Raised greave filigree", shin_points([(-1.70, -4.17, 10.55),
+                (.25, -5.07, 8.8), (1.85, -5.02, 9.49)]), .44, s.gold_dark)
         s.line("Greave aether channel", shin_points([(-2.7, -3.2, 10.2),
                (-3.34, -2.57, 7.3), (-2.82, -3.1, 4.2), (-2.15, -3.8, 2.2)]),
                .65, s.blue)
@@ -493,13 +574,20 @@ def build_limbs(s, legs, arms):
             s.ellipsoid("Raised thumb", (21.47, -12.78, 73.14), (1.34, 1.28, 1.8), s.dark)
             s.ellipsoid("Orb mounting clasp", (23.75, -13.47, 73.4), (2.94, 2.54, 1.81),
                         s.gold_dark)
-            s.ellipsoid("Aether focus stone", (23.75, -13.55, 76.55),
-                        (3.65, 3.35, 4.18), s.blue, detail=2)
-            s.bezel("Bound orb meridian", (23.75, -14.22, 76.35), 3.28, .66,
-                    s.gold, (.26, -1, -.25))
-            s.blade("Crystal bright facet", [((23.62, -16.49, 74.35), .49, .52),
-                    ((23.79, -16.57, 76.76), 1.26, .74),
-                    ((23.62, -15.62, 79.37), .48, .47)], s.light)
+            focus = s.loft("Six-cut aether prism", [(72.7, 23.75, -13.54, .7, .7),
+                (75.52, 23.75, -13.54, 3.7, 3.45), (78.21, 23.05, -13.54, 3.38, 3.18),
+                (81.55, 22.52, -13.47, .43, .43)], s.blue, sides=6, smooth=False)
+            focus.data.materials.append(s.light)
+            for face_index in (4, 10, 11, 17):
+                focus.data.polygons[face_index].material_index = 1
+            for tooth in range(3):
+                angle = -pi*.48 + tooth*2*pi/3
+                dx, dy = cos(angle), sin(angle)
+                s.tube("Electrum setting prong", [
+                    ((23.7+1.97*dx, -13.54+1.97*dy, 73.24), .73),
+                    ((23.6+3.05*dx, -13.54+3.02*dy, 75.40), .66),
+                    ((23.4+3.61*dx, -13.54+3.44*dy, 76.68), .58),
+                    ((23.1+3.01*dx, -13.54+2.90*dy, 78.13), .37)], s.gold)
 
 
 def build_helmet(s):
@@ -523,15 +611,24 @@ def build_helmet(s):
                 helm([(2.83, -6.3, 96.3)])[0], s.silver, s.gold)
         s.line("Visor slit", helm([(.67, -6.10, 99.96), (2.35, -5.91, 100.14),
                 (4.2, -5.09, 100.57), (5.61, -3.74, 101.12)]), .62, s.blue)
+        s.line("Creased edge beneath visor", helm([(1.55, -6.24, 99.12), (2.9, -5.92, 99.39),
+                (4.25, -4.82, 99.92), (5.64, -3.11, 100.52)]), .40, s.gold)
         s.plate("Temple fin", helm([(4.75, .34, 102.35), (6.25, .95, 107.1),
                 (8.5, 4.15, 110.0), (7.95, 4.43, 105.34), (6.0, 3.8, 100.7),
                 (4.95, 1.65, 97.4)]),
                 helm([(6.62, 2.15, 103.56)])[0], s.iron, s.gold, (side*.7, -.65, 0))
-        for i in range(2):
-            s.plate("Cheek vent", helm([(2.63+i*.85, -6.14+i*.47, 96.67+i*.57),
-                    (3.01+i*.9, -6.07+i*.52, 97.28+i*.49),
-                    (2.65+i*.9, -5.94+i*.49, 94.92+i*.59)]),
-                    helm([(2.83+i*.9, -6.17+i*.44, 96.3+i*.56)])[0], s.iron)
+        s.blade("Cheek fluting", [(p, width, h) for p, width, h in zip(
+            helm([(3.75, -4.81, 98.95), (3.37, -5.84, 97.18),
+                  (2.68, -6.24, 95.93), (1.81, -5.95, 94.44)]),
+            (.45, .61, .51, .34), (.44, .53, .48, .37))], s.gold_dark)
+    s.plate("Layered nape guard", [(-4.35, 3.64, 104), (.75, 5.19, 106.6),
+            (5.8, 3.86, 104.2), (5.17, 4.30, 98.4), (3.53, 3.67, 92.35),
+            (.82, 4.19, 90.7), (-2.19, 3.68, 92.85), (-4.02, 4.12, 98.56)],
+            (.79, 6.1, 100.9), s.iron, s.gold_dark, (0, 1, 0))
+    s.blade("Nape crest spine", [((.87, 5.4, 107.1), .55, .75),
+            ((.88, 5.82, 104.3), 1.16, 1.1), ((.86, 5.97, 101.4), 1.3, 1),
+            ((.86, 5.25, 97.67), .78, .82), ((.86, 4.8, 94.7), .41, .56)],
+            s.silver, normal=(0, 1, 0), edge=s.gold)
     s.blade("Helm nose guard", [((.78, -5.75, 105.4), 1.05, .83),
             ((.78, -6.17, 102.1), 1.35, 1.05), ((.78, -6.05, 98.1), .82, .85),
             ((.78, -5.72, 94.2), .55, .72)], s.gold_dark, edge=s.gold)
@@ -604,7 +701,7 @@ def build_print(s):
     bpy.ops.object.join()
     obj = bpy.context.object
     obj.name = "Astral Sentinel • fused print"
-    obj.data.remesh_voxel_size = .28
+    obj.data.remesh_voxel_size = .24
     obj.data.use_remesh_preserve_attributes = False
     obj.data.use_remesh_preserve_volume = True
     bpy.ops.object.voxel_remesh()
@@ -647,12 +744,11 @@ def build_print(s):
         obj.data.materials.append(mat)
     obj.data.update()
     for face in obj.data.polygons:
-        distance, index = float("inf"), None
-        # A small offset outside the remesh favors visible boundary surfaces.
-        for offset in (0, .20):
-            _, _, candidate, gap = surface.find_nearest(face.center + face.normal*offset)
-            if gap is not None and gap < distance:
-                distance, index = gap, candidate
+        # Cast inward to find the visible original surface where sculpt parts overlap.
+        center, normal = face.center, face.normal
+        _, _, index, _ = surface.ray_cast(center + normal*.75, -normal, 1.45)
+        if index is None:
+            _, _, index, _ = surface.find_nearest(center)
         face.material_index = colors[index] if index is not None else 0
         face.use_smooth = True
 
@@ -749,7 +845,7 @@ def setup_studio(s):
         obj.location = position
         aim(obj, target)
 
-    area("Warm key", (-73, -94, 145), 470000, 104, (1, .84, .66), (0, 0, 66), 70)
+    area("Warm key", (-73, -94, 145), 410000, 94, (1, .84, .66), (0, 0, 66), 70)
     area("Cool studio fill", (76, -73, 91), 270000, 94, (.61, .77, 1), (0, 0, 55), 124)
     area("Violet rim", (40, 61, 151), 470000, 72, (.68, .46, 1), (0, 0, 61), 105)
     area("Crown highlight", (-42, 29, 133), 235000, 54, (.81, .93, 1), (0, 0, 64))
@@ -780,9 +876,10 @@ def setup_studio(s):
         return obj
 
     hero = camera("Three-quarter", (122, -245, 121), (0, 0, 59), 139)
-    front = camera("Front", (0, -245, 89), (0, 0, 59), 136)
-    side = camera("Right side", (245, 0, 89), (0, 0, 59), 136)
-    back = camera("Back", (-14, 245, 98), (0, 0, 59), 136)
+    camera("Front", (0, -245, 89), (0, 0, 59), 136)
+    camera("Right side", (245, 0, 89), (0, 0, 59), 136)
+    camera("Back", (0, 245, 89), (0, 0, 59), 136)
+    camera("Left side", (-245, 0, 89), (0, 0, 59), 136)
     scene.camera = hero
     for screen in bpy.data.screens:
         for view in screen.areas:
@@ -794,7 +891,43 @@ def setup_studio(s):
                 space.region_3d.view_rotation = hero.rotation_euler.to_quaternion()
                 space.overlay.show_overlays = False
                 space.shading.color_type = "MATERIAL"
-    return hero, front, side, back
+
+
+def render_views(output, draft=False):
+    scene = bpy.context.scene
+    for name in (("Three-quarter",) if draft else
+                 ("Three-quarter", "Front", "Right side", "Back", "Left side")):
+        scene.camera = bpy.data.objects[name]
+        if name == "Three-quarter":
+            scene.cycles.samples = 32 if draft else 112
+            scene.render.resolution_x = 480 if draft else 864
+            scene.render.resolution_y = 600 if draft else 1080
+        else:
+            scene.cycles.samples = 48
+            scene.render.resolution_x = 512
+            scene.render.resolution_y = 640
+        scene.render.filepath = str(output / (name.lower().replace(" ", "-")+".png"))
+        bpy.ops.render.render(write_still=True)
+
+    if not draft:
+        layer = bpy.context.view_layer
+        clay = material("QA | matte print clay", (.38, .38, .38), 0, .48)
+        layer.material_override = clay
+        lights = list(bpy.data.lights)
+        saved_colors = [tuple(light.color) for light in lights]
+        for light in lights:
+            light.color = (1, 1, 1)
+        try:
+            scene.camera = bpy.data.objects["Three-quarter"]
+            scene.cycles.samples = 64
+            scene.render.resolution_x = 720
+            scene.render.resolution_y = 900
+            scene.render.filepath = str(output / "clay.png")
+            bpy.ops.render.render(write_still=True)
+        finally:
+            layer.material_override = None
+            for light, color in zip(lights, saved_colors):
+                light.color = color
 
 
 def main():
@@ -836,24 +969,13 @@ def main():
     (output / "mesh-report.json").write_text(json.dumps(report, indent=2)+"\n")
     print(json.dumps(report, indent=2), flush=True)
 
-    hero, front, side, back = setup_studio(s)
+    setup_studio(s)
     scene.render.resolution_x = 960
     scene.render.resolution_y = 1200
     select_only(print_mesh)
     bpy.ops.wm.save_as_mainfile(filepath=str(output / "astral-sentinel.blend"), compress=True)
-    if settings.render == "none":
-        return
-    cameras = (hero,) if settings.render == "draft" else (hero, front, side, back)
-    for camera in cameras:
-        scene.camera = camera
-        scene.render.resolution_x = 480 if settings.render == "draft" else 864
-        scene.render.resolution_y = 600 if settings.render == "draft" else 1080
-        if camera != hero:
-            scene.render.resolution_x = 512
-            scene.render.resolution_y = 640
-            scene.cycles.samples = 48
-        scene.render.filepath = str(output / (camera.name.lower().replace(" ", "-")+".png"))
-        bpy.ops.render.render(write_still=True)
+    if settings.render != "none":
+        render_views(output, draft=settings.render == "draft")
 
 
 if __name__ == "__main__":
