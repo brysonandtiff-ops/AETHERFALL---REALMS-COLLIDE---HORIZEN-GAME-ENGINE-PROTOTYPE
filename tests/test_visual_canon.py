@@ -18,6 +18,8 @@ class VisualCanonTests(unittest.TestCase):
         self.root = Path(self.tmp.name)
         paths = [
             "docs/characters/CANON_LOCKS.json",
+            "docs/art/AETHERFALL_STYLE_CANON.json",
+            "docs/art/AETHERFALL_STYLE_CANON.md",
             "docs/characters/plans/CHR_Vellaris_Bloodshield.json",
             "docs/characters/plans/CHR_ThornDell.json",
             "art/asset_registry.json",
@@ -133,7 +135,10 @@ class VisualCanonTests(unittest.TestCase):
             "status": "PROPOSAL_PENDING_OWNER_REVIEW",
             "canonical_source_sha256": guard.PINNED["CHR_Vellaris_Bloodshield"]["sha256"],
             "candidate_sha256": __import__("hashlib").sha256(proposed.read_bytes()).hexdigest(),
-            "source_note": "Test candidate only"
+            "source_note": "Test candidate only",
+            "style_lock_id": guard.STYLE_ID,
+            "style_reference_sha256": guard.STYLE_SHA,
+            "display_brand": guard.STYLE_BRAND
         }
         proposed.with_name(proposed.name + ".review.json").write_text(json.dumps(review))
         self.assertEqual(guard.check(self.root), [])
@@ -150,6 +155,40 @@ class VisualCanonTests(unittest.TestCase):
             d["assets"].append({**d["assets"][0], "id": "CHR_Corvex"})
         self.change("art/asset_registry.json", mutate)
         self.rejected("Unresolved Corvex/Korvex alias collision")
+
+    def test_third_image_reference_fingerprint_cannot_be_changed(self):
+        self.change("docs/art/AETHERFALL_STYLE_CANON.json",
+                    lambda d: d["source_reference"].update(sha256="b" * 64))
+        self.rejected("Third-image style reference changed")
+
+    def test_owner_project_brand_is_not_shadowspire_midnight_or_nexusfall(self):
+        self.change("docs/art/AETHERFALL_STYLE_CANON.json",
+                    lambda d: d.update(owner_display_title="SHADOWSPIRE"))
+        self.rejected("AETHERFALL canonical style lock/branding drift")
+
+    def test_mandatory_illustrated_sheet_sections_cannot_be_removed(self):
+        self.change("docs/art/AETHERFALL_STYLE_CANON.json",
+                    lambda d: d["sheet_panel_order"].pop())
+        self.rejected("AETHERFALL third-image art style hierarchy drift")
+
+    def test_locked_character_plan_must_link_style_anchor(self):
+        self.change("docs/characters/plans/CHR_Vellaris_Bloodshield.json",
+                    lambda d: d.update(presentation_style_lock_id="UNAPPROVED_STYLE"))
+        self.rejected("Approved character plan missing third-image art style")
+
+    def test_new_proposal_missing_style_anchor_must_fail(self):
+        proposed = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/proposals/v02.webp"
+        proposed.parent.mkdir()
+        proposed.write_bytes(b"proposed art, not a source")
+        review = {
+            "character_id": "CHR_Vellaris_Bloodshield",
+            "status": "PROPOSAL_PENDING_OWNER_REVIEW",
+            "canonical_source_sha256": guard.PINNED["CHR_Vellaris_Bloodshield"]["sha256"],
+            "candidate_sha256": __import__("hashlib").sha256(proposed.read_bytes()).hexdigest(),
+            "source_note": "No art style metadata"
+        }
+        proposed.with_name(proposed.name + ".review.json").write_text(json.dumps(review))
+        self.rejected("Proposal missing AETHERFALL canonical art style anchor")
 
 
 if __name__ == "__main__":
