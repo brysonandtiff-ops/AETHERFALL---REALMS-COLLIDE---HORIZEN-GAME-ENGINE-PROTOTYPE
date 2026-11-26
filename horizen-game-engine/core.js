@@ -64,7 +64,10 @@ export function normalizeState(state) {
     worlds:worlds.map((w,i)=>{
       const id=cleanText(w?.id,100)||`import-world-${i}`;
       if(uniqueWorlds.has(id)) throw new Error('Duplicate world identity.'); uniqueWorlds.add(id);
-      return {...createWorld(w,id),kind:cleanText(w?.kind||'LOCAL WORLD',60)};
+      const world={...createWorld(w,id),kind:cleanText(w?.kind||'LOCAL WORLD',60)};
+      // Migrate only the known legacy catalog label; never overwrite owner-renamed worlds.
+      if(id==='world-aetherfall'&&world.name==='AETHERFALL: REALMS COLLIDE')world.name='AETHERFALL – REALMS COLIDE';
+      return world;
     }),
     assets:assets.map((a,i)=>{
       const id=cleanText(a?.id,100),name=cleanText(a?.name,80),sha256=cleanText(a?.sha256,64).toLowerCase();
