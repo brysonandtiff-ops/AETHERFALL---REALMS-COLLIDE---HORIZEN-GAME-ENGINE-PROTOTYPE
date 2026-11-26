@@ -461,7 +461,7 @@ def main():
         for failure in failures:
             print("FAIL: " + failure, file=sys.stderr)
         return 1
-    print("PASS: source/asset path safety, Godot reference checks and migration status (STATIC ONLY)")
+    print("PASS: source/asset paths, character source hashes/canon metadata, gate order, Godot references and migration safety (STATIC ONLY; NO VISUAL LIKENESS PROOF)")
     return 0
 
 
