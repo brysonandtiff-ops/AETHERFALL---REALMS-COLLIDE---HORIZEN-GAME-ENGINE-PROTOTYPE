@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "project_display": "AETHERFALL – REALMS COLIDE",
+  "work_order": "AF-HORIZEN-MODEL-INTAKE-40292-2026-11-26",
+  "date": "2026-11-26",
+  "source_upload": "40292.mp4",
+  "source_sha256": "9539f1ab23bd250d1d91b008a13144666d8b0967a7eee537df55c67b3aae0782",
+  "source_bytes": 19328053,
+  "media_inspection": {
+    "format": "MP4",
+    "codec": "H.264",
+    "width": 1200,
+    "height": 1080,
+    "duration_seconds": 21.994967,
+    "frames": 1271,
+    "frame_rate_approx": 57.785948
+  },
+  "observed_content": "Phone screen recording of text/code in Gemini: bpy Blender selected-mesh export/audit suggestions and Three.js GLTF/OBJ/STL viewer + IndexedDB conceptual implementation.",
+  "classification": "OWNER_SUPPLIED_CODE_REFERENCE_NOT_RUNTIME_PROOF",
+  "raw_binary_committed_to_git": false,
+  "raw_binary_location": "owner conversation attachment /mnt/data/40292.mp4 (NOT a Git tracked object; transfer required for archival)",
+  "requested_changes": {
+    "blender": "Implement selected-source GLB, scaled STL, basic mesh audit, checksums, receipt",
+    "pwa": "Extend existing HORIZEN browser Model Forge with STL, self-contained glTF and opt-in IndexedDB original-file storage"
+  },
+  "implemented_on_branch": "feat/40292-model-export-vault-20261126",
+  "artifacts": [
+    "tools/horizen_mesh_io.py",
+    "tools/horizen_blender_export.py",
+    "horizen-game-engine/model-extra.js",
+    "horizen-game-engine/model-vault.js",
+    "horizen-game-engine/model-inspect.js",
+    "horizen-game-engine/app.js"
+  ],
+  "explicitly_unverified": [
+    "Blender actual operator execution",
+    "Godot asset import",
+    "physical phone PWA install, offline IndexedDB restore, performance and quota behavior",
+    "watertight/slicer-verified 3D print",
+    "production game integration",
+    "owner character art fidelity",
+    "cross-repo SIRE merge"
+  ],
+  "blockers": [
+    "Exact video binary is still external to Git; 19 MB owner upload, no approved large-media repository transfer",
+    "Candidate HORIZEN PWA itself remains on an unmerged parent branch",
+    "Full native Blender and physical Android testing are required for certification"
+  ]
+}
