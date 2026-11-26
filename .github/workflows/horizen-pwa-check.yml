@@ -22,5 +22,9 @@ jobs:
         run: node --test horizen-game-engine/tests/*.test.mjs
       - name: Test loopback server responses and install assets
         run: python3 horizen-game-engine/tests/server_smoke.py
+      - name: Test Termux launcher recovery and port fallback in Linux sandbox
+        run: |
+          bash -n horizen-game-engine/start-horizen-engine.sh
+          python3 -m unittest discover -s horizen-game-engine/tests -p 'test_*.py' -v
       - name: State evidence boundary
         run: echo 'Source and HTTP tests only; no Android, service worker, engine, or game certification.'
