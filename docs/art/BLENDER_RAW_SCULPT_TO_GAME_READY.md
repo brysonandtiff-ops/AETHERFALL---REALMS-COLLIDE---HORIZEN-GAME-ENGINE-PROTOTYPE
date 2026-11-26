@@ -1,9 +1,9 @@
 # AF-ART-BLENDER-001 — Raw AI sculpt → game-ready character
 
-**Project:** AETHERFALL: REALMS COLLIDE (1P + 3P hero shooter)  
-**Owner instruction date:** 2026-11-26  
-**Authorised executors:** Existing owner-approved Blender art team and S.I.R.E. / HORIZON / GENESIS workflow with actual asset and tool access. This document does **not** create a new agent or grant access.  
-**Status:** Production standard / checklist; **not evidence** that any sculpt has been retopologized, exported, or verified in Godot.  
+**Project:** AETHERFALL: REALMS COLLIDE (1P + 3P hero shooter)
+**Owner instruction date:** 2026-11-26
+**Authorised executors:** Existing owner-approved Blender art team and S.I.R.E. / HORIZON / GENESIS workflow with actual asset and tool access. This document does **not** create a new agent or grant access.
+**Status:** Production standard / checklist; **not evidence** that any sculpt has been retopologized, exported, or verified in Godot.
 **Work order:** AF-ART-BLENDER-001 — build, validate and hand off source-matched character models, keeping original artwork intact.
 
 This is the mandatory detailed procedure beneath `docs/art/ASSET_PIPELINE.md` and `docs/characters/CHARACTER_WORKFLOW.md`. Follow FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH. No shortcut or AI render establishes "game-ready" without the real deliverables and tests below.
