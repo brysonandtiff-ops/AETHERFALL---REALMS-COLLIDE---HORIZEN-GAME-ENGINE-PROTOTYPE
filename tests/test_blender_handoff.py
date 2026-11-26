@@ -67,6 +67,16 @@ class BlenderHandoffTests(unittest.TestCase):
         self.save()
         self.assertTrue(gate.check(self.root))
 
+    def test_unhashable_stage_status_fails_closed(self):
+        self.doc["stages"]["rig_sockets_export"]["status"] = ["PASS"]
+        self.save()
+        self.assertTrue(any("Missing/invalid Blender stage" in x for x in gate.check(self.root)))
+
+    def test_unhashable_production_status_fails_closed(self):
+        self.doc["production_status"] = {"status": "GAME_READY"}
+        self.save()
+        self.assertTrue(any("Unknown Blender handoff production status" in x for x in gate.check(self.root)))
+
     def test_wrong_identity_rejected(self):
         self.doc["asset_id"] = "CHR_OtherHero"
         self.save()
