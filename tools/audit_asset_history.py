@@ -16,8 +16,14 @@ REGISTRY = ROOT / "art/asset_registry.json"
 MAX_BYTES = 1024 * 1024
 ASSET_ID = re.compile(r"^(?:CHR|WPN)_[A-Za-z][A-Za-z0-9_]*$")
 LOCKED_KEYS = (
-    "id", "type", "role", "status", "concept_status",
+    "id", "type", "role", "concept_status",
     "legacy_alias", "concept_dir", "source_dir", "runtime_dir",
+)
+
+# State changes are allowed only one reviewed, receipt-backed stage at a time.
+STAGES = (
+    "reserved_no_source", "concept_recorded", "blender_source_recorded",
+    "runtime_export_recorded", "native_import_reviewed",
 )
 
 
@@ -62,6 +68,11 @@ def audit_registry(baseline, current):
         for key in LOCKED_KEYS:
             if older.get(key) != newer.get(key):
                 errors.append("Approved art identity/source contract rewritten: " + older["id"] + " / " + key)
+        old_stage, new_stage = older.get("status"), newer.get("status")
+        if old_stage not in STAGES or new_stage not in STAGES:
+            errors.append("Invalid asset lifecycle state: " + older["id"])
+        elif old_stage != new_stage and STAGES.index(new_stage) != STAGES.index(old_stage) + 1:
+            errors.append("Unsafe asset lifecycle transition: " + older["id"])
     for entry in new[len(old):]:
         if not ASSET_ID.fullmatch(entry["id"]):
             errors.append("Invalid new canonical art asset ID")
@@ -110,7 +121,7 @@ def main(argv=None):
         for error in sorted(set(errors)):
             print("FAIL: " + error, file=sys.stderr)
         return 1
-    print("PASS: art IDs, approved source paths, history and protected evidence not silently rewritten (SOURCE ONLY)")
+    print("PASS: art IDs, approved source paths, staged status history and original evidence preserved (SOURCE ONLY)")
     return 0
 
 

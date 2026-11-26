@@ -33,6 +33,24 @@ class ProtectedArtHistoryTests(unittest.TestCase):
         self.after["assets"][0], self.after["assets"][1] = self.after["assets"][1], self.after["assets"][0]
         self.assert_bad("Canonical art IDs removed, renamed or reordered")
 
+    def test_controlled_first_asset_stage_is_allowed_by_history(self):
+        self.after["assets"][0]["status"] = "concept_recorded"
+        # This audit checks only the status transition. Receipt/files are independently verified.
+        self.assertEqual(art.audit_registry(self.before, self.after), [])
+
+    def test_skipped_asset_stage_is_rejected(self):
+        self.after["assets"][0]["status"] = "runtime_export_recorded"
+        self.assert_bad("Unsafe asset lifecycle transition")
+
+    def test_unknown_asset_stage_is_rejected(self):
+        self.after["assets"][0]["status"] = "magic_verified"
+        self.assert_bad("Invalid asset lifecycle state")
+
+    def test_reverted_asset_stage_is_rejected(self):
+        self.before["assets"][0]["status"] = "blender_source_recorded"
+        self.after["assets"][0]["status"] = "concept_recorded"
+        self.assert_bad("Unsafe asset lifecycle transition")
+
     def test_source_dir_change_is_rejected(self):
         self.after["assets"][0]["source_dir"] = "art/blender/characters/CHR_Other"
         self.assert_bad("Approved art identity/source contract rewritten")

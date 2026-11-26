@@ -94,10 +94,16 @@ def artifact(root, spec, kind, base_dir, errors, asset_id):
     if candidate.stat().st_size != declared_size:
         errors.append("Asset file size mismatch (" + kind + "): " + asset_id)
         return
+    digest_state = hashlib.sha256()
     with candidate.open("rb") as stream:
         header = stream.read(16)
         stream.seek(0)
-        digest = hashlib.file_digest(stream, "sha256").hexdigest()
+        while True:
+            chunk = stream.read(1024 * 1024)
+            if not chunk:
+                break
+            digest_state.update(chunk)
+    digest = digest_state.hexdigest()
     if digest != declared_sha:
         errors.append("Asset checksum mismatch (" + kind + "): " + asset_id)
     suffix = candidate.suffix.lower()
@@ -142,7 +148,17 @@ def check(root=ROOT, registry=None):
         if stage == STAGES[0]:
             if receipt_path.exists() or receipt_path.is_symlink():
                 errors.append("Reserved asset has premature handoff receipt: " + asset_id)
-            # No promoted state is claimed. Do not inspect placeholders as native art.
+            # Catch undisclosed model/concept uploads; a real file requires a receipt.
+            for key, extensions in (
+                ("concept_dir", ALLOWED_EXTENSIONS["concept"]),
+                ("source_dir", ALLOWED_EXTENSIONS["blender"]),
+                ("runtime_dir", ALLOWED_EXTENSIONS["runtime"]),
+            ):
+                folder = safe_relative(root, entry.get(key))
+                if folder is not None and folder.is_dir():
+                    for child in folder.iterdir():
+                        if child.is_file() and child.suffix.lower() in extensions:
+                            errors.append("Unregistered source file for reserved asset: " + asset_id)
             continue
         if not receipt_path.is_file() or receipt_path.is_symlink():
             errors.append("Missing handoff receipt for promoted asset: " + asset_id)

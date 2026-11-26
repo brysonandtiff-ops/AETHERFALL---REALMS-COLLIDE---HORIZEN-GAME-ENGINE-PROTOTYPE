@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """AETHERFALL offline source safety gates. Not native game or art evidence."""
 
+import importlib.util
 import json
 import os
 import re
@@ -18,6 +19,8 @@ REQUIRED_FILES = (
     "pipeline/README.md", "game/addons/README.md",
     "tools/validate_studio_layout.py", "tests/test_studio_layout.py",
     "tools/audit_asset_history.py", "tests/test_art_history.py",
+    "tools/validate_asset_handoffs.py", "tests/test_asset_handoffs.py",
+    "art/handoffs/README.md",
     "tools/production_queue.py", "docs/production/WORK_QUEUE.json",
     "docs/production/README.md", "docs/production/MASTER_BUILD_ROADMAP.md",
     "docs/production/DEFINITION_OF_DONE.md",
@@ -47,7 +50,7 @@ REQUIRED_DIRS = (
     "pipeline/qa", "pipeline/release", "game/addons", "game/localization",
     "game/scripts/ai", "game/scripts/input", "game/scripts/save",
     "game/scripts/telemetry", "game/scenes/cinematics",
-    "art/storyboards", "art/ui", "art/vfx",
+    "art/storyboards", "art/ui", "art/vfx", "art/handoffs",
     "evidence/godot", "evidence/blender", "evidence/device", "tests",
 )
 IGNORED_DIRS = {".git", ".godot", ".import", ".pytest_cache", "__pycache__", ".venv"}
@@ -194,7 +197,10 @@ def validate_registry(root, errors):
             errors.append("Asset ID/type mismatch: " + identifier)
         if not isinstance(asset.get("role"), str) or not asset["role"].strip():
             errors.append("Asset role missing: " + identifier)
-        if asset.get("status") != "reserved_no_source":
+        if asset.get("status") not in (
+            "reserved_no_source", "concept_recorded", "blender_source_recorded",
+            "runtime_export_recorded", "native_import_reviewed",
+        ):
             errors.append("Unverified asset status promotion: " + identifier)
         if asset.get("concept_status") not in (
             "aetherfall_approved", "aetherfall_design_brief",
@@ -215,6 +221,21 @@ def validate_registry(root, errors):
             if unique in destinations:
                 errors.append("Reused asset path: " + identifier)
             destinations.add(unique)
+
+
+def validate_asset_handoffs(root, errors):
+    """Validate receipt paths/checksums without claiming Blender/Godot verification."""
+    path = Path(__file__).resolve().with_name("validate_asset_handoffs.py")
+    if not path.is_file():
+        errors.append("Missing asset handoff validator")
+        return
+    try:
+        spec = importlib.util.spec_from_file_location("aetherfall_intake", path)
+        checker = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(checker)
+        errors.extend(checker.check(root))
+    except (OSError, ValueError, TypeError, UnicodeError) as exc:
+        errors.append("Asset receipt validation failed: " + type(exc).__name__)
 
 
 def validate_godot(root, errors):
@@ -279,6 +300,7 @@ def check(root=ROOT):
     scan_source_tree(root, errors)
     validate_git_index(root, errors)
     validate_registry(root, errors)
+    validate_asset_handoffs(root, errors)
     validate_godot(root, errors)
     validate_legacy_hold(root, errors)
     return errors
