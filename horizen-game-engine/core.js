@@ -2,7 +2,7 @@
 export const SCHEMA = 'sire.horizen.staging.v1';
 export const STORAGE_KEY = 'sire.horizen.workspace.v1';
 export const DEFAULT_WORLDS = Object.freeze([
-  {id:'world-aetherfall',name:'AETHERFALL: REALMS COLLIDE',status:'staged',url:'',notes:'Godot 4 source project; native engine and gameplay not verified.',kind:'HERO SHOOTER'},
+  {id:'world-aetherfall',name:'AETHERFALL – REALMS COLIDE',status:'staged',url:'',notes:'Godot 4 source project; native engine and gameplay not verified.',kind:'HERO SHOOTER'},
   {id:'world-cryptid',name:'CRYPTID RESERVE',status:'staged',url:'',notes:'Catalog entry only. No browser build connected.',kind:'WORLD'},
   {id:'world-fossil',name:'FOSSIL.OS',status:'staged',url:'',notes:'Catalog entry only. No browser build connected.',kind:'SIMULATION'},
   {id:'world-portfolio',name:'PORTFOLIO BUILDS',status:'staged',url:'',notes:'Register local browser-ready builds when their files exist.',kind:'COLLECTION'},
