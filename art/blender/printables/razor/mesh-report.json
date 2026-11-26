@@ -1,0 +1,53 @@
+{
+  "vertices": 127969,
+  "triangles": 256138,
+  "non_triangles": 0,
+  "connected_components": 1,
+  "non_manifold_edges": 0,
+  "non_manifold_vertices": 0,
+  "inconsistent_edges": 0,
+  "degenerate_faces": 0,
+  "volume_mm3": 115098.096,
+  "dimensions_mm": [
+    71.998,
+    127.064,
+    95.776
+  ],
+  "min_z_mm": 0.0,
+  "discarded_remesh_component_vertices": [
+    12,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8
+  ],
+  "stl_sha256": "4d829c13146165e1d5eaef8873762c4705f5bdbfb373f4bb4e2bb027c058eca9",
+  "3mf_sha256": "16ae5ace021351ff78e172143b411f617f2c350638e57a2131639839b785920d",
+  "slicer": {
+    "version": "CuraEngine 5.0.0",
+    "layer_height_mm": 0.16,
+    "nozzle_mm": 0.4,
+    "adhesion": "skirt",
+    "supports": "everywhere",
+    "layers": 598,
+    "support_sections": 591,
+    "physical_print": "untested"
+  },
+  "review_artifacts_sha256": {
+    "razor-clay.jpg": "ac88f7d00608438f99e5cbc454cc3131f283bb6fe8b4956d1912a90759df3e0c",
+    "razor-color.jpg": "4fd20b1f91b5219d517a647104aa2fff2e8ba4fa024cfb9988e221d69d21142e",
+    "razor.blend": "c7901f2b8aa249881503bf9665506b3150c06441f593fc901366854f877ad3e8",
+    "views/back.png": "d92038eab3339dd05bdf658732ef383e3dcb474ccd15062cbc304d2165f2728c",
+    "views/front.png": "204e115eb537b622b207b554af07002adcce938e87bdf38330421577a14a9ef4",
+    "views/left-side.png": "814b93fb1c5c6383ef567bc5057b708baed70a522c7bd7cebf452cdc8e8c342c",
+    "views/right-side.png": "ca1518d8c753d0a10362016de7808f4f58686719df4b2d863da265e64b6374ed"
+  }
+}

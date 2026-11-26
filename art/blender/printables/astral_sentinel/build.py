@@ -10,6 +10,7 @@ from math import cos, pi, sin
 from pathlib import Path
 import sys
 from zipfile import ZIP_DEFLATED, ZipFile
+from xml.sax.saxutils import escape
 
 import bmesh
 import bpy
@@ -785,7 +786,7 @@ def inspection(mesh):
     return result
 
 
-def write_3mf(path, mesh):
+def write_3mf(path, mesh, title="Aetherfall - Astral Sentinel"):
     # The format records millimeters explicitly. The printable part is one mesh.
     types = ('<?xml version="1.0" encoding="UTF-8"?>'
              '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
@@ -807,7 +808,7 @@ def write_3mf(path, mesh):
             write('<?xml version="1.0" encoding="UTF-8"?>\n'
                   '<model unit="millimeter" xml:lang="en-US" '
                   'xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">\n'
-                  '<metadata name="Title">Aetherfall - Astral Sentinel</metadata>\n'
+                  f'<metadata name="Title">{escape(title)}</metadata>\n'
                   '<resources><object id="1" type="model"><mesh><vertices>\n')
             for v in mesh.vertices:
                 x, y, z = v.co
