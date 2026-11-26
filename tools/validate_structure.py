@@ -439,6 +439,8 @@ def validate_infographic_policy(root, errors):
         approved = canon["locked_characters"]["CHR_Vellaris_Bloodshield"]["source"]
     except (KeyError, TypeError):
         approved = {}
+    if not isinstance(approved, dict):
+        approved = {}
     if (ref.get("character_id") != "CHR_Vellaris_Bloodshield"
             or ref.get("uploaded_name") != "39403.png"
             or ref.get("actual_format") != "WEBP"
@@ -454,7 +456,9 @@ def validate_infographic_policy(root, errors):
         panels = {}
     for kind, required in INFOGRAPHIC_REQUIRED_PANELS.items():
         available = panels.get(kind)
-        if (not isinstance(available, list) or len(available) != len(set(available))
+        if (not isinstance(available, list)
+                or not all(isinstance(panel, str) for panel in available)
+                or len(available) != len(set(available))
                 or not set(required).issubset(set(available))):
             errors.append("Infographic required panels missing: " + kind)
     frame = policy.get("board_frame")
@@ -468,15 +472,19 @@ def validate_infographic_policy(root, errors):
             or policy.get("generated_art_is_runtime_proof") is not False
             or policy.get("source_integrity_sha256_required_for_archive") is not True
             or not isinstance(policy.get("statuses"), list)
+            or not policy["statuses"]
             or policy["statuses"][0] != "PROPOSAL_PENDING_OWNER_REVIEW"):
         errors.append("Infographic owner review/evidence safety drift")
     if (not isinstance(template, dict)
             or template.get("law_id") != "SIRE-ART-INFO-001"
             or template.get("project") != "AETHERFALL: REALMS COLLIDE"
             or template.get("status") != "PROPOSAL_PENDING_OWNER_REVIEW"
-            or template.get("owner_review", {}).get("decision") != "pending"
-            or template.get("runtime_evidence", {}).get("status") != "NOT_VERIFIED"
-            or template.get("infographic", {}).get("archive_status") != "not_archived"):
+            or not isinstance(template.get("owner_review"), dict)
+            or template["owner_review"].get("decision") != "pending"
+            or not isinstance(template.get("runtime_evidence"), dict)
+            or template["runtime_evidence"].get("status") != "NOT_VERIFIED"
+            or not isinstance(template.get("infographic"), dict)
+            or template["infographic"].get("archive_status") != "not_archived"):
         errors.append("Infographic plan template self-approval or evidence drift")
 
 
