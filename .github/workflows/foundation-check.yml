@@ -20,6 +20,10 @@ jobs:
           persist-credentials: false
       - name: Validate source and migration boundary
         run: python3 tools/validate_structure.py
+      - name: Validate ordered production work queue and truth gates
+        run: |
+          python3 tools/production_queue.py --validate
+          python3 tools/production_queue.py --next
       - name: Run adversarial standard-library tests
         run: python3 -m unittest discover -s tests -v
 

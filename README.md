@@ -1,5 +1,7 @@
 # AETHERFALL: REALMS COLLIDE
 
+**START HERE: [BUILD_HERE.md](BUILD_HERE.md)** — one clear entry point for the 58-task, nine-stage build path. Run `python3 tools/production_queue.py --next` to see the next safe work packages; follow [master roadmap](docs/production/MASTER_BUILD_ROADMAP.md) and [definition of done](docs/production/DEFINITION_OF_DONE.md). **Planned tasks are not implemented features.**
+
 **Status:** Repository foundation / pre-production. This is not yet a playable game.
 
 AETHERFALL is a 3D game project intended for **Godot 4.x**, with editable character and world source art created in **Blender**. It follows the existing S.I.R.E. / HORIZON GAME ENGINE / GENESIS AI workflow; those systems are external integrations, not additional agents inside this repository.
@@ -9,9 +11,10 @@ AETHERFALL is a 3D game project intended for **Godot 4.x**, with editable charac
 1. Clone this repository.
 2. In Godot 4.x, choose **Import** and select `game/project.godot`.
 3. Run the project (F5) to see the **placeholder bootstrap screen**. It confirms only that the starter scene loads; it is **not gameplay evidence**.
-4. Run the offline structure check with `python3 tools/validate_structure.py` from the repository root.
+4. Run `python3 tools/validate_structure.py && python3 tools/production_queue.py --validate && python3 -m unittest discover -s tests -v` from the repository root.
+5. Run `python3 tools/production_queue.py --next` and select an unblocked work order from the actual queue.
 
-Engine target for the wider S.I.R.E. workflow: **Godot 4.7.2**, pending verification in a connected native runner. This scaffold uses basic Godot 4 syntax and has not yet been opened in that engine.
+Engine target for the wider S.I.R.E. workflow: **Godot 4.7.2**. An actual GitHub Actions job confirmed headless Godot 4.7.2 import/start for the scaffold on [PR #8](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/pull/8). That is **native headless smoke only**, not rendered gameplay, Blender model, physical-device or multiplayer verification. The latest change still requires its own CI validation.
 
 ## Repository map
 
@@ -19,7 +22,7 @@ Engine target for the wider S.I.R.E. workflow: **Godot 4.7.2**, pending verifica
 | --- | --- |
 | `game/` | Standalone Godot project, scenes, GDScript, imported runtime assets, audio, shaders. |
 | `art/` | Editable original Blender files, concepts, high-resolution texture/audio sources. |
-| `docs/` | Game design, worldbuilding, character register, technical and asset handoff guides. |
+| `docs/` | Game design, worldbuilding, character register, **master roadmap, work queue**, technical and asset handoff guides. |
 | `tools/` | Offline validation and future deterministic art/build utilities. |
 | `tests/` | Test plans and future executable tests. |
 | `evidence/` | Genuine engine, Blender, device, and performance capture records. |
@@ -33,7 +36,7 @@ Blender source belongs in `art/blender/`. Exported `.glb` assets and supporting 
 ## Completion truth
 
 - **Repository structure:** populated and checkable.
-- **Main Godot scene:** starter scene exists, native engine launch not yet verified.
+- **Main Godot scene:** starter scene exists; real Godot 4.7.2 headless import/boot was previously verified in GitHub CI. No rendered gameplay proof.
 - **Real characters, combat, levels, saves and multiplayer:** not implemented by this scaffold.
 - **Blender/Godot screenshots and gameplay video:** not captured.
 - **Real Android/iPhone/device acceptance:** not run.
@@ -44,4 +47,4 @@ No builds, deployments, merges, subscriptions or paid API calls are needed to us
 
 Historical Shadowspire design notes and 10 owner-selected concept characters are documented at `docs/legacy/README.md` and `docs/characters/LEGACY_ROSTER.md`. The original Godot/Unreal source is **not connected or migrated**, and no Shadowspire repository has been deleted. Two AETHERFALL-approved character IDs are preserved; eight further characters are reserved as *legacy candidates*, not models.
 
-Run `python3 tools/validate_structure.py` and `python3 -m unittest discover -s tests -v` for fail-closed static protection and adversarial tests. GitHub's hardened workflow also verifies official, SHA-256-pinned Godot **4.7.2** and launches the starter scene **headlessly**. Only a successful actual workflow run provides that native-engine evidence, and it does **not** prove visuals, character models, actual combat or physical devices.
+Run `python3 tools/validate_structure.py`, `python3 tools/production_queue.py --validate` and `python3 -m unittest discover -s tests -v` for fail-closed structure/plan protection and adversarial tests. GitHub's hardened workflow also verifies official, SHA-256-pinned Godot **4.7.2** and launches the starter scene **headlessly**. Only a successful actual workflow run provides that native-engine evidence, and it does **not** prove visuals, character models, actual combat or physical devices.

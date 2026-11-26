@@ -32,3 +32,11 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 - Protect original art, model versions, file paths, local saves and reference history. Do not fabricate assets or runtime media to fill missing source.
 - `tools/validate_structure.py`, adversarial tests and actual Godot headless CI are mandatory source-level gates. Only genuine graphical/native engine and actual device captures can establish visual acceptance. Never claim a playable game from a headless placeholder.
 - No new paid APIs, merges, deployments or destructive repository operations without the relevant independent evidence and owner authorisation.
+
+## Mandatory continuous-build routing
+
+Before starting a work order, read `BUILD_HERE.md`, `docs/production/MASTER_BUILD_ROADMAP.md`, `docs/production/DEFINITION_OF_DONE.md` and the dependency/status source `docs/production/WORK_QUEUE.json`. Query `python3 tools/production_queue.py --next`; do not pick blocked or prerequisite-incomplete work. Each job follows FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH.
+
+After real work, record exact source commit, test commands/results, original engine/art/device evidence, reviewer decision, and next safe task using `docs/production/HANDOFF_AND_RECOVERY.md`. No task can become VERIFIED without real evidence and all dependencies verified. If a step fails, repair and retest. If owner approval, original art, rights, budget or authorised runner is missing, mark it BLOCKED with an actionable reason and move to **independent** unblocked work only. Never silently bypass a gate.
+
+The task queue is a **plan**, not an active autonomous execution system or permission to create new agents, spend, merge or deploy. Existing owner-authorised S.I.R.E. / AXIOM G.A.I.S. / HORIZON governance remains in force.

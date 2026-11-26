@@ -9,7 +9,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
-    "README.md", "AGENTS.md", ".gitignore", ".gitattributes",
+    "README.md", "BUILD_HERE.md", "AGENTS.md", ".gitignore", ".gitattributes",
+    "tools/production_queue.py", "docs/production/WORK_QUEUE.json",
+    "docs/production/README.md", "docs/production/MASTER_BUILD_ROADMAP.md",
+    "docs/production/DEFINITION_OF_DONE.md",
+    "docs/production/HANDOFF_AND_RECOVERY.md",
+    "docs/production/TEST_MATRIX.md",
+    "docs/production/DECISIONS_AND_RISKS.md",
+    "docs/production/RELEASE_AND_OPERATIONS.md",
     "game/project.godot", "game/scenes/bootstrap/main.tscn",
     "art/asset_registry.json", "docs/architecture/REPO_LAYOUT.md",
     "docs/architecture/HERO_SHOOTER_TREE_RESEARCH.md",
