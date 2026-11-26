@@ -64,3 +64,14 @@ python3 tools/aetherfall.py handoff AETHERFALL-DEVOPS-001 --json
 Read [START HERE](docs/development/START_HERE.md) and [S.I.R.E. integration boundaries](docs/development/SIRE_INTEGRATION.md). The CI job on pull requests runs standard-library tests plus a genuine official Godot 4.7.2 **headless** startup. This does not produce native visual/device evidence or automatically merge or deploy anything.
 
 For the next safe job, run `python3 tools/aetherfall.py work new AETHERFALL-GAME-002 --team gameplay --goal "Implement one approved playable encounter" --criterion "Real native Godot capture and accepted tests"`. Use `python3 tools/aetherfall.py calls --json` to inspect **suggested upstream S.I.R.E. calls**, which are never executed automatically.
+
+## Safe file structure during development
+
+Source folders, canonical character IDs, Godot resource links and existing assets are guarded by [the structure safety contract](docs/architecture/FILE_STRUCTURE_SAFETY.md). Run:
+
+```sh
+python3 tools/structure_guard.py check
+python3 tools/aetherfall.py check
+```
+
+For a proposed change, CI also checks the pull-request base against the candidate commit. New files are allowed; deleting original models, renaming existing character asset paths or breaking `res://` links fails. No change in this protection step is a playable game or graphical evidence claim.

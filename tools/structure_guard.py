@@ -252,11 +252,14 @@ def compare_issues(root: Path, base: str) -> list[str]:
     if old_project is None:
         errors.append("Base Godot project missing")
     else:
-        current_project = (root / policy["godot_project"]).read_text(encoding="utf-8")
-        old_main = MAIN_SCENE.search(old_project)
-        new_main = MAIN_SCENE.search(current_project)
-        if not old_main or not new_main or old_main.group(1) != new_main.group(1):
-            errors.append("Main scene path changed without a reviewed migration")
+        try:
+            current_project = (root / policy["godot_project"]).read_text(encoding="utf-8")
+            old_main = MAIN_SCENE.search(old_project)
+            new_main = MAIN_SCENE.search(current_project)
+            if not old_main or not new_main or old_main.group(1) != new_main.group(1):
+                errors.append("Main scene path changed without a reviewed migration")
+        except (OSError, UnicodeError):
+            errors.append("Current Godot project is missing or unreadable")
     raw = _git(root, "diff", "--name-status", "-z", "--no-renames", base, "HEAD", "--")
     if raw is None:
         errors.append("Git delta cannot be read")

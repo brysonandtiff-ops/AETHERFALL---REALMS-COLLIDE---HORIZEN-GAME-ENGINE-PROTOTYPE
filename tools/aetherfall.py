@@ -203,10 +203,21 @@ def doctor_report(root: Path = ROOT) -> dict:
         static_result = "PASS" if p.returncode == 0 else "FAIL"
         if p.returncode:
             problems.append("Static validator failed: " + (p.stderr.strip() or p.stdout.strip()))
+    guard_command = root / "tools/structure_guard.py"
+    if not guard_command.is_file():
+        problems.append("Missing structural protection guard")
+        layout_result = "FAIL"
+    else:
+        q = subprocess.run([sys.executable, str(guard_command), "check"], cwd=root,
+                           capture_output=True, text=True, timeout=30, check=False)
+        layout_result = "PASS" if q.returncode == 0 else "FAIL"
+        if q.returncode:
+            problems.append("Structure guard failed: " + (q.stderr.strip() or q.stdout.strip()))
     return {
         "project": EXPECTED_PROJECT,
         "integration_contract": "PASS" if not problems else "FAIL",
         "static_repository": static_result,
+        "structure_guard": layout_result,
         "issues": problems,
         "git": git_observation(),
         "sire_runner": "NOT_CONNECTED",
@@ -369,6 +380,7 @@ def handoff(order_id: str) -> dict:
 def run_checks() -> int:
     commands = [
         [sys.executable, str(ROOT / "tools/validate_structure.py")],
+        [sys.executable, str(ROOT / "tools/structure_guard.py"), "check"],
         [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
     ]
     if all_issues():

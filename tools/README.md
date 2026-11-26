@@ -25,3 +25,12 @@ python3 tools/aetherfall.py check
 ```
 
 Each command is offline. A handoff is printed to the operator only; it does not call an external agent. `native-smoke` optionally runs already-installed Godot 4.7.2 headlessly; if no correct engine is installed it exits BLOCKED with code 2. Graphical/device proof is separate.
+
+## Structural protection (new game work)
+
+```sh
+python3 tools/structure_guard.py check
+python3 tools/structure_guard.py diff --base <actual-ancestor-40-digit-commit>
+```
+
+The first checks project layout, portable names, literal Godot `res://` resources, and UIDs. The second runs read-only Git comparison against a verified ancestor and rejects deletion/renaming of protected existing source and registry identity changes. Pull-request CI obtains the base SHA from GitHub. New additive game files are allowed. See `docs/architecture/FILE_STRUCTURE_SAFETY.md`.

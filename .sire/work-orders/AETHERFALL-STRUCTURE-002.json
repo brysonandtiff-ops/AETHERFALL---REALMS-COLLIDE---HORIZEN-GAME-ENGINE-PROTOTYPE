@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "AETHERFALL-STRUCTURE-002",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository": "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE",
+  "goal": "Introduce additive file-structure protection that prevents accidental asset or scene loss during continual Godot production.",
+  "authorised_executor": {
+    "master": "S.I.R.E AI",
+    "specialist": "S.I.R.E. Secrets Steward",
+    "team": "security",
+    "execution_status": "NOT_CONNECTED"
+  },
+  "requirements": [
+    "Preserve all existing Godot and art files, stable asset IDs, S.I.R.E. work orders and evidence",
+    "Add source-only portability, resource reference and UID checks",
+    "Compare pull request changes against the trusted base commit without weakening its original safety policy",
+    "Keep existing project and visual canon unchanged and support new additive scenes and models",
+    "No network dispatch, paid tools, auto-merge, destructive refactoring or fabricated runtime evidence"
+  ],
+  "status": "STAGED_FOR_REVIEW",
+  "completion_criteria": [
+    "Layout guard succeeds on original repository source",
+    "Adversarial tests reject existing asset moves, deletes, unsafe paths and stale resource references",
+    "New scenes and placeholder replacements succeed without requiring destructive migration",
+    "PR checks pass on the exact source commit and native Godot headless smoke remains green",
+    "Current approved art and project root untouched; actual graphical/device evidence remains NOT_RUN"
+  ],
+  "evidence": {
+    "source_tests": "NOT_RUN_ON_CANDIDATE",
+    "native_godot": "NOT_RUN_ON_CANDIDATE",
+    "graphical_proof": "NOT_RUN",
+    "device": "NOT_RUN"
+  },
+  "rollback": "Close stacked draft PR and keep its parent development branch unchanged. Never force-push, delete or rewrite originals."
+}

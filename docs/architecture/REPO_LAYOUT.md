@@ -29,3 +29,7 @@
 ## Boundaries
 
 Keep saved-game data in Godot `user://`, not under the repository. Preserve model version history rather than overwriting source .blend files. Do not automatically commit private photographs, secrets, paid/licensed third-party assets or enormous binaries. Set up Git LFS deliberately if the team needs large binary files; this scaffold does not claim LFS is configured.
+
+## File identity and no-break gate
+
+The versioned `config/layout-contract.json` defines protected source paths and preserved roots. `tools/structure_guard.py` checks cross-platform filename hazards, existing Godot `res://` references, resource UIDs, and disallowed deletions/renames against the pull request's base commit. See [FILE_STRUCTURE_SAFETY.md](FILE_STRUCTURE_SAFETY.md). This supports additive scenes while protecting existing originals.
