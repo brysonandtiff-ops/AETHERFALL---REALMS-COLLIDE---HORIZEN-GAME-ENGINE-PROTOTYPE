@@ -5,6 +5,28 @@ const SW="\"use strict\";\nconst KEY=\"aetherfall-pwa-shell-v1\",SHELL=[\"/\",\"
 const ICON="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><rect width=\"512\" height=\"512\" rx=\"104\" fill=\"#100b1d\"/><circle cx=\"256\" cy=\"248\" r=\"182\" fill=\"none\" stroke=\"#e9c08a\" stroke-width=\"10\"/><circle cx=\"256\" cy=\"248\" r=\"134\" fill=\"#4a345c\"/><circle cx=\"289\" cy=\"204\" r=\"118\" fill=\"#0b0715\"/><path d=\"m256 100 31 118 119 31-119 31-31 118-31-118-119-31 119-31z\" fill=\"#edcb92\"/><circle cx=\"256\" cy=\"249\" r=\"14\" fill=\"#fff9ed\"/></svg>";
 const MANIFEST="{\"id\":\"/\",\"name\":\"AETHERFALL: REALMS COLLIDE — Live Showcase\",\"short_name\":\"AETHERFALL\",\"start_url\":\"/\",\"scope\":\"/\",\"display\":\"standalone\",\"description\":\"Installable game development showcase, updated from the AETHERFALL repository.\",\"background_color\":\"#0d0913\",\"theme_color\":\"#100b19\",\"icons\":[{\"src\":\"/icon.svg\",\"type\":\"image/svg+xml\",\"sizes\":\"any\",\"purpose\":\"any\"},{\"src\":\"/icon-192.png\",\"type\":\"image/png\",\"sizes\":\"192x192\",\"purpose\":\"any maskable\"},{\"src\":\"/icon-512.png\",\"type\":\"image/png\",\"sizes\":\"512x512\",\"purpose\":\"any maskable\"}]}";
 
+const ICONS={};
+const CRC_TABLE=new Uint32Array(256);
+for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;CRC_TABLE[i]=c>>>0;}
+function pngChunk(label,content){const z=new Uint8Array(content.length+12),dv=new DataView(z.buffer);dv.setUint32(0,content.length);for(let i=0;i<4;i++)z[4+i]=label.charCodeAt(i);z.set(content,8);let c=0xffffffff;for(let i=4;i<z.length-4;i++)c=CRC_TABLE[(c^z[i])&255]^(c>>>8);dv.setUint32(z.length-4,(c^0xffffffff)>>>0);return z;}
+function pngIcon(n){if(ICONS[n])return ICONS[n];
+const w=n,h=n,raw=new Uint8Array((w+1)*h);
+for(let y=0;y<h;y++){const row=y*(w+1);for(let x=0;x<w;x++){const dx=(x-w/2)/(w/2),dy=(y-h/2)/(h/2),r=Math.hypot(dx,dy),ax=Math.abs(dx),ay=Math.abs(dy);let c=0;
+if(r<0.53)c=2;
+if(r>0.68&&r<0.73)c=1;
+if((ax<0.07&&ay<0.64-ax*.5)||(ay<0.07&&ax<0.64-ay*.5))c=1;
+if(ax+ay<0.30)c=1;
+if(ax+ay<0.055)c=3;
+raw[row+x+1]=c;}}
+const parts=[];let total=2+4;for(let start=0;start<raw.length;start+=65535){const len=Math.min(65535,raw.length-start),part=new Uint8Array(len+5);part[0]=start+len>=raw.length?1:0;part[1]=len&255;part[2]=len>>>8;part[3]=(~len)&255;part[4]=((~len)>>>8)&255;part.set(raw.subarray(start,start+len),5);parts.push(part);total+=part.length;}
+const zlib=new Uint8Array(total);zlib[0]=0x78;zlib[1]=0x01;let pos=2;for(const part of parts){zlib.set(part,pos);pos+=part.length;}
+let a=1,b=0;for(let i=0;i<raw.length;i++){a+=raw[i];b+=a;if((i&8191)===8191){a%=65521;b%=65521;}}a%=65521;b%=65521;new DataView(zlib.buffer).setUint32(pos,((b<<16)|a)>>>0);
+const hdr=new Uint8Array(13),dv=new DataView(hdr.buffer);dv.setUint32(0,w);dv.setUint32(4,h);hdr[8]=8;hdr[9]=3;
+const palette=new Uint8Array([16,10,25,237,196,144,79,57,96,255,241,221]);
+const segments=[new Uint8Array([137,80,78,71,13,10,26,10]),pngChunk("IHDR",hdr),pngChunk("PLTE",palette),pngChunk("IDAT",zlib),pngChunk("IEND",new Uint8Array(0))];
+const bytes=new Uint8Array(segments.reduce((s,p)=>s+p.length,0));let offset=0;for(const part of segments){bytes.set(part,offset);offset+=part.length;}ICONS[n]=bytes;return bytes;}
+function iconResponse(size){return new Response(pngIcon(size),{headers:{"content-type":"image/png","cache-control":"public,max-age=86400","x-content-type-options":"nosniff"}});}
+
 const REPO="brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE";
 const RAW="https://raw.githubusercontent.com/"+REPO+"/main/";
 const API="https://api.github.com/repos/"+REPO+"/git/trees/main?recursive=1";
@@ -41,6 +63,8 @@ export default {async fetch(request){
  if(p==="/style.css")return respond(CSS,"text/css; charset=utf-8");
  if(p==="/app.js")return respond(APP,"application/javascript; charset=utf-8");
  if(p==="/sw.js")return respond(SW,"application/javascript; charset=utf-8",{"service-worker-allowed":"/"});
+ if(p==="/icon-192.png")return iconResponse(192);
+ if(p==="/icon-512.png")return iconResponse(512);
  if(p==="/icon.svg")return respond(ICON,"image/svg+xml");
  if(p==="/manifest.webmanifest")return respond(MANIFEST,"application/manifest+json; charset=utf-8");
  if(p==="/health")return respond(JSON.stringify({status:"ok",source:"github-main"}),"application/json; charset=utf-8");
