@@ -1,5 +1,7 @@
 # AETHERFALL — Mandatory Character Blueprint: VELLARIS_V1_PLUS
 
+**Mandatory preflight:** Before planning or generating ANY hero, inspect the owner's THIRD Vellaris picture `39403.png` as the high-detail gothic-fantasy artwork and sheet-layout standard; record style lock `AF-STYLE-39403-V1` and its pinned SHA in the character plan and proposal review. Follow `docs/art/AETHERFALL_STYLE_CANON.md` and `docs/art/STYLE_DESIGN_BRIEF_TEMPLATE.md`. New owner-facing art must say **AETHERFALL – REALMS COLIDE**, never MIDNIGHT/SHADOWSPIRE/NEXUSFALL. The hero's individually approved original art overrides any temptation to copy Vellaris's personal features. If either actual reference is missing, STOP canonical claims.
+
 **Policy date:** 2026-11-26. **Owner-authorised standard:** All future playable characters, tanks, DPS, supports, enemies, bosses and important NPCs must use this workflow or a documented owner-approved improvement. This adds to (does not replace) `docs/art/ASSET_PIPELINE.md` and the existing S.I.R.E. production law.
 
 The owner-provided **Vellaris — The Bloodshield** master sheet is the **minimum completeness reference**, *not* a verified final game model. Match the sheet's depth and clarity, **not** her shield, colors, abilities, silhouette or species. Every tank must be meaningfully 1-of-1: avoid giving all tanks a shield. Do not change locked art or canonical IDs without owner approval.

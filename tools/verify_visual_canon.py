@@ -15,6 +15,15 @@ PROJECT = "AETHERFALL: REALMS COLLIDE"
 HERE = Path(__file__).resolve()
 ROOT = HERE.parents[1]
 LOCK_FILE = "docs/characters/CANON_LOCKS.json"
+STYLE_FILE = "docs/art/AETHERFALL_STYLE_CANON.json"
+STYLE_DOC = "docs/art/AETHERFALL_STYLE_CANON.md"
+STYLE_ID = "AF-STYLE-39403-V1"
+# Pin the FULL machine-readable style brief as a Git blob: every byte change
+# must be reviewed with a corresponding code change, not just JSON self-edit.
+STYLE_MANIFEST_BLOB = "40cc7fec9bd4e5d2a10c55e2ac524b7702186ec8"
+STYLE_SHA = "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939"
+STYLE_BRAND = "AETHERFALL – REALMS COLIDE"
+STYLE_BANNED_BRANDS = ["MIDNIGHT", "SHADOWSPIRE", "NEXUSFALL"]
 
 # Intentionally anchored twice (here AND in the committed JSON): a casual JSON
 # edit cannot promote a new canonical character source without code-owner review.
@@ -133,6 +142,10 @@ def _validate_proposal(root, img, character, source_sha, errors):
             or not isinstance(doc.get("source_note"), str)
             or not doc["source_note"].strip()):
         errors.append("Unsafe/mislabelled character art proposal: " + rel)
+    if (doc.get("style_lock_id") != STYLE_ID
+            or doc.get("style_reference_sha256") != STYLE_SHA
+            or doc.get("display_brand") != STYLE_BRAND):
+        errors.append("Proposal missing AETHERFALL canonical art style anchor: " + rel)
     if "approval" in doc or "is_canonical" in doc or "owner_approved" in doc:
         errors.append("Proposal cannot self-promote to canonical art: " + rel)
 
@@ -159,6 +172,60 @@ def check(root=ROOT):
             or "magenta" not in present.get("frame_style", "").lower()
             or "purple" not in present.get("frame_style", "").lower()):
         errors.append("Character infographic presentation identity drift")
+    # Third owner image is the global presentation reference. This proves
+    # identifier/metadata consistency, NOT actual visual resemblance.
+    style_path = root / STYLE_FILE
+    try:
+        style_bytes = style_path.read_bytes() if not style_path.is_symlink() else b""
+    except OSError:
+        style_bytes = b""
+    git_blob = hashlib.sha1(
+        b"blob " + str(len(style_bytes)).encode("ascii") + bytes([0]) + style_bytes
+    ).hexdigest()
+    if git_blob != STYLE_MANIFEST_BLOB:
+        errors.append("AETHERFALL full style specification checksum drift")
+    style = _json(style_path)
+    if not isinstance(style, dict):
+        errors.append("Missing canonical AETHERFALL style lock")
+        style = {}
+    if (style.get("schema_version") != 1
+            or style.get("style_lock_id") != STYLE_ID
+            or style.get("state") != "OWNER_LOCKED_PRESENTATION_STYLE"
+            or style.get("owner_display_title") != STYLE_BRAND
+            or style.get("internal_project_id") != PROJECT
+            or style.get("excluded_external_branding") != STYLE_BANNED_BRANDS
+            or style.get("candidate_review_status") != "PROPOSAL_PENDING_OWNER_REVIEW"):
+        errors.append("AETHERFALL canonical style lock/branding drift")
+    source = style.get("source_reference")
+    source = source if isinstance(source, dict) else {}
+    for key, expected in (
+            ("sha256", STYLE_SHA),
+            ("source_upload_name", "39403.png"),
+            ("actual_format", "WEBP"),
+            ("width", 1536), ("height", 1152), ("bytes", 340668),
+            ("repository_target", PINNED["CHR_Vellaris_Bloodshield"]["path"]),
+            ("archive_state", "pending_binary_checkin"),
+    ):
+        if source.get(key) != expected:
+            errors.append("Third-image style reference changed: " + key)
+    if (style.get("sheet_panel_order") != LAYOUT
+            or not isinstance(style.get("frame_style"), dict)
+            or style["frame_style"].get("master_ratio") != "4:3"
+            or "gothic" not in str(style["frame_style"].get("tone", "")).lower()):
+        errors.append("AETHERFALL third-image art style hierarchy drift")
+    master_doc_path = _safe(root, STYLE_DOC)
+    try:
+        master_doc = master_doc_path.read_text(encoding="utf-8") if master_doc_path else ""
+    except OSError:
+        master_doc = ""
+    if STYLE_SHA not in master_doc or STYLE_BRAND not in master_doc or STYLE_ID not in master_doc:
+        errors.append("AETHERFALL canonical art style instructions missing or drifted")
+    if (present.get("style_lock_id") != STYLE_ID
+            or present.get("style_reference_sha256") != STYLE_SHA
+            or present.get("style_manifest_path") != STYLE_FILE
+            or present.get("display_brand") != STYLE_BRAND):
+        errors.append("Character presentation not bound to owner's third image")
+
     locks = manifest.get("locked_characters")
     if not isinstance(locks, dict) or not set(PINNED).issubset(set(locks)):
         errors.append("Pinned owner-approved character canon lock missing")
@@ -204,6 +271,9 @@ def check(root=ROOT):
         if not isinstance(plan, dict):
             errors.append("Missing plan for locked character: " + identifier)
             continue
+        if (plan.get("presentation_style_lock_id") != STYLE_ID
+                or plan.get("presentation_style_source_sha256") != STYLE_SHA):
+            errors.append("Approved character plan missing third-image art style: " + identifier)
         cref = plan.get("concept_reference", {})
         if not isinstance(cref, dict) or (cref.get("repo_path") != pinned["path"]
                 or cref.get("sha256") != pinned["sha256"]):
@@ -311,6 +381,9 @@ def check(root=ROOT):
                     or not isinstance(extra.get("forbidden_drift"), list)
                     or len(extra["forbidden_drift"]) < 3):
                 errors.append("Approved character extra lock identity/review incomplete: " + identifier)
+            if (plan.get("presentation_style_lock_id") != STYLE_ID
+                    or plan.get("presentation_style_source_sha256") != STYLE_SHA):
+                errors.append("New approved character plan missing third-image art style: " + identifier)
             cref = plan.get("concept_reference") or {}
             if cref.get("repo_path") != raw or cref.get("sha256") != media["sha256"]:
                 errors.append("Approved character extra lock not linked to plan: " + identifier)

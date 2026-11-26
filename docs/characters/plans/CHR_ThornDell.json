@@ -68,5 +68,7 @@
     "Complete the full distinctive character-sheet package and owner approval.",
     "Do not claim Blender/Godot/gameplay/device evidence without genuine captures."
   ],
-  "provenance_note": "Concept or proposed design, NOT a model, rig, playable character or native runtime evidence."
+  "provenance_note": "Concept or proposed design, NOT a model, rig, playable character or native runtime evidence.",
+  "presentation_style_lock_id": "AF-STYLE-39403-V1",
+  "presentation_style_source_sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939"
 }

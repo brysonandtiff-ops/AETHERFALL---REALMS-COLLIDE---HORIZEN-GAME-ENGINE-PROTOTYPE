@@ -7,6 +7,9 @@
 /.github/workflows/ @brysonandtiff-ops
 /tools/validate_structure.py @brysonandtiff-ops
 
+/docs/art/ @brysonandtiff-ops
+/tests/test_visual_canon.py @brysonandtiff-ops
+
 # No-bypass owner reviews for master governance.
 /AGENTS.md @brysonandtiff-ops
 /.github/CODEOWNERS @brysonandtiff-ops

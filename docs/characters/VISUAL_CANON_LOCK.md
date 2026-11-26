@@ -1,5 +1,7 @@
 # AETHERFALL — VISUAL CANON LOCK: NO SILENT DRIFT
 
+**Owner style authority (2026-11-26):** The THIRD uploaded picture `39403.png`, an AETHERFALL Vellaris infographic (actual WebP, SHA-256 `4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939`), sets the mandatory **gothic-fantasy art style and illustrated sheet layout** for future character designs. Read `docs/art/AETHERFALL_STYLE_CANON.md` and `docs/art/AETHERFALL_STYLE_CANON.json`. All NEW sheets use owner-facing **AETHERFALL – REALMS COLIDE** branding; no MIDNIGHT/SHADOWSPIRE/NEXUSFALL branding. Preserve each hero's own approved face, silhouette, palette, equipment and kit. Third-image binary archive is still pending; do not claim it has been committed.
+
 **Status:** owner-directed repository hardening, 2026-11-26. **Authority:** exact owner-approved original image > approved character identity > verified model > new concept proposal > legacy concept > AI guess.
 
 ## HARD STOP before generation or modelling
