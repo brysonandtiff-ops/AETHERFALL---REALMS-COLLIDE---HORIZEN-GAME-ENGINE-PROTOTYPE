@@ -12,3 +12,8 @@
 /.github/CODEOWNERS @brysonandtiff-ops
 /tools/verify_visual_canon.py @brysonandtiff-ops
 /docs/architecture/ @brysonandtiff-ops
+
+# No-drift master style policy, validator and regression tests.
+/docs/art/ @brysonandtiff-ops
+/tools/verify_art_style_contract.py @brysonandtiff-ops
+/tests/test_art_style_contract.py @brysonandtiff-ops
