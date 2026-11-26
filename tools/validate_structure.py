@@ -84,8 +84,14 @@ def scan_source_tree(root, errors):
                 errors.append("Possible key/credential file: " + rel)
             if rel.startswith("game/") and item.suffix.casefold() == ".blend":
                 errors.append("Editable Blender source inside game/: " + rel)
-            if rel.startswith("art/") and item.suffix.casefold() == ".glb":
-                errors.append("Runtime GLB export inside art/: " + rel)
+            # Preserve original AI sculpt GLBs only in scoped registered character raw/ archives.
+            # Runtime exports elsewhere in art/ still fail the structural safety check.
+            raw_source_glb = re.fullmatch(
+                r"art/blender/characters/CHR_[A-Za-z][A-Za-z0-9_]*/raw/[A-Za-z0-9_.-]+\.glb",
+                rel,
+            )
+            if rel.startswith("art/") and item.suffix.casefold() == ".glb" and not raw_source_glb:
+                errors.append("GLB outside approved character raw source archive: " + rel)
             if item.suffix.lower() in BINARY_ART_EXTENSIONS and item.stat().st_size > MAX_DIRECT_BINARY_BYTES:
                 errors.append("Binary exceeds 50 MiB without reviewed LFS/storage plan: " + rel)
 
