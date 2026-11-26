@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -26,7 +27,7 @@ EXPECTED_REPO = "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-EN
 EXPECTED_ENGINE = "4.7.2.stable"
 ORDER_ID = re.compile(r"^AETHERFALL-[A-Z0-9-]{2,64}$")
 ROUTE_IDS = {"gameplay", "character_art", "runtime_qa", "git", "security", "integrations"}
-ACTIONS = {"doctor", "status", "routes", "skills", "check", "work list", "handoff"}
+ACTIONS = {"doctor", "status", "routes", "skills", "calls", "check", "work list", "work new", "handoff"}
 ALLOWED_ORDER_STATES = {"PLANNED", "STAGED_FOR_REVIEW", "IN_REVIEW", "BLOCKED"}
 
 
@@ -258,6 +259,81 @@ def show_order(order_id: str) -> dict:
     return order
 
 
+
+def available_calls() -> dict:
+    """Display upstream *suggestions*, never run commands or authenticate apps."""
+    config = read_json(MANIFEST)
+    return {
+        route_id: {
+            "owner": "S.I.R.E AI",
+            "specialist": data["specialist"],
+            "suggested_upstream_command": data["upstream_cli"],
+            "connection": "DEFINED_NOT_CONNECTED",
+            "invoked": False,
+            "needs_authenticated_runner": True,
+        }
+        for route_id, data in config["routes"].items()
+    }
+
+
+def create_order(order_id: str, team: str, goal: str, criteria: list[str], root: Path = ROOT) -> dict:
+    """Create one bounded local work-order atomically. Never dispatch it."""
+    if not ORDER_ID.fullmatch(order_id):
+        raise ValueError("Invalid AETHERFALL work-order ID")
+    if not isinstance(goal, str) or len(goal.strip()) < 12:
+        raise ValueError("Goal must contain at least 12 characters")
+    if not criteria or any(not isinstance(item, str) or len(item.strip()) < 5 for item in criteria):
+        raise ValueError("Supply at least one meaningful --criterion")
+    config = read_json(root / ".sire/integration.json")
+    shortcuts = read_json(root / ".sire/commands.json")
+    issues = config_issues(config, shortcuts, root)
+    if issues:
+        raise ValueError("Invalid integration contract: " + "; ".join(issues))
+    if team not in config["routes"]:
+        raise ValueError("Unapproved team: " + team)
+    path = root / ".sire/work-orders" / (order_id + ".json")
+    if not path.parent.is_dir():
+        raise ValueError("Missing work order directory")
+    order = {
+        "schema_version": 1,
+        "id": order_id,
+        "project": EXPECTED_PROJECT,
+        "repository": EXPECTED_REPO,
+        "goal": goal.strip(),
+        "authorised_executor": {
+            "master": "S.I.R.E AI",
+            "specialist": config["routes"][team]["specialist"],
+            "team": team,
+            "execution_status": "NOT_CONNECTED",
+        },
+        "requirements": [
+            "Preserve existing approved artwork, original source and saved drafts",
+            "Follow FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH",
+            "No new paid APIs, unapproved remote calls, merges, deploys or destructive changes",
+            "Use exact source SHA and separately verify real native/graphical/device proof",
+        ],
+        "status": "PLANNED",
+        "completion_criteria": [criterion.strip() for criterion in criteria],
+        "evidence": {"source_tests": "NOT_RUN", "native_godot": "NOT_RUN",
+                     "graphical_proof": "NOT_RUN", "device": "NOT_RUN"},
+        "rollback": "Stop this work order, leave the current approved source unchanged and preserve existing media.",
+    }
+    errors = order_issues(order)
+    if errors:
+        raise ValueError("; ".join(errors))
+    descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+        json.dump(order, stream, indent=2, ensure_ascii=False)
+        stream.write("\n")
+    return {
+        "id": order_id,
+        "status": "PLANNED",
+        "saved_path": path.relative_to(root).as_posix(),
+        "dispatched": False,
+        "source_modified": True,
+    }
+
+
 def handoff(order_id: str) -> dict:
     """Output a source-pinned *proposal*. No network, process dispatch or file write."""
     order = show_order(order_id)
@@ -341,7 +417,7 @@ def native_smoke(executable: str | None) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="AETHERFALL / S.I.R.E. offline developer command centre")
     sub = parser.add_subparsers(dest="command", required=True)
-    for name in ("doctor", "status", "routes", "skills", "check", "native-smoke"):
+    for name in ("doctor", "status", "routes", "skills", "calls", "check", "native-smoke"):
         option = sub.add_parser(name)
         if name not in ("check", "native-smoke"):
             option.add_argument("--json", action="store_true")
@@ -354,6 +430,12 @@ def main(argv: list[str] | None = None) -> int:
     work_show = work_sub.add_parser("show")
     work_show.add_argument("work_id")
     work_show.add_argument("--json", action="store_true")
+    work_new = work_sub.add_parser("new")
+    work_new.add_argument("work_id")
+    work_new.add_argument("--team", choices=sorted(ROUTE_IDS), required=True)
+    work_new.add_argument("--goal", required=True)
+    work_new.add_argument("--criterion", action="append", required=True)
+    work_new.add_argument("--json", action="store_true")
     hand = sub.add_parser("handoff")
     hand.add_argument("work_id")
     hand.add_argument("--json", action="store_true")
@@ -372,11 +454,13 @@ def main(argv: list[str] | None = None) -> int:
                 )}
             render(report, args.json)
             return 0 if report["integration_contract"] == "PASS" else 1
-        if args.command in ("routes", "skills"):
+        if args.command in ("routes", "skills", "calls"):
             config = read_json(MANIFEST)
             routes = config["routes"]
             if args.command == "skills":
                 routes = {key: value["skill"] for key, value in routes.items()}
+            if args.command == "calls":
+                routes = available_calls()
             render(routes, args.json)
             return 0 if not all_issues() else 1
         if args.command == "cmd":
@@ -394,6 +478,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "work":
             if args.work_command == "list":
                 render(list_orders(), args.json)
+            elif args.work_command == "new":
+                render(create_order(args.work_id, args.team, args.goal, args.criterion), args.json)
             else:
                 render(show_order(args.work_id), args.json)
             return 0
