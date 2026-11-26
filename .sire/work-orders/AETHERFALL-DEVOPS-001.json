@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "AETHERFALL-DEVOPS-001",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository": "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE",
+  "goal": "Establish reliable continual development, S.I.R.E. integration contracts, routed work orders, one command interface and real CI safety gates.",
+  "authorised_executor": {
+    "master": "S.I.R.E AI",
+    "specialist": "GENESIS AI",
+    "team": "integrations",
+    "execution_status": "NOT_CONNECTED"
+  },
+  "requirements": [
+    "Preserve existing approved game art and source",
+    "Reuse existing S.I.R.E. Git, plugin, supervisor and MCP architecture without duplicating agents",
+    "Keep external calls fail-closed until a verified authenticated runner",
+    "Use Python standard library and existing Godot CI; no new costs",
+    "Separate source checks, native Godot headless execution and real device/visual proof"
+  ],
+  "status": "STAGED_FOR_REVIEW",
+  "completion_criteria": [
+    "Integration manifest validates and names only known upstream components",
+    "CLI doctor, status, routes, skills, work list/show, handoff, cmd and check operate",
+    "Handoff reports exact commit and cannot dispatch or send secrets",
+    "Python positive and adversarial tests pass in GitHub Actions",
+    "Existing exact-version Godot headless smoke succeeds on the candidate commit",
+    "No merge or deployment, native graphical gameplay proof remains not verified"
+  ],
+  "evidence": {
+    "source_test": "NOT_RUN_ON_CANDIDATE",
+    "native_godot": "NOT_RUN_ON_CANDIDATE",
+    "graphical_proof": "NOT_RUN",
+    "phone_proof": "NOT_RUN"
+  },
+  "rollback": "Close draft PR and delete only its development branch after review; main untouched."
+}

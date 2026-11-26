@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "note": "Quick commands resolve to help/route suggestions. They do not execute agents, install plugins, deploy or merge.",
+  "shortcuts": {
+    "N": {
+      "meaning": "Next permitted work order",
+      "route": "gameplay",
+      "action": "work list"
+    },
+    "G": {
+      "meaning": "Git readiness",
+      "route": "git",
+      "action": "doctor"
+    },
+    "B": {
+      "meaning": "Build planning",
+      "route": "gameplay",
+      "action": "work list"
+    },
+    "T": {
+      "meaning": "Run source tests",
+      "route": "runtime_qa",
+      "action": "check"
+    },
+    "E": {
+      "meaning": "Request genuine evidence",
+      "route": "runtime_qa",
+      "action": "work list"
+    },
+    "R": {
+      "meaning": "Repair issue",
+      "route": "gameplay",
+      "action": "work list"
+    },
+    "H": {
+      "meaning": "Harden project",
+      "route": "security",
+      "action": "check"
+    },
+    "F": {
+      "meaning": "Finish only with proof",
+      "route": "runtime_qa",
+      "action": "doctor"
+    },
+    "GENESIS": {
+      "meaning": "Game creation specialist",
+      "route": "gameplay",
+      "action": "routes"
+    },
+    "HGE": {
+      "meaning": "HORIZON GAME ENGINE",
+      "route": "gameplay",
+      "action": "routes"
+    }
+  }
+}

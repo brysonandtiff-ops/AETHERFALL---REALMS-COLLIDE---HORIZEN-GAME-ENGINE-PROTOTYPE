@@ -32,3 +32,12 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 - Protect original art, model versions, file paths, local saves and reference history. Do not fabricate assets or runtime media to fill missing source.
 - `tools/validate_structure.py`, adversarial tests and actual Godot headless CI are mandatory source-level gates. Only genuine graphical/native engine and actual device captures can establish visual acceptance. Never claim a playable game from a headless placeholder.
 - No new paid APIs, merges, deployments or destructive repository operations without the relevant independent evidence and owner authorisation.
+
+## AETHERFALL continual development and S.I.R.E. team routing
+
+- Master is the **existing S.I.R.E AI**; gameplay/art route to **GENESIS AI / HORIZON**, Git to S.I.R.E. Git Team, security/plugins to the existing stewards. No local definition is a new running AI.
+- Use `.sire/integration.json` and `.sire/work-orders/` for bounded authorisation, honest connection status, explicit tests and acceptance. `docs/development/SIRE_INTEGRATION.md` documents the source paths and routing.
+- Repeatable pipeline: FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH. One change/PR at a time.
+- Local command: `python3 tools/aetherfall.py doctor|status|routes|skills|check|work|handoff|cmd`. None of these automatically contacts S.I.R.E. agents/plugins or grants a runner.
+- Keep revisions in a review branch/draft PR. CI is source-contract/native headless verification only; genuine graphical/device/Blender/video evidence must be reported separately.
+- No new spending, undisclosed networks, remote control, user credential copying, automatic merge, auto-release or destructive cleanups. Only use verified upstream S.I.R.E. connections and existing permissions.
