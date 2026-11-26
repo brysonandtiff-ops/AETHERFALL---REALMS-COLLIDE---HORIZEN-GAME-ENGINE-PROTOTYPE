@@ -11,6 +11,10 @@
 **Current status:** Scaffold only. Gameplay, assets, native Godot/Blender execution and device evidence are NOT VERIFIED.
 **Acceptance for this work order:** Versioned folder layout; Godot 4 project and startup scene; accurate asset registry; offline validator; linkable commit. Native-engine/gameplay verification remains a separate gate.
 
+## UNIVERSAL INFOGRAPHIC-FIRST DESIGN LOCK — ALL VISUAL ASSETS
+
+**SIRE-ART-INFO-001:** Before planning/approving a new character, weapon, object, prop, creature, vehicle, building, level, realm, environment, VFX, UI/HUD or other visual feature, create the corresponding complete 4:3 AETHERFALL-branded infographic board in the owner-approved Vellaris presentation format. Read `docs/art/UNIVERSAL_INFOGRAPHIC_STANDARD.md`, `docs/art/INFOGRAPHIC_POLICY.json` and `docs/art/INFOGRAPHIC_PLAN_TEMPLATE.json`. The master reference is the owner's `39403.png` upload (actual WebP, SHA-256 pinned in `docs/characters/CANON_LOCKS.json`); reuse **layout only**. Honour each character's own approved source and do not make new concepts canonical without owner review. Non-visual source changes do not need decorative boards. Infographic = concept plan, **not** runtime evidence. The full S.I.R.E. law resides in the existing SIRE engineering-laws repository; this AETHERFALL adoption is pending review/merge.
+
 ## Working rules
 
 1. Inspect current files, branch, canonical references and dependencies before modifying.
