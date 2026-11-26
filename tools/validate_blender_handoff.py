@@ -60,7 +60,7 @@ def _check_manifest(root, file):
     if doc.get("schema_version") != 1 or doc.get("project") != PROJECT or doc.get("asset_id") != asset_id:
         failures.append(f"Blender handoff identity mismatch: {tag}")
     state = doc.get("production_status")
-    if state not in PRODUCTION_STATUSES:
+    if not isinstance(state, str) or state not in PRODUCTION_STATUSES:
         failures.append(f"Unknown Blender handoff production status: {tag}")
     stages = doc.get("stages")
     if not isinstance(stages, dict) or set(stages) != set(STAGE_NAMES):
@@ -68,7 +68,7 @@ def _check_manifest(root, file):
         stages = {}
     for stage in STAGE_NAMES:
         item = stages.get(stage)
-        if not isinstance(item, dict) or item.get("status") not in STAGE_STATUSES:
+        if not isinstance(item, dict) or not isinstance(item.get("status"), str) or item.get("status") not in STAGE_STATUSES:
             failures.append(f"Missing/invalid Blender stage {stage}: {tag}")
             continue
         if item["status"] == "PASS":
