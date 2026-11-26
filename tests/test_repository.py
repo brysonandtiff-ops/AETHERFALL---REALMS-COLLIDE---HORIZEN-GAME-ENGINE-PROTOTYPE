@@ -21,6 +21,16 @@ class ScaffoldTests(unittest.TestCase):
         self.assertIn('type="Node3D"', scene)
         self.assertIn("no gameplay implemented yet", scene)
 
+    def test_each_character_has_a_registered_blueprint(self):
+        data = json.loads((ROOT / "art/asset_registry.json").read_text(encoding="utf-8"))
+        for asset in data["assets"]:
+            if asset["type"] == "character":
+                plan = ROOT / "docs/characters/plans" / (asset["id"] + ".json")
+                self.assertTrue(plan.is_file(), asset["id"])
+                payload = json.loads(plan.read_text(encoding="utf-8"))
+                self.assertEqual(payload["character_id"], asset["id"])
+                self.assertEqual(payload["registry_concept_status"], asset["concept_status"])
+
     def test_asset_ids_are_unique_and_unfinished(self):
         data = json.loads((ROOT / "art/asset_registry.json").read_text(encoding="utf-8"))
         assets = data["assets"]
