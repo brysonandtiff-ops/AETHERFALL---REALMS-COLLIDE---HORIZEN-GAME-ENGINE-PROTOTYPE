@@ -1,0 +1,29 @@
+name: AETHERFALL Source Foundation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'game/**'
+      - 'art/**'
+      - 'docs/**'
+      - 'tools/**'
+      - 'tests/**'
+      - '.github/workflows/foundation-check.yml'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Verify repository paths and scene references
+        run: python3 tools/validate_structure.py
+      - name: Run Python standard-library tests
+        run: python3 -m unittest discover -s tests -v
