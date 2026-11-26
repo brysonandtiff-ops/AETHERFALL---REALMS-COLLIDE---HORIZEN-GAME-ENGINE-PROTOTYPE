@@ -110,6 +110,16 @@ class SireSourceSealTests(unittest.TestCase):
         with self.assertRaisesRegex(seal.IntegrityBlocked, "policy deviation"):
             self.receipt()
 
+
+    def test_unverified_branch_protection_cannot_be_claimed_enabled(self):
+        path = self.root / seal.POLICY_PATH
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["required_server_controls"]["mandatory_status_checks"] = "ENABLED"
+        path.write_text(json.dumps(data), encoding="utf-8")
+        self.commit("falsely report GitHub branch enforcement")
+        with self.assertRaisesRegex(seal.IntegrityBlocked, "server-side approval rules"):
+            self.receipt()
+
     def test_fake_phone_access_is_not_inferred(self):
         result = self.receipt()
         self.assertEqual(result["phone_downloads_access"], "NOT_VERIFIED")

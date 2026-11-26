@@ -66,3 +66,15 @@ A subsequent S.I.R.E.-authorised reviewer would need source-pinned real Blender 
 Once the source-seal policy exists on a trusted ancestor, future PRs cannot silently remove earlier required paths, loosen the maximum verified blob size or drop/change existing proof gates. A saved receipt is first size/symlink checked before digest validation, so untrusted oversized bytes fail closed. An earlier exact-SHA receipt cannot be replayed against a newer source commit.
 
 These are additional **integrity safeguards**, not independent signing or game-release certification.
+
+## GitHub enforcement is not yet configured — STOP before release
+
+At inspection on **26 November 2026**, GitHub reported `main.protected=false` and zero repository rulesets. The branch-protection details endpoint returned `403` to this GitHub app; this is **not** evidence that enforcement exists. An owner-managed GitHub repository rule must require:
+1. Pull requests before merging to `main`.
+2. At least one **independent, authorised reviewer** (not the agent which produced the code).
+3. The `static-source-security` and `native-godot-4-7-2-smoke` checks passing for the exact candidate.
+4. No force-push or branch deletion on `main` and no ordinary bypass for automated actors.
+
+The `.github/CODEOWNERS` file is only a review hint. **No S.I.R.E. seal, signed stage badge, or final game release is permitted while independent enforcement and full LAW-104/105/106/108/115 evidence remain unverified.**
+
+The source receipt includes `server_side_branch_review=NOT_ENABLED` to prevent hiding this known gap.

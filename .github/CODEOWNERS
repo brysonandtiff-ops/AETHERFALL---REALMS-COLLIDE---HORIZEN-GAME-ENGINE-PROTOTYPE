@@ -8,3 +8,6 @@
 /tools/structure_guard.py @brysonandtiff-ops
 /config/local-documents.json @brysonandtiff-ops
 /tools/phone_docs.py @brysonandtiff-ops
+/config/sire-source-seal.json @brysonandtiff-ops
+/tools/sire_seal.py @brysonandtiff-ops
+/docs/development/SIRE_SOURCE_SEAL.md @brysonandtiff-ops

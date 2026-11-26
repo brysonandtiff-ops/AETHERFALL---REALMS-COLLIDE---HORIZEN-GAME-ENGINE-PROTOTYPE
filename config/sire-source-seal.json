@@ -41,5 +41,12 @@
     "independent_reviewer_signature": "NOT_VERIFIED",
     "owner_release_authorisation": "NOT_VERIFIED"
   },
-  "notes": "An integrity receipt is neither a signed receipt nor a S.I.R.E. release seal. No S.I.R.E. agent, plugin or phone runtime is connected by this file. LAW-104/105/106 and LAW-108 remain higher-order gates."
+  "notes": "An integrity receipt is neither a signed receipt nor a S.I.R.E. release seal. No S.I.R.E. agent, plugin or phone runtime is connected by this file. LAW-104/105/106 and LAW-108 remain higher-order gates.",
+  "required_server_controls": {
+    "branch": "main",
+    "required_pull_request_review": "NOT_ENABLED",
+    "required_independent_reviewer": "NOT_CONFIGURED",
+    "mandatory_status_checks": "NOT_ENABLED",
+    "status_source": "GitHub branch main protected=false; repository rulesets=[] inspected 2026-11-26 (current status may later change)"
+  }
 }

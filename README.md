@@ -91,3 +91,5 @@ python3 tools/aetherfall.py seal --base TRUSTED_40_HEX_ANCESTOR --expected-head 
 ```
 
 **This is source-integrity evidence, not a signed S.I.R.E. release seal.** Independent original Godot/Blender/device evidence, reviewer signature and owner release authority remain blocked.
+
+**Seal blocker:** GitHub `main` currently has no enforced branch rules or required independent review. `CODEOWNERS` and passing source checks do not replace server-side protection. See the S.I.R.E. Source Seal document; draft PRs remain unmerged.

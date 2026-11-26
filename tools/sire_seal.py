@@ -91,6 +91,13 @@ def policy_at(root: Path):
     }
     if not required.issubset(paths):
         raise IntegrityBlocked("Seal policy omits protected game/S.I.R.E. files")
+    server_controls = data.get("required_server_controls")
+    if (not isinstance(server_controls, dict)
+        or server_controls.get("branch") != "main"
+        or server_controls.get("required_pull_request_review") != "NOT_ENABLED"
+        or server_controls.get("required_independent_reviewer") != "NOT_CONFIGURED"
+        or server_controls.get("mandatory_status_checks") != "NOT_ENABLED"):
+        raise IntegrityBlocked("No externally verified server-side approval rules: BLOCKED")
     gates = data.get("evidence_gates")
     if not isinstance(gates, dict) or any(
         gates.get(name) != "NOT_VERIFIED"
@@ -267,6 +274,7 @@ def source_receipt(root: Path, base: str, expected_head: str):
         "law104_release_predicate": "NOT_SATISFIED",
         "law105_graphical_and_animation_proof": "NOT_VERIFIED",
         "law106_release_badge": "NOT_MINTED",
+        "server_side_branch_review": "NOT_ENABLED",
         "law108_12_stage_signed_pipeline": "NOT_VERIFIED",
         "phone_downloads_access": "NOT_VERIFIED",
         "sire_agent_mcp_runtime": "NOT_CONNECTED",
