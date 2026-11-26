@@ -36,3 +36,7 @@ Any FAIL or missing/not-tested critical identity/prop/kit evidence blocks canoni
 ## Evidence state
 
 Concept references approved; original binaries remain external to GitHub. No native Blender character render, in-game Godot visual or real device verification has been established. Plans and CI cannot turn an unverified candidate into a completed model.
+
+## Supplement: AF-ART-STYLE-20261126-V1 — exact presentation references
+
+In addition to **character-specific canonical likeness**, every new AETHERFALL hero image must follow the independent **presentation style** lock in `docs/art/MASTER_ART_STYLE_LOCK.md` and `docs/art/ART_STYLE_LOCK.json`. The exact primary owner-supplied style reference hashes are Vellaris (`39403.png`) `4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939` and Korvex (`39412.png`) `ff352a079685864ced7bbc255a81f73060847156ac24f74edbc2883dd348621b`. Both are actual WebP sources. The `39401.jpg` NEXUSFALL screenshot is a composition-only roster reference, never the AETHERFALL name or a source of automatic approvals. A black-background key-art portrait must not be labelled a complete infographic; a full character sheet must preserve the locked 11-panel Vellaris/Korvex layout, and each hero must retain its own distinctive anatomy, costume and weapon. Proposals require style and identity review separately. The art-style static validator checks only file/source integrity and declared metadata; owner visual review is required to judge any artistic match.
