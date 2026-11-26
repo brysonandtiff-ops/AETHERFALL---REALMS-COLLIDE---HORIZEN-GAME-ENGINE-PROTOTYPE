@@ -16,3 +16,7 @@
 ## Large files
 
 Binary `.blend`, `.glb`, textures and audio remain binary. Git LFS is not enabled here. Before committing large art, agree storage limits and enable an approved approach to prevent expensive repository growth.
+
+## Incoming media category policy (2026-11-26)
+
+Composite **character concept/infographic sheets** belong to the character's existing `art/concepts/characters/CHR_*` directory, not `evidence/godot/`. Offline VTK/blockout screenshots, GIFs and MP4s go to `evidence/prototype-previews/` with the exact source tool and verification limits. Owner-photographed role/approval notes go to `docs/characters/owner-notes/` (confirm public-release permissions first). The source upload's extension must match the actual file signature; do not recode or crop without logging a derivative. Track checksum, size, approval scope and `pending_binary_checkin` versus `checked_in` separately. See [intake catalogue](INTAKE_2026-11-26.md).
