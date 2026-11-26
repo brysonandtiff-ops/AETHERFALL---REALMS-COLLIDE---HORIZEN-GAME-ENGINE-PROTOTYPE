@@ -29,6 +29,7 @@ class StructureGuardTests(unittest.TestCase):
             shutil.copyfile(src, target)
         for rel in policy["preserved_roots"]:
             (self.root / rel).mkdir(parents=True, exist_ok=True)
+        (self.root / "art/blender").mkdir(parents=True, exist_ok=True)
         (self.root / "game/scenes/levels/realms").mkdir(parents=True, exist_ok=True)
         (self.root / "game/scenes/levels/realms/.gitkeep").write_text("reserve", encoding="utf-8")
         (self.root / "game/scenes/levels/realms/old_map.tscn").write_text(
