@@ -14,6 +14,10 @@ import json
 import sys
 from pathlib import Path
 
+# Blender --python does not guarantee the script directory is importable.
+SCRIPT_DIR = str(Path(__file__).resolve().parent)
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
 from horizen_mesh_io import audit_triangles, binary_stl, safe_asset_id, sha256_file
 
 
