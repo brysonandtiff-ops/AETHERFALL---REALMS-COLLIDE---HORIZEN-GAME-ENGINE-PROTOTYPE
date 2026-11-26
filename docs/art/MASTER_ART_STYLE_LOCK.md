@@ -1,7 +1,7 @@
 # AETHERFALL — MASTER ART-STYLE LOCK / NO DRIFT
 
-**Lock:** `AF-ART-STYLE-20261126-V1` | **Project:** AETHERFALL: REALMS COLLIDE  
-**Order:** exact owner-approved hero identity > owner-supplied style references > evaluated new proposal > AI preference.  
+**Lock:** `AF-ART-STYLE-20261126-V1` | **Project:** AETHERFALL: REALMS COLLIDE
+**Order:** exact owner-approved hero identity > owner-supplied style references > evaluated new proposal > AI preference.
 **Status:** Owner directed style correction; actual artwork still requires source-to-output approval. This is not a Blender or Godot evidence claim.
 
 ## The exact three supplied references
