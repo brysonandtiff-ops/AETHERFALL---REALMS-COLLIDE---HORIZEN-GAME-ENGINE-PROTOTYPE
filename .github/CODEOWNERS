@@ -1,0 +1,14 @@
+# Code-owner reviews are enforced only when branch rules require them.
+/docs/characters/ @brysonandtiff-ops
+/art/concepts/characters/ @brysonandtiff-ops
+/art/blender/characters/ @brysonandtiff-ops
+/art/asset_registry.json @brysonandtiff-ops
+/game/assets/characters/ @brysonandtiff-ops
+/.github/workflows/ @brysonandtiff-ops
+/tools/validate_structure.py @brysonandtiff-ops
+
+# No-bypass owner reviews for master governance.
+/AGENTS.md @brysonandtiff-ops
+/.github/CODEOWNERS @brysonandtiff-ops
+/tools/verify_visual_canon.py @brysonandtiff-ops
+/docs/architecture/ @brysonandtiff-ops

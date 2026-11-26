@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """AETHERFALL offline source safety gates. Not native game or art evidence."""
 
+import hashlib
 import json
 import os
 import re
@@ -15,6 +16,14 @@ REQUIRED_FILES = (
     "docs/art/ASSET_PIPELINE.md", "docs/characters/CHARACTER_REGISTRY.md",
     "docs/legacy/shadowspire_migration.json", "docs/legacy/README.md",
     "docs/characters/LEGACY_ROSTER.md",
+    "docs/characters/CHARACTER_WORKFLOW.md",
+    "docs/characters/CANON_LOCKS.json",
+    "docs/characters/VISUAL_CANON_LOCK.md",
+    "tools/verify_visual_canon.py",
+    "docs/characters/DRIFT_REVIEW_TEMPLATE.md",
+    "docs/architecture/MAIN_BRANCH_LOCK_SETUP.md",
+    "docs/characters/CHARACTER_INTAKE.md",
+    "docs/characters/templates/CHARACTER_PLAN_TEMPLATE.json",
     "docs/game-design/SHADOWSPIRE_LEGACY_DESIGN.md", "evidence/README.md",
 )
 REQUIRED_DIRS = (
@@ -137,6 +146,242 @@ def validate_registry(root, errors):
             destinations.add(unique)
 
 
+
+CHARACTER_SECTIONS = (
+    "hero_portrait", "turnaround_front", "turnaround_side", "turnaround_back",
+    "turnaround_three_quarter", "silhouette_exploration", "face_expressions",
+    "palette_swatches", "materials_callouts", "weapon_or_focus",
+    "gameplay_identity", "ability_kit", "vfx_motion", "audio_voice",
+    "technical_handoff", "accessibility_readability",
+)
+CHARACTER_GATES = (
+    "identity_owner_approved", "source_archived", "concept_package_reviewed",
+    "blockout_approved", "model_verified", "rig_animation_verified",
+    "godot_import_verified", "gameplay_verified", "release_verified",
+)
+SECTION_STATES = {
+    "pending", "visible_in_unarchived_reference", "source_verified", "approved_waiver",
+}
+HASH_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+
+
+def _nonempty(value):
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _valid_digest(value):
+    return isinstance(value, str) and bool(HASH_SHA256.fullmatch(value))
+
+
+def _file_matches_sha256(path, digest):
+    return hashlib.sha256(path.read_bytes()).hexdigest() == digest
+
+
+def validate_character_plans(root, errors):
+    """Fail closed for all registered heroes; never equate a plan to native engine proof."""
+    registry_path = root / "art/asset_registry.json"
+    if not registry_path.is_file():
+        return
+    try:
+        data = json.loads(registry_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError):
+        return  # validate_registry has already reported the malformed registry.
+    if not isinstance(data, dict) or not isinstance(data.get("assets"), list):
+        return
+    characters = {item["id"]: item for item in data["assets"]
+                  if isinstance(item, dict) and item.get("type") == "character"
+                  and isinstance(item.get("id"), str)
+                  and ID_PATTERN.fullmatch(item["id"])}
+    plan_dir = root / "docs/characters/plans"
+    if not plan_dir.is_dir() or plan_dir.is_symlink():
+        errors.append("Missing/unsafe character plan directory")
+        return
+    actual_plans = {path.stem for path in plan_dir.glob("*.json")}
+    for orphan in sorted(actual_plans - set(characters)):
+        errors.append("Unregistered character plan: " + orphan)
+    one_of_one = {}
+    for identifier, asset in sorted(characters.items()):
+        path = plan_dir / (identifier + ".json")
+        if not path.is_file() or path.is_symlink():
+            errors.append("Missing character plan: " + identifier)
+            continue
+        try:
+            plan = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, ValueError):
+            errors.append("Invalid character plan JSON: " + identifier)
+            continue
+        if not isinstance(plan, dict):
+            errors.append("Invalid character plan object: " + identifier)
+            continue
+        if (plan.get("schema_version") != 1 or
+                plan.get("project") != "AETHERFALL: REALMS COLLIDE" or
+                plan.get("standard") != "VELLARIS_V1_PLUS" or
+                plan.get("character_id") != identifier or
+                plan.get("registry_role") != asset.get("role") or
+                plan.get("registry_concept_status") != asset.get("concept_status")):
+            errors.append("Character plan identity/registry mismatch: " + identifier)
+        if not _nonempty(plan.get("display_name")) or not _nonempty(plan.get("epithet")):
+            errors.append("Character name/title missing: " + identifier)
+
+        identity = plan.get("identity")
+        if not isinstance(identity, dict):
+            errors.append("Character identity missing: " + identifier)
+            identity = {}
+        role = asset.get("role", "")
+        expected_class = "tank" if "tank" in role else "support" if "support" in role else None
+        if (identity.get("role_class") not in ("tank", "support", "damage", "enemy", "boss", "npc", "unconfirmed")
+                or (expected_class and identity.get("role_class") != expected_class)):
+            errors.append("Character role class mismatch: " + identifier)
+        for key in ("archetype", "one_of_one_hook", "silhouette_read", "gameplay_promise", "counterplay"):
+            if not _nonempty(identity.get(key)):
+                errors.append("Missing character identity " + key + ": " + identifier)
+        hook = identity.get("one_of_one_hook")
+        if _nonempty(hook):
+            unique = hook.strip().casefold()
+            if unique in one_of_one:
+                errors.append("Duplicate character one-of-one identity: " + identifier + " and " + one_of_one[unique])
+            one_of_one[unique] = identifier
+
+        design = plan.get("design")
+        if not isinstance(design, dict):
+            design = {}
+            errors.append("Character design package missing: " + identifier)
+        approved = asset.get("concept_status") == "aetherfall_approved"
+        expected_status = "approved_concept_only" if approved else "legacy_candidate_pending_aetherfall_approval"
+        if design.get("owner_status") != expected_status:
+            errors.append("Unreviewed character approval promotion: " + identifier)
+        for key in ("visual_identity", "signature_prop", "accessibility_notes"):
+            if not _nonempty(design.get(key)):
+                errors.append("Missing character design " + key + ": " + identifier)
+        if not isinstance(design.get("palette"), list) or not isinstance(design.get("materials"), list):
+            errors.append("Character palette/material data malformed: " + identifier)
+        kit_status = design.get("kit_status")
+        if kit_status not in ("pending", "concept_reference_only", "owner_locked"):
+            errors.append("Unknown character kit status: " + identifier)
+        abilities = design.get("active_abilities")
+        passive = design.get("passive")
+        if not isinstance(abilities, list):
+            errors.append("Character abilities not a list: " + identifier)
+            abilities = []
+        if kit_status != "pending":
+            if not abilities or not isinstance(passive, dict) or not _nonempty(passive.get("name")) or not _nonempty(passive.get("summary")):
+                errors.append("Character kit lacks named active/passive: " + identifier)
+        names = set()
+        for ability in abilities:
+            if not isinstance(ability, dict) or not all(_nonempty(ability.get(k)) for k in ("slot", "name", "summary")):
+                errors.append("Malformed character ability: " + identifier)
+                continue
+            name = ability["name"].casefold()
+            if name in names:
+                errors.append("Duplicate character ability: " + identifier)
+            names.add(name)
+
+        source = plan.get("concept_reference")
+        if not isinstance(source, dict):
+            source = {}
+            errors.append("Missing character concept reference: " + identifier)
+        raw = source.get("repo_path")
+        expected_prefix = asset.get("concept_dir", "") + "/"
+        file = safe_path(root, raw)
+        if (file is None or not isinstance(raw, str)
+                or not raw.startswith(expected_prefix) or
+                not raw.lower().endswith((".png", ".jpg", ".jpeg", ".webp")) or
+                file.parent != root / asset.get("concept_dir", "")):
+            errors.append("Unsafe/mismatched character master path: " + identifier)
+            file = None
+        archive = source.get("archive_status")
+        digest = source.get("sha256")
+        if archive not in ("pending_source_upload", "source_verified"):
+            errors.append("Invalid character source archive status: " + identifier)
+        if digest is not None and not _valid_digest(digest):
+            errors.append("Malformed character reference SHA-256: " + identifier)
+        if not _nonempty(source.get("origin_note")):
+            errors.append("Missing character provenance: " + identifier)
+        if file is not None:
+            if archive == "source_verified":
+                if not file.is_file() or file.is_symlink() or not _valid_digest(digest):
+                    errors.append("Character source claimed archived without verified file: " + identifier)
+                elif not _file_matches_sha256(file, digest):
+                    errors.append("Character master source checksum mismatch: " + identifier)
+            elif file.is_file():
+                errors.append("Character source present but archive not verified: " + identifier)
+
+        sections = plan.get("sheet_sections")
+        if not isinstance(sections, dict) or set(sections) != set(CHARACTER_SECTIONS):
+            errors.append("Character sheet sections incomplete: " + identifier)
+            sections = {}
+        waivers = plan.get("section_waivers")
+        if not isinstance(waivers, dict):
+            waivers = {}
+            errors.append("Character section waivers malformed: " + identifier)
+        for section, state in sections.items():
+            if state not in SECTION_STATES:
+                errors.append("Invalid character sheet section state: " + identifier + "/" + section)
+            if state == "source_verified" and archive != "source_verified":
+                errors.append("Unarchived character sheet marked source-verified: " + identifier)
+            if state == "approved_waiver":
+                waiver = waivers.get(section)
+                if not isinstance(waiver, dict) or not all(_nonempty(waiver.get(k)) for k in ("owner", "reason", "review_path")):
+                    errors.append("Undocumented character section waiver: " + identifier + "/" + section)
+                else:
+                    review = safe_path(root, waiver["review_path"])
+                    if (review is None or not waiver["review_path"].startswith("evidence/characters/" + identifier + "/")
+                            or not review.is_file() or review.is_symlink()):
+                        errors.append("Missing character waiver review: " + identifier + "/" + section)
+        for waived in set(waivers) - {k for k, v in sections.items() if v == "approved_waiver"}:
+            errors.append("Unused character waiver: " + identifier + "/" + waived)
+
+        gates = plan.get("gates")
+        if not isinstance(gates, dict) or set(gates) != set(CHARACTER_GATES) or any(type(x) is not bool for x in gates.values()):
+            errors.append("Character stage gates incomplete/invalid: " + identifier)
+            continue
+        if gates["identity_owner_approved"] != approved:
+            errors.append("Character identity gate mismatch with registry: " + identifier)
+        if gates["source_archived"] != (archive == "source_verified"):
+            errors.append("Character archived source gate mismatch: " + identifier)
+        for previous, current in zip(CHARACTER_GATES, CHARACTER_GATES[1:]):
+            if gates[current] and not gates[previous]:
+                errors.append("Character production gate skipped: " + identifier + "/" + current)
+        if gates["concept_package_reviewed"] and any(state not in ("source_verified", "approved_waiver") for state in sections.values()):
+            errors.append("Character concept sheet not fully verified: " + identifier)
+        if kit_status == "owner_locked" and not gates["concept_package_reviewed"]:
+            errors.append("Character kit locked without approved package: " + identifier)
+
+        stage_evidence = plan.get("stage_evidence")
+        if not isinstance(stage_evidence, dict):
+            errors.append("Character stage_evidence malformed: " + identifier)
+            stage_evidence = {}
+        for stage in CHARACTER_GATES[2:]:
+            if not gates[stage]:
+                continue
+            proof = stage_evidence.get(stage)
+            if not isinstance(proof, dict):
+                errors.append("Missing character stage evidence: " + identifier + "/" + stage)
+                continue
+            proof_path = proof.get("path")
+            proof_file = safe_path(root, proof_path)
+            proof_hash = proof.get("sha256")
+            if (proof_file is None or not isinstance(proof_path, str)
+                    or not proof_path.startswith("evidence/characters/" + identifier + "/")
+                    or not proof_file.is_file() or proof_file.is_symlink() or not _valid_digest(proof_hash)):
+                errors.append("Unsafe/missing character proof file: " + identifier + "/" + stage)
+            elif not _file_matches_sha256(proof_file, proof_hash):
+                errors.append("Character proof checksum mismatch: " + identifier + "/" + stage)
+
+    registered = set(characters)
+    for base in (
+        "art/concepts/characters", "art/blender/characters",
+        "game/assets/characters/heroes", "game/assets/characters/enemies",
+        "game/assets/characters/npcs", "game/scenes/characters/heroes",
+        "game/scenes/characters/enemies", "game/scenes/characters/npcs",
+    ):
+        folder = root / base
+        if folder.is_dir():
+            for child in folder.iterdir():
+                if child.is_dir() and child.name not in registered:
+                    errors.append("Unregistered character folder: " + child.relative_to(root).as_posix())
+
+
 def validate_godot(root, errors):
     project = root / "game/project.godot"
     if not project.is_file():
@@ -198,6 +443,13 @@ def check(root=ROOT):
             errors.append("Missing/unsafe directory: " + rel)
     scan_source_tree(root, errors)
     validate_registry(root, errors)
+    validate_character_plans(root, errors)
+    import importlib.util
+    canon_file = Path(__file__).with_name("verify_visual_canon.py")
+    spec = importlib.util.spec_from_file_location("aetherfall_visual_canon", canon_file)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    errors.extend(module.check(root))
     validate_godot(root, errors)
     validate_legacy_hold(root, errors)
     return errors
@@ -209,7 +461,7 @@ def main():
         for failure in failures:
             print("FAIL: " + failure, file=sys.stderr)
         return 1
-    print("PASS: source/asset path safety, Godot reference checks and migration status (STATIC ONLY)")
+    print("PASS: source/asset paths, character source hashes/canon metadata, gate order, Godot references and migration safety (STATIC ONLY; NO VISUAL LIKENESS PROOF)")
     return 0
 
 

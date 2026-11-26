@@ -45,3 +45,11 @@ No builds, deployments, merges, subscriptions or paid API calls are needed to us
 Historical Shadowspire design notes and 10 owner-selected concept characters are documented at `docs/legacy/README.md` and `docs/characters/LEGACY_ROSTER.md`. The original Godot/Unreal source is **not connected or migrated**, and no Shadowspire repository has been deleted. Two AETHERFALL-approved character IDs are preserved; eight further characters are reserved as *legacy candidates*, not models.
 
 Run `python3 tools/validate_structure.py` and `python3 -m unittest discover -s tests -v` for fail-closed static protection and adversarial tests. GitHub's hardened workflow also verifies official, SHA-256-pinned Godot **4.7.2** and launches the starter scene **headlessly**. Only a successful actual workflow run provides that native-engine evidence, and it does **not** prove visuals, character models, actual combat or physical devices.
+
+## Mandatory character production blueprint (proposed policy)
+
+See `docs/characters/CHARACTER_WORKFLOW.md` for the owner-specified Vellaris-plus sheet, `docs/characters/plans/` for every registered character and `docs/characters/CHARACTER_INTAKE.md` for unresolved Razor, Raven, Corvex/Korvex and support briefs. The Vellaris uploaded PNG is **not yet committed in GitHub**, so its source-archive/production gates remain pending. An admin must enable required CI and CODEOWNERS branch protection after review.
+
+## Approved art: no-silent-drift policy
+
+Read docs/characters/VISUAL_CANON_LOCK.md and CANON_LOCKS.json before character work. The approved Vellaris upload (39403.png) is **actually WebP**, not PNG: archive at art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp, with exact source SHA. Do not overwrite master art; all new art remains an owner-review proposal. Automatic gates verify source identity and manifest integrity; only genuine source-to-output review can verify visual fidelity.

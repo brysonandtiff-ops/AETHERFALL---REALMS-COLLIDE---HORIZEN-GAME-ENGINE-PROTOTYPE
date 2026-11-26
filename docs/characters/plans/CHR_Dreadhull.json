@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "character_id": "CHR_Dreadhull",
+  "display_name": "Dreadhull",
+  "epithet": "Not yet approved for AETHERFALL",
+  "registry_role": "tank_denial_disruption",
+  "registry_concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+  "standard": "VELLARIS_V1_PLUS",
+  "identity": {
+    "role_class": "tank",
+    "archetype": "Denial / disruption",
+    "one_of_one_hook": "Disruptive denial without copying blood or venom tank mechanics",
+    "silhouette_read": "Pending",
+    "gameplay_promise": "Disrupt approaches",
+    "counterplay": "Pending"
+  },
+  "design": {
+    "owner_status": "legacy_candidate_pending_aetherfall_approval",
+    "visual_identity": "Provisional historical idea; master AETHERFALL visual style pending.",
+    "signature_prop": "Pending",
+    "palette": [],
+    "materials": [],
+    "accessibility_notes": "Check contrast, gameplay-distance silhouette, VFX obstruction, color-blind readability, sound alternatives and safe flashes in real tests.",
+    "kit_status": "pending",
+    "active_abilities": [],
+    "passive": null
+  },
+  "concept_reference": {
+    "repo_path": "art/concepts/characters/CHR_Dreadhull/MASTER_CONCEPT_PENDING.png",
+    "archive_status": "pending_source_upload",
+    "sha256": null,
+    "origin_note": "Legacy selected concept, not an approved new AETHERFALL source image."
+  },
+  "sheet_sections": {
+    "hero_portrait": "pending",
+    "turnaround_front": "pending",
+    "turnaround_side": "pending",
+    "turnaround_back": "pending",
+    "turnaround_three_quarter": "pending",
+    "silhouette_exploration": "pending",
+    "face_expressions": "pending",
+    "palette_swatches": "pending",
+    "materials_callouts": "pending",
+    "weapon_or_focus": "pending",
+    "gameplay_identity": "pending",
+    "ability_kit": "pending",
+    "vfx_motion": "pending",
+    "audio_voice": "pending",
+    "technical_handoff": "pending",
+    "accessibility_readability": "pending"
+  },
+  "section_waivers": {},
+  "gates": {
+    "identity_owner_approved": false,
+    "source_archived": false,
+    "concept_package_reviewed": false,
+    "blockout_approved": false,
+    "model_verified": false,
+    "rig_animation_verified": false,
+    "godot_import_verified": false,
+    "gameplay_verified": false,
+    "release_verified": false
+  },
+  "stage_evidence": {},
+  "blockers": [
+    "Archive the original rights-cleared master sheet and verify its SHA-256.",
+    "Complete the full distinctive character-sheet package and owner approval.",
+    "Do not claim Blender/Godot/gameplay/device evidence without genuine captures."
+  ],
+  "provenance_note": "Concept or proposed design, NOT a model, rig, playable character or native runtime evidence."
+}
