@@ -39,3 +39,19 @@ Do not bulk-import the offline archive automatically. Record owner approval, sou
 - JS source syntax checks and actual 192/512 PNG dimensions were verified in an isolated JS harness.
 - Manual browser installation, Cloudflare public HTTP playback on an actual phone, native device install and service-worker offline acceptance were **not** performed in this audit.
 - GitHub main is protected: source changes are proposed on this feature branch by PR, not forced to main.
+
+
+## 26 November phone screenshot fix — local gallery importer
+
+The owner confirmed the installed site loaded and displayed the truthful **0 images / 0 videos** from GitHub. To show the previously audited artwork without violating repo art-lock and provenance gates, the PWA now has a **Load existing gallery ZIP** button.
+
+- Download `AETHERFALL_PHONE_GALLERY_STARTER.zip` from the ChatGPT conversation (approximately 10.85 MB). It includes **28 display-optimised WebP images** and **11 original MP4 previews**, plus an import manifest.
+- In Android Chrome / the installed AETHERFALL app, tap **Load existing gallery ZIP** and select the downloaded file.
+- Browser JavaScript reads the ZIP locally, validates ZIP structure, blocks encryption/path traversal/oversize entries, decompresses via native `DecompressionStream('deflate-raw')`, and stores the results in **IndexedDB on that device**.
+- The gallery merges imported device assets with new media committed to GitHub `main`. Media cards label their source as **Device archive** or **GitHub**. Exploratory files containing `UNAPPROVED` are clearly labelled.
+- **No upload endpoint was added.** Imported files are not transferred to Cloudflare storage or GitHub, do not alter canonical game art and are not production proof.
+- If the user clears website data, changes device/browser or hits a browser storage quota, the local library may need re-importing. The source ZIP remains the recoverable handoff.
+- The installed app uses a network-first shell cache v2. Online GitHub polling continues after import.
+- 10 mock Worker route tests passed previously; a synthetic ZIP central-directory parser test and actual ZIP CRC readback passed. Actual Android Chrome import and device persistence have **not been observed** and remain an acceptance gate.
+
+This is a deliberate two-source showcase: **private existing media, live public GitHub changes**. Do not call local imported preview art canonical or claim the public GitHub repo contains those images.
