@@ -24,3 +24,10 @@ List exact exit codes, CI run links, tested commit SHA, screenshot/video origina
 
 ## Risks, recovery and next
 Known limitations, rollback instructions, next bounded step and release hold:
+
+## S.I.R.E. source integrity receipt (if available)
+- [ ] Exact candidate `git rev-parse HEAD` matches the CI-reported PR head
+- [ ] SHA-256/SHA3-256 manifest and Merkle root attached outside Git
+- [ ] Only `UNANCHORED_INTEGRITY_ONLY` or independently anchored integrity is claimed
+- [ ] Original graphics, animations, native engine and phone evidence separately verified if the change needs them
+- [ ] No self-issued release or owner-signature claim

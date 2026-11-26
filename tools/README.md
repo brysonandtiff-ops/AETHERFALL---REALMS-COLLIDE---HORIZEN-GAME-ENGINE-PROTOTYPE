@@ -45,3 +45,12 @@ python3 tools/phone_docs.py --scan --apply
 ```
 
 The destination is the existing Android `AETHERFALL – REALMS COLIDE/Docs/Inbox` (not a second differently spelled folder). The script is offline, restricted to the top level of Download, preview-only by default, copies with checksum, leaves originals in Download, never installs an Android system service, and is not yet running on the phone.
+
+## S.I.R.E. source integrity only
+
+```sh
+python3 tools/aetherfall.py seal --base TRUSTED_40_HEX_ANCESTOR --expected-head ACTUAL_40_HEX_HEAD
+python3 tools/sire_seal.py source --base TRUSTED_40_HEX_ANCESTOR --expected-head ACTUAL_40_HEX_HEAD
+```
+
+Refuses dirty Git trees, wrong candidate SHAs, missing original files, unapproved paths and unresolved LFS pointers. CI produces a hash inventory outside source; no signature or Gold Seal is minted. See `docs/development/SIRE_SOURCE_SEAL.md`.

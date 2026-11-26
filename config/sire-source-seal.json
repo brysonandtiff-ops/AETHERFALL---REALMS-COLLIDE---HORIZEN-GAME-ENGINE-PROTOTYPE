@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "SIRE-AETHERFALL-SOURCE-001",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository": "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE",
+  "seal_level": "UNANCHORED_INTEGRITY_ONLY",
+  "approval_state": "BLOCKED",
+  "automatic_release": false,
+  "automatic_merge": false,
+  "trust_independent_signature_required": true,
+  "clean_tree_required": true,
+  "max_blob_bytes": 150000000,
+  "main_godot_project": "game/project.godot",
+  "required_paths": [
+    ".github/workflows/foundation-check.yml",
+    ".sire/integration.json",
+    "AGENTS.md",
+    "art/asset_registry.json",
+    "config/layout-contract.json",
+    "config/local-documents.json",
+    "config/sire-source-seal.json",
+    "docs/development/ANDROID_LOCAL_DOCUMENTS.md",
+    "docs/development/SIRE_SOURCE_SEAL.md",
+    "game/project.godot",
+    "tools/aetherfall.py",
+    "tools/phone_docs.py",
+    "tools/sire_seal.py",
+    "tools/structure_guard.py",
+    "tools/validate_structure.py"
+  ],
+  "fixed_phone_folder": "AETHERFALL – REALMS COLIDE",
+  "fixed_phone_docs_subfolder": "Docs/Inbox",
+  "evidence_gates": {
+    "source_integrity": "MUST_PASS_EXACT_COMMIT",
+    "native_godot_headless": "SEPARATE_REAL_RUN",
+    "blender_source_and_four_views": "NOT_VERIFIED",
+    "original_animation_full_videos": "NOT_VERIFIED",
+    "graphical_gameplay": "NOT_VERIFIED",
+    "physical_android": "NOT_VERIFIED",
+    "external_trust_anchor": "NOT_VERIFIED",
+    "independent_reviewer_signature": "NOT_VERIFIED",
+    "owner_release_authorisation": "NOT_VERIFIED"
+  },
+  "notes": "An integrity receipt is neither a signed receipt nor a S.I.R.E. release seal. No S.I.R.E. agent, plugin or phone runtime is connected by this file. LAW-104/105/106 and LAW-108 remain higher-order gates.",
+  "required_server_controls": {
+    "branch": "main",
+    "required_pull_request_review": "NOT_ENABLED",
+    "required_independent_reviewer": "NOT_CONFIGURED",
+    "mandatory_status_checks": "NOT_ENABLED",
+    "status_source": "GitHub branch main protected=false; repository rulesets=[] inspected 2026-11-26 (current status may later change)"
+  }
+}

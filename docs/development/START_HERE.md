@@ -27,3 +27,7 @@ This creates a **PLANNED** work order on disk, nothing more. Stage/commit it in 
 ## Local Android documents
 
 To retain newly downloaded AETHERFALL documents under the existing phone project folder, see [Android local documents](ANDROID_LOCAL_DOCUMENTS.md). The local folder remains `AETHERFALL – REALMS COLIDE` (phone spelling), with `Docs/Inbox` for copied documents and untouched `korvex_blockout_v01`. No phone-side installation or automatic redirection is claimed.
+
+## Source seal and proof boundary
+
+Use `python3 tools/aetherfall.py seal --base TRUSTED_40_HEX_ANCESTOR --expected-head ACTUAL_40_HEX_HEAD` after local checks to inspect source integrity. See [S.I.R.E. source seal](SIRE_SOURCE_SEAL.md). Never claim `SOURCE_INTEGRITY_ONLY` as a real gameplay/Blender/Android or signed release seal.
