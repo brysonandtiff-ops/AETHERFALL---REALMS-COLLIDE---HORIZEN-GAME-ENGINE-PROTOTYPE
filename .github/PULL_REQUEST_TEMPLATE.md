@@ -1,21 +1,26 @@
-## Change
+## One bounded work order
+Work order ID (e.g. `AETHERFALL-DEVOPS-001`):
+Executor/specialist (existing S.I.R.E. systems only):
+Exact project scope and acceptance:
 
-Describe what changed and link the work order.
+## What changed (FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH)
+Describe source files changed, canonical art locks, dependencies and how to roll back.
 
-## Tests performed (exact commands and results)
+## Verified test evidence
+- [ ] `python3 tools/aetherfall.py doctor --json` (source contracts, not S.I.R.E. runtime)
+- [ ] `python3 tools/aetherfall.py check` (validator + unit tests)
+- [ ] GitHub CI headless Godot 4.7.2 run for the exact candidate commit
+- [ ] Real Godot graphic gameplay captured, if claiming a playable/visual change
+- [ ] Blender original geometry/rig/animation proof, if changing 3D assets
+- [ ] Physical-device evidence, if claiming device readiness
 
-- [ ] Structure validator run (or explain why not)
-- [ ] Native Godot project opened and main scene run (only check if really performed)
-- [ ] Native Blender import/export tested (if relevant)
-- [ ] Physical device tested (if relevant)
+List exact exit codes, CI run links, tested commit SHA, screenshot/video originals and evidence limits. Unrun tests are NOT_RUN; no simulated passes.
 
-## Art and evidence
+## Security / integrations
+- [ ] No secrets/tokens, unsafe untrusted commands, new paid APIs or unnecessary plugin installs
+- [ ] No second master agent or unverified connected runner claims
+- [ ] Existing S.I.R.E. Git/permissions/security stewards respected
+- [ ] Original art, game files and drafts preserved; no auto-merge or deploy
 
-- [ ] No approved reference artwork overwritten
-- [ ] Original art and exported GLB stored separately
-- [ ] Genuine screenshots/video/hashes attached when actual visual/runtime change is claimed
-- [ ] Not-run or blocked checks clearly identified
-
-## Risks / rollback
-
-State known limitations and exact revert instructions. No auto-deploy or merge.
+## Risks, recovery and next
+Known limitations, rollback instructions, next bounded step and release hold:
