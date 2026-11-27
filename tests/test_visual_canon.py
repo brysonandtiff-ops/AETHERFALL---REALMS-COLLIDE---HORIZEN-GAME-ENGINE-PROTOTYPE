@@ -20,6 +20,7 @@ class VisualCanonTests(unittest.TestCase):
             "docs/characters/CANON_LOCKS.json",
             "docs/characters/plans/CHR_Vellaris_Bloodshield.json",
             "docs/characters/plans/CHR_ThornDell.json",
+            "docs/characters/plans/CHR_Dreadhull.json",
             "art/asset_registry.json",
         ]
         for rel in paths:
@@ -93,6 +94,26 @@ class VisualCanonTests(unittest.TestCase):
         self.change("docs/characters/plans/CHR_Vellaris_Bloodshield.json",
                     lambda d: d["design"]["active_abilities"][0].update(name="New random spell"))
         self.rejected("Approved character active kit drift")
+
+    def test_dreadhull_reference_is_immutable(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_Dreadhull"]["source"].update(sha256="a"*64))
+        self.rejected("Approved reference identity/hash drift: CHR_Dreadhull")
+
+    def test_dreadhull_dredge_cannot_be_replaced(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"].update(signature_prop="Anchor-scythe"))
+        self.rejected("Approved character design/prop changed in plan: CHR_Dreadhull")
+
+    def test_dreadhull_kit_cannot_be_replaced(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"]["active_abilities"][0].update(name="Tide Chain"))
+        self.rejected("Approved character active kit drift: CHR_Dreadhull")
+
+    def test_dreadhull_approval_cannot_be_downgraded(self):
+        self.change("art/asset_registry.json", lambda d: next(a for a in d["assets"]
+                    if a["id"] == "CHR_Dreadhull").update(concept_status="legacy_owner_approved_candidate_for_aetherfall"))
+        self.rejected("Pinned owner-approved character registry status removed: CHR_Dreadhull")
 
     def test_infographic_hierarchy_cannot_be_dropped(self):
         self.change("docs/characters/CANON_LOCKS.json",

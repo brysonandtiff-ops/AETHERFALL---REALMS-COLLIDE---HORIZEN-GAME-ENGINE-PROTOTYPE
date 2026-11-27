@@ -17,7 +17,9 @@
 
 **ThornDell — The Venomroot:** owner-approved 1536x1024 real PNG, 3219162 bytes. SHA-256 34056a337ebfa67f413375a757f837a247938a3897aabf5e06b0683b48ba89d5. Intended source path: art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_APPROVED_v1.png. Preserve giant asymmetrical antlered forest titan, bark/basalt armour, bronze, fungi, roots, lime poison pathways and thorn-wrapped Root Bulwark. Proposed gameplay kit is not native-tested.
 
-**Important:** neither original master image is yet archived in GitHub. The exact SHA pins preserve source identity but cannot by themselves validate a new generated illustration's visual similarity.
+**Dreadhull — Bonebrine Reaver — The Cursed Salvager:** owner-approved 2026-11-27, original upload 40768.png is actually a 1536x1152 WebP, 538780 bytes. SHA-256 `6d172d578f0d01e5ea126f755ae7c309a4e5d176b801bf11af7de3990a43273c`. Intended GitHub source: `art/concepts/characters/CHR_Dreadhull/Dreadhull_Bonebrine_Reaver_CANONICAL_v1.webp`. The exact image with hooded face, bone-brine plates, cyan energy, crimson cloth, original open wreck frame, opposite-arm salvage bulwark and circular Ossuary Dredge is canonical. Locked source kit: Dredge Snare; Salvage Recall; Reforge Bulwark; Wreckline Drag; Graveyard Forge; passive Sunken Claim. Later full-galleon, anchor-scythe and other generated variants are not approved. Do not add or remove visual features without a separately approved version. The exact image is preserved in the original chat and personal Library; repository binary archive is pending.
+
+**Important:** original master images are not yet archived in GitHub. The exact SHA pins preserve source identity but cannot by themselves validate a new generated illustration's visual similarity.
 
 ## Mandatory source-to-output comparison
 
