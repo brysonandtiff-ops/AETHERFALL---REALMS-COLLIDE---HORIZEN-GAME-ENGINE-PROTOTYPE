@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   pwa-source-contracts:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Supported Playwright runner; avoid rolling OS incompatibility
     timeout-minutes: 12
     steps:
       - name: Checkout source without stored credentials
