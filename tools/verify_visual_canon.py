@@ -38,6 +38,16 @@ PINNED = {
         "actives": [], "passive": None,
         "traits": ("antlers", "bark", "basalt", "venom", "root bulwark", "fungi"),
     },
+    "CHR_Dreadhull": {
+        "path": "art/concepts/characters/CHR_Dreadhull/Dreadhull_Bonebrine_Reaver_CANONICAL_v1.webp",
+        "sha256": "6d172d578f0d01e5ea126f755ae7c309a4e5d176b801bf11af7de3990a43273c",
+        "format": "WEBP", "width": 1536, "height": 1152, "bytes": 538780,
+        "name": "Dreadhull", "title": "Bonebrine Reaver — The Cursed Salvager", "role": "tank",
+        "focus": "Ossuary Dredge",
+        "actives": ["Dredge Snare","Salvage Recall","Reforge Bulwark","Wreckline Drag","Graveyard Forge"],
+        "passive": "Sunken Claim",
+        "traits": ("hooded", "bone-brine", "cyan", "crimson", "ossuary dredge", "salvage bulwark", "wreck frame"),
+    },
 }
 EXTRA_KNOWN = {
     "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_chat_copy.webp": {
@@ -261,6 +271,8 @@ def check(root=ROOT):
             and entry.get("concept_status") == "aetherfall_approved"
             and isinstance(entry.get("id"), str)
         }
+        for identifier in sorted(set(PINNED) - set(approved)):
+            errors.append("Pinned owner-approved character registry status removed: " + identifier)
         for identifier in sorted(set(approved) - set(locks)):
             errors.append("Approved character missing visual lock: " + identifier)
         for identifier in sorted(set(locks) - set(PINNED)):
