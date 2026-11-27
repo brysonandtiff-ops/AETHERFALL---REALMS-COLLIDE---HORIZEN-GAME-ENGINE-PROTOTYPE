@@ -1,6 +1,7 @@
 import {SCHEMA,STORAGE_KEY,PIPELINE,GATES,SUBSYSTEMS,makeEmptyState,normalizeState,createWorld,safeSameOriginUrl,filterWorlds,sha256,stagingReceipt,importReceipt,validId,isEngineShellUrl,findExistingSourceAsset,persistenceMessage} from './core.js';
 import {inspectSource} from './model-inspect.js';
 import {mountPreview,clearPreview} from './viewer.js';
+import {retainSource,getRetainedSource,forgetRetainedSource} from './model-vault.js';
 const $ = s => document.querySelector(s);
 const e=(tag,cls='',str)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(str!==undefined&&str!==null)n.textContent=String(str);return n;};
 const uuid=()=>globalThis.crypto?.randomUUID?.()||`local-${Date.now()}-${Math.round(Math.random()*1e8)}`;
@@ -25,7 +26,36 @@ function renderWorlds(){const matches=filterWorlds(state.worlds,$('#world-search
 $('#world-search').addEventListener('input',renderWorlds);$('#world-filter').addEventListener('change',renderWorlds);
 $('#new-world').addEventListener('click',()=>{$('#world-form').reset();$('#world-dialog').showModal();});$('#world-close').addEventListener('click',()=>$('#world-dialog').close());$('#world-form').addEventListener('submit',ev=>{ev.preventDefault();try{const url=$('#world-url').value.trim();if(url)safeSameOriginUrl(url,location.href);if(state.worlds.length>=200)throw new Error('Local world registry limit reached.');const item=createWorld({name:$('#world-name').value,url,notes:$('#world-notes').value,status:$('#world-status').value},uuid());state.worlds.push(item);const saved=store();$('#world-dialog').close();refresh();toast(persistenceMessage(saved,'World registered. Launch remains gated on HTML verification.'));}catch(err){toast(err.message);}});
 function renderStatus(){const gates=$('#gate-grid');gates.replaceChildren();GATES.forEach(([name,description],i)=>{const n=e('article','gate'),idx=e('span','gate-index',String(i+1).padStart(2,'0')),info=e('div','gate-info');info.append(e('b','',name),e('small','',description));let status='NOT VERIFIED';if(i===0&&state.assets.length)status='LOCAL HASH ONLY';if(i===8&&state.assets.some(a=>a.evidence.some(Boolean)))status='EVIDENCE SUBMITTED';n.append(idx,info,e('span','gate-state',status));gates.append(n);});const systems=$('#systems-grid');systems.replaceChildren();SUBSYSTEMS.forEach(([name,description,status])=>{const n=e('article','system-card');n.append(e('b','',name),e('p','',description),e('span',`system-state ${status.includes('LOCAL')?'local':''}`,status));systems.append(n);});}
-function selectAsset(id){selectedAsset=id;const info=sourcePreviews.get(id);clearPreview();const canvas=$('#model-canvas');canvas.hidden=true;$('#preview-empty').hidden=false;$('#preview-empty').querySelector('b').textContent=info?.vertices?.length?'RENDERING SOURCE':'VIEWPORT LOCKED';$('#preview-empty').querySelector('small').textContent=info?.vertices?.length?'Actual uploaded geometry can be previewed in this browser.':'Re-select the original GLB or OBJ file to render its bytes. Stored hashes are not a mesh.';$('#inspection-details').textContent='No source geometry currently rendered.';
+let selectionRevision=0;
+async function selectAsset(id){
+ const revision=++selectionRevision;
+ selectedAsset=id;
+ clearPreview();$('#model-canvas').hidden=true;$('#preview-empty').hidden=false;
+ $('#preview-state').textContent='RESTORING SOURCE';
+ $('#preview-empty').querySelector('b').textContent='RESTORING SOURCE';
+ $('#preview-empty').querySelector('small').textContent='Checking original bytes for the selected asset.';
+ $('#inspection-details').textContent='Previous asset preview cleared.';
+ $('#forget-local-model').disabled=true;renderForge();
+ let info=sourcePreviews.get(id);
+ if(!info){
+  try{
+   const saved=await getRetainedSource(id);
+   if(saved){
+    const asset=state.assets.find(item=>item.id===id);
+    if(!asset||asset.sha256!==saved.sha256)throw new Error('Stored model receipt differs from current asset registry.');
+    const original=new File([saved.file],saved.name,{type:saved.file.type});
+    if(await sha256(original)!==saved.sha256)throw new Error('Stored model hash mismatch. Reselect the original file.');
+    info=await inspectSource(original);
+    if(selectedAsset!==id||revision!==selectionRevision)return;
+    sourcePreviews.set(id,info);
+   }
+  }catch(err){
+   if(selectedAsset===id&&revision===selectionRevision&&!String(err.message).includes('IndexedDB is unavailable'))toast('Stored model not restored: '+err.message);
+  }
+ }
+ if(selectedAsset!==id||revision!==selectionRevision)return;
+ $('#forget-local-model').disabled=false;
+ clearPreview();const canvas=$('#model-canvas');canvas.hidden=true;$('#preview-empty').hidden=false;$('#preview-empty').querySelector('b').textContent=info?.vertices?.length?'RENDERING SOURCE':'VIEWPORT LOCKED';$('#preview-empty').querySelector('small').textContent=info?.vertices?.length?'Actual uploaded geometry can be previewed in this browser.':'Re-select the original GLB or OBJ file to render its bytes. Stored hashes are not a mesh.';$('#inspection-details').textContent='No source geometry currently rendered.';
  if(info?.vertices?.length){try{canvas.hidden=false;$('#preview-empty').hidden=true;mountPreview(canvas,info.vertices);const details=info.stats;$('#preview-state').textContent='REAL LOCAL SOURCE';$('#inspection-details').textContent=`${info.format} · ${details.sourceTriangles?.toLocaleString()||'?'} source tris · ${details.previewTriangles?.toLocaleString()||'?'} shown · ${details.note} · Browser renderer: ${canvas.dataset.renderer||'WebGL2 source triangles'}`;}catch(err){canvas.hidden=true;$('#preview-empty').hidden=false;$('#preview-state').textContent='UNAVAILABLE';$('#inspection-details').textContent=err.message;}}
  else{$('#preview-state').textContent=info?.format==='FBX'?'FBX HASHED / NO VIEWER':'NO SOURCE LOADED';$('#inspection-details').textContent=info?.stats?.note||'No file bytes available in this session. Source file hashes alone cannot render a model.';}renderForge();}
 function renderForge(){const list=$('#asset-list');list.replaceChildren();if(!state.assets.length)list.append(e('div','asset-empty','No assets yet. Register an actual source file to begin.'));for(const asset of state.assets){const item=e('button',`asset-item ${selectedAsset===asset.id?'on':''}`),left=e('div');left.append(e('b','',asset.name),e('small','',`${asset.format} · ${asset.fileName||'original source'} · ${asset.sha256.slice(0,12)}…`));item.append(left,e('span','mono small',asset.evidence.filter(Boolean).length+'/8'));item.type='button';item.addEventListener('click',()=>selectAsset(asset.id));list.append(item);}$('#asset-count').textContent=state.assets.length;
@@ -37,6 +67,7 @@ $('#asset-form').addEventListener('submit',async ev=>{
  if(!file){toast('Choose a genuine source file.');return;}
  const button=$('#asset-form button[type=submit]');button.disabled=true;button.textContent='INSPECTING SOURCE…';
 
+ const keepOriginal=$('#asset-retain').checked;
  try{
   const inspection=await inspectSource(file),hash=await sha256(file);
   if(state!==catalog)throw new Error('Catalog changed during inspection. Reselect source.');
@@ -45,17 +76,28 @@ $('#asset-form').addEventListener('submit',async ev=>{
   const id=existing?.id||uuid();
   if(!existing)state.assets.push({id,name,worldId,fileName:file.name,format:inspection.format,sha256:hash,bytes:file.size,inspection:inspection.stats.note,createdAt:stamp(),evidence:Array(8).fill(null)});
   sourcePreviews.set(id,inspection);const saved=store();
-  const storeNote='Original source bytes are session-only.';
+  let storeNote='Original source is session-only unless previously retained.';
+  if(keepOriginal&&saved){
+   try{await retainSource(id,file,hash);storeNote='Original source saved on THIS browser using IndexedDB.';}
+   catch(err){storeNote='Local original retention failed: '+err.message+'; reselect after reload.';}
+  }else if(keepOriginal&&!saved){storeNote='Original retention skipped because catalog persistence failed.';}
+  if(state!==catalog){toast('Catalog changed during retention; no new selection made.');return;}
   $('#asset-form').reset();refresh();selectAsset(id);
   toast(persistenceMessage(saved,(existing?'Original hash matched; existing asset and receipts preserved. ':'Source hashed and inspected. ')+storeNote+' No native Blender/Godot or gameplay verification.'));
  }catch(err){toast('Source rejected: '+err.message);}finally{button.disabled=false;button.textContent='INSPECT & REGISTER SOURCE';}
+});
+$('#forget-local-model').addEventListener('click',async()=>{
+ if(!selectedAsset){toast('Select an asset first.');return;}
+ const targetId=selectedAsset,targetName=state.assets.find(a=>a.id===targetId)?.name||targetId;
+ try{await forgetRetainedSource(targetId);toast('Stored original removed for '+targetName+'. In-session preview remains available until reload.');}
+ catch(err){toast('Could not erase stored original: '+err.message);}
 });
 $('#evidence-file').addEventListener('change',async ev=>{const file=ev.target.files?.[0],target=pendingStage,asset=state.assets.find(a=>a.id===target?.assetId),index=target?.index;ev.target.value='';pendingStage=null;if(!file||!asset||!Number.isInteger(index))return;if(file.size>64*1024*1024){toast('Evidence file limit is 64 MiB. Register larger files in an approved source repository.');return;}try{asset.evidence[index]={name:file.name,bytes:file.size,sha256:await sha256(file),submittedAt:stamp(),review:'PENDING_INDEPENDENT_REVIEW'};if(!state.assets.includes(asset))throw new Error('Catalog changed while evidence was inspected. Reselect the target.');const saved=store();renderForge();toast(persistenceMessage(saved,'Evidence hash submitted. This does not certify a pipeline stage.'));}catch(err){toast(err.message);}});
 async function browserChecks(){let storage=false,indexedDBSupported=false,worker=false;try{const x='__sire_probe';localStorage.setItem(x,'1');storage=localStorage.getItem(x)==='1';localStorage.removeItem(x);}catch{}try{indexedDBSupported=typeof indexedDB!=='undefined';}catch{}try{worker=!!(await navigator.serviceWorker?.getRegistration('./'))?.active;}catch{}let webgl=false;try{const c=document.createElement('canvas');webgl=!!c.getContext('webgl2');}catch{}return {'Secure context / loopback':isSecureContext,'Local storage writable':storage,'IndexedDB available':indexedDBSupported,'SHA-256 Web Crypto':!!crypto?.subtle,'Service worker active':worker,'WebGL2 source viewport':webgl,'Network reachable (device only)':navigator.onLine};}
 function showChecks(checks){const box=$('#doctor-checks');box.replaceChildren();for(const [key,value] of Object.entries(checks)){const row=e('div','doctor-check');const status=typeof value==='boolean'?(value?'AVAILABLE':'UNAVAILABLE'):String(value);row.append(e('span','',key),e('b',value===true?'pass':value===false?'fail':'',status));box.append(row);}}
 $('#doctor-run').addEventListener('click',async()=>{const button=$('#doctor-run');button.disabled=true;try{doctor=await browserChecks();let detail='Health endpoint not checked.';try{const raw=$('#doctor-path').value.trim(),url=safeSameOriginUrl(raw,location.href);const timeout=AbortSignal.timeout(4500);const r=await fetch(url.href,{signal:timeout,cache:'no-store',redirect:'error',credentials:'same-origin',headers:{Accept:'application/json'}});const ct=r.headers.get('content-type')||'';if(!r.ok||!ct.includes('application/json'))throw new Error(`HTTP ${r.status}; JSON health response required`);const json=await r.json();if(json.service!=='GAISLINK'||json.status!=='healthy')throw new Error('Response does not match GAISLINK health contract');detail=`Endpoint responded HTTP ${r.status}. Health response observed; authenticated GAISLINK authority NOT verified.`;doctor['GAISLINK endpoint response']='REACHABLE / AUTH UNVERIFIED';}catch(err){detail=`GAISLINK not verified: ${err.message}`;doctor['GAISLINK endpoint response']='NOT VERIFIED';}showChecks(doctor);$('#doctor-state').textContent='LOCAL CHECK COMPLETE';$('#doctor-note').textContent=detail;toast('Browser checks complete. No fleet or release certification granted.');}catch(err){toast(err.message);}finally{button.disabled=false;}});
 function downloadJSON(obj,filename){const blob=new Blob([JSON.stringify(obj,null,2)+'\n'],{type:'application/json'}),url=URL.createObjectURL(blob);const a=e('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-$('#manifest-export').addEventListener('click',()=>{const receipt=stagingReceipt(state,{origin:location.origin,doctor});downloadJSON(receipt,`horizen-staging-${new Date().toISOString().slice(0,10)}.json`);toast('Staging JSON exported. Certification remains HOLD / NOT VERIFIED.');});$('#manifest-import').addEventListener('click',()=>$('#manifest-file').click());$('#manifest-file').addEventListener('change',async ev=>{const file=ev.target.files?.[0];ev.target.value='';if(!file)return;try{if(file.size>1_500_000)throw new Error('Manifest over 1.5 MB.');const fresh=importReceipt(JSON.parse(await file.text()));if(!confirm(`Replace this browser's local catalog with ${fresh.worlds.length} worlds and ${fresh.assets.length} asset records? Source files cannot be restored from receipts.`))return;state=fresh;ready.clear();sourcePreviews.clear();clearPreview();selectedAsset=null;pendingStage=null;const saved=store();refresh();toast(persistenceMessage(saved,'Receipt imported as unverified local records.'));}catch(err){toast('Manifest import rejected: '+err.message);}});
+$('#manifest-export').addEventListener('click',()=>{const receipt=stagingReceipt(state,{origin:location.origin,doctor});downloadJSON(receipt,`horizen-staging-${new Date().toISOString().slice(0,10)}.json`);toast('Staging JSON exported. Certification remains HOLD / NOT VERIFIED.');});$('#manifest-import').addEventListener('click',()=>$('#manifest-file').click());$('#manifest-file').addEventListener('change',async ev=>{const file=ev.target.files?.[0];ev.target.value='';if(!file)return;try{if(file.size>1_500_000)throw new Error('Manifest over 1.5 MB.');const fresh=importReceipt(JSON.parse(await file.text()));if(!confirm(`Replace this browser's local catalog with ${fresh.worlds.length} worlds and ${fresh.assets.length} asset records? Source files cannot be restored from receipts.`))return;state=fresh;ready.clear();sourcePreviews.clear();clearPreview();selectedAsset=null;selectionRevision++;$('#forget-local-model').disabled=false;pendingStage=null;const saved=store();refresh();toast(persistenceMessage(saved,'Receipt imported as unverified local records.'));}catch(err){toast('Manifest import rejected: '+err.message);}});
 function refresh(){renderWorlds();renderStatus();renderForge();}
 function updateClock(){const d=new Date();$('#local-clock').textContent=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',hour12:false}).format(d);$('#network-label').textContent=navigator.onLine?'LOCAL SHELL / DEVICE ONLINE':'LOCAL SHELL / OFFLINE';}updateClock();setInterval(updateClock,60_000);window.addEventListener('online',updateClock);window.addEventListener('offline',updateClock);
 if('serviceWorker' in navigator&&isSecureContext)navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(err=>console.warn('Offline shell registration failed:',err));

@@ -1,12 +1,12 @@
 # S.I.R.E. // HORIZEN GAME ENGINE
 
-A self-contained, offline-capable **local PWA shell**, distinct from the unverified Godot game-engine binary. Official app title: **HORIZEN GAME ENGINE**. Featured game: **AETHERFALL: REALMS COLLIDE**.
+A self-contained, offline-capable **local PWA shell**, distinct from the unverified Godot game-engine binary. Official app title: **HORIZEN GAME ENGINE**. Featured game: **AETHERFALL – REALMS COLIDE** (owner-facing name; internal legacy project IDs remain unchanged).
 
 ## What actually works
 
 - **World Library:** search/filter four seed catalog entries; register custom local worlds; stage/archive; verify same-origin HTTP HTML entry before launching a browser build. The HTML check is **not gameplay certification**. Catalog and asset metadata persist in localStorage.
 - **System Status:** 10 honest evidence gates and seven subsystem cards. Native engine, release, phone, connected fleet, and owner art approval remain **HOLD / NOT VERIFIED**.
-- **Model Forge:** register genuine local `.glb`, `.obj` or `.fbx` files (64 MiB browser limit), hash with Web Crypto SHA-256, inspect glTF 2.0 embedded geometry or OBJ polygons, render actual local triangles through WebGL2 (Canvas2D source-triangle fallback where WebGL2 is unavailable), and submit hash-backed supporting evidence at each of eight production stages. FBX is **hash only**; uploaded files are not persisted. Browser previews are **not** Blender/Godot renders, canonical acceptance, animation or material verification.
+- **Model Forge:** register genuine local `.glb`, self-contained `.gltf`, `.obj`, `.stl` or `.fbx` files (64 MiB limit), hash with Web Crypto SHA-256, inspect supported glTF 2.0 embedded triangles, OBJ polygons, or binary/ASCII STL geometry and preview actual local triangles with WebGL2 or Canvas2D. External glTF `.bin` buffers are not fetched. FBX is **hash only**. Optional **explicit** IndexedDB retention saves chosen original model bytes on this browser; restored files are SHA-256 checked before preview. Users can erase the stored original. Eight production-stage receipts remain pending independent review. No Blender/Godot material, animation, print or gameplay certification is implied.
 - **GAISLINK Doctor:** browser prerequisites and an optional *same-origin* health endpoint check. Even a matching health response does not authenticate GAISLINK authority or certify a connection.
 - **Staging receipts:** JSON export/import, with schema validation and independent-review state. Imported receipts contain metadata, **not original source bytes**.
 - **Offline PWA:** service worker caches only application shell resources after first successful online load. Server responses use no-store; updates are network-first, offline fallback from service worker cache.
@@ -36,3 +36,31 @@ The localhost web server binds to `127.0.0.1` and does **not** expose itself on 
 No generated art or fake frame is included. No model is promoted to canonical art. No game is claimed to be playable, no Godot/Blender/Android validation is implied, and no GitHub commit is a release certificate. S.I.R.E. stages; external platforms govern final publishing.
 
 Original assets should remain in the approved **AETHERFALL** source folders. Refer to `../AGENTS.md`, `../docs/characters/VISUAL_CANON_LOCK.md`, and `../docs/art/ASSET_PIPELINE.md` when this folder lives inside the AETHERFALL repository.
+
+
+## Video 40292 — Blender and HORIZEN model pipeline intake
+
+Owner upload `40292.mp4` is a 22-second screen recording of *proposed code in a chat*, SHA-256 `9539f1ab23bd250d1d91b008a13144666d8b0967a7eee537df55c67b3aae0782`. It is **not** a working Blender/Three.js demonstration. The full original 19 MB video has not been committed to Git; the evidence identity and media facts are in `../evidence/intake/40292_CODE_REFERENCE_2026-11-26.json`.
+
+### Export from an actual saved Blender file
+Set Blender scene units to **Metric**, unit scale **1.0**, and select **exactly one mesh**. In a real Blender environment run:
+
+```sh
+blender /path/to/canonical-character.blend --background \
+  --python tools/horizen_blender_export.py -- \
+  --asset-id CHR_Example --output-dir /path/to/versioned-exports
+```
+
+The exporter writes a **new versioned directory** containing one selected-mesh GLB, a **metres-to-millimetres** binary STL and `export_receipt.json` with source object name, Blender version, mesh-edge audit, file lengths and SHA-256s. It does not re-scale or thicken your canonical Blender mesh. **STL wall thickness, manifold quality and printer/slicer acceptance are NOT proved**; perform explicit native repair and slicer validation before printing. It never copies to a phone or publishes anything.
+
+Run the dependency-free tests first: `python3 -m unittest tests/test_horizen_mesh_io.py -v`. A real Blender execution/test and real Godot import must still be completed by an authorised native runner.
+
+### Local model vault
+
+On the HORIZEN Model Forge asset form, choose a real GLB/embedded glTF/OBJ/STL file. Tick **Save the original file in this browser** only if you want optional on-device retention. On a later reload, selecting the asset can restore the original from IndexedDB after verifying the same SHA-256. The **Forget saved original** action removes the stored file. If IndexedDB is missing, full or cleared, choose the source again; **a JSON receipt by itself does not restore geometry**. No automatic device scan or remote upload is implemented. Real Android offline/reload/device acceptance remains pending.
+
+Full production state: `../docs/characters/MODEL_STEP_CHECKLIST_2026-11-26.md`. AETHERFALL game name and art-source locks apply; HORIZEN is the tool/app name, not the game.
+
+### Source repair boundaries
+
+Binary STL intake and exporter use the same 64 MiB limit (1,342,175 binary STL triangles maximum). Save all current Blender scene changes before export; hashing an older disk revision is not a valid receipt for an unsaved in-memory model. Reattaching an exact original preserves its existing asset record and evidence. Browser storage failures explicitly report session-only changes. The DOM smoke harness uses actual ES module scopes with intercepted local resources, not a live device or engine test.

@@ -11,8 +11,8 @@ permissions:
 
 jobs:
   pwa-source-contracts:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+    runs-on: ubuntu-24.04 # Supported Playwright runner; avoid rolling OS incompatibility
+    timeout-minutes: 12
     steps:
       - name: Checkout source without stored credentials
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -26,5 +26,22 @@ jobs:
         run: |
           bash -n horizen-game-engine/start-horizen-engine.sh
           python3 -m unittest discover -s horizen-game-engine/tests -p 'test_*.py' -v
+      - name: Install pinned Playwright and Chromium
+        run: |
+          python3 -m venv "$RUNNER_TEMP/horizen-browser"
+          "$RUNNER_TEMP/horizen-browser/bin/python" -m pip install playwright==1.55.0
+          "$RUNNER_TEMP/horizen-browser/bin/python" -m playwright install --with-deps chromium
+      - name: Real Chromium model vault acceptance
+        env:
+          PR_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: '"$RUNNER_TEMP/horizen-browser/bin/python" horizen-game-engine/tests/browser_vault_acceptance.py'
+      - name: Archive real browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: horizen-vault-chromium-${{ github.run_id }}-${{ github.run_attempt }}
+          path: horizen-game-engine/evidence/vault-acceptance/
+          if-no-files-found: warn
+          retention-days: 7
       - name: State evidence boundary
-        run: echo 'Source and HTTP tests only; no Android, service worker, engine, or game certification.'
+        run: echo 'Browser and source tests only. Synthetic fixtures; no native Blender, Godot model import, physical Android, or release certification.'

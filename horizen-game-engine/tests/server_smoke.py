@@ -52,7 +52,10 @@ class LocalServerContract(unittest.TestCase):
 
     def test_sw_exists_and_root_is_private_to_loopback(self):
         with self.get('sw.js') as res:
-            self.assertIn(b'horizen-shell-v0.1.0',res.read())
+            worker=res.read()
+        self.assertRegex(worker, rb"horizen-shell-v0\.1\.[0-9]+")
+        self.assertIn(b"'./model-extra.js'", worker)
+        self.assertIn(b"'./model-vault.js'", worker)
         self.assertEqual(self.server.server_address[0],'127.0.0.1')
 
     def test_directory_listing_forbidden(self):
