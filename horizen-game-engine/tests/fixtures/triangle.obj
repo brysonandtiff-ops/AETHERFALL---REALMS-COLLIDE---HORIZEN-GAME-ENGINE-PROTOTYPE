@@ -1,0 +1,6 @@
+# Synthetic geometry for geometry parser unit testing. Not a canonical hero model.
+o UnitTestTriangle
+v 0 0 0
+v 1 0 0
+v 0 1 0
+f 1 2 3

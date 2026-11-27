@@ -1,0 +1,35 @@
+/** WebGL2 preview of real local source triangles. Not a native engine/Blender render. */
+let current=null;
+function compile(gl,type,source){const shader=gl.createShader(type);gl.shaderSource(shader,source);gl.compileShader(shader);if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(shader));return shader;}
+export function mountPreview(canvas,vertices){
+  current?.dispose();current=null;
+  if(!vertices?.length)throw new Error('No genuine source triangles to display.');
+  const gl=canvas.getContext('webgl2',{antialias:true,preserveDrawingBuffer:true});if(!gl)return mountCanvas2D(canvas,vertices);
+  const vertex=compile(gl,gl.VERTEX_SHADER,`#version 300 es\nprecision highp float;in vec3 aPosition;uniform mat4 uRotation;uniform float uScale;out vec3 vPos;void main(){vec4 v=uRotation*vec4(aPosition*uScale,1.);vPos=v.xyz;gl_Position=vec4(v.xy*.72,v.z*.16,1.);}`);
+  const fragment=compile(gl,gl.FRAGMENT_SHADER,`#version 300 es\nprecision highp float;in vec3 vPos;out vec4 color;void main(){vec3 n=normalize(cross(dFdx(vPos),dFdy(vPos)));float lit=.35+abs(dot(n,normalize(vec3(.6,.8,1.0))))*.65;vec3 base=mix(vec3(.29,.24,.45),vec3(.70,.79,.98),lit);color=vec4(base,1.);}`);
+  const program=gl.createProgram();gl.attachShader(program,vertex);gl.attachShader(program,fragment);gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error('WebGL2 shader link failed.');gl.useProgram(program);
+  const arr=new Float32Array(vertices);let min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];for(let i=0;i<arr.length;i+=3)for(let j=0;j<3;j++){min[j]=Math.min(min[j],arr[i+j]);max[j]=Math.max(max[j],arr[i+j]);}const mid=min.map((v,i)=>(v+max[i])/2),size=Math.max(...max.map((v,i)=>v-min[i]),.0001);for(let i=0;i<arr.length;i+=3)for(let j=0;j<3;j++)arr[i+j]=(arr[i+j]-mid[j])/size*2;
+  const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);const loc=gl.getAttribLocation(program,'aPosition');gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(loc);const uRot=gl.getUniformLocation(program,'uRotation'),uScale=gl.getUniformLocation(program,'uScale');let yaw=.62,pitch=.22,zoom=1.0,pointer=null;
+  function render(){const w=canvas.width=canvas.clientWidth*Math.min(devicePixelRatio||1,2),h=canvas.height=canvas.clientHeight*Math.min(devicePixelRatio||1,2);gl.viewport(0,0,w,h);gl.clearColor(.035,.045,.075,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);const c=Math.cos(yaw),s=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);gl.uniformMatrix4fv(uRot,false,Float32Array.from([c,sp*s,-cp*s,0,0,cp,sp,0,s,-sp*c,cp*c,0,0,0,0,1]));gl.uniform1f(uScale,zoom);gl.drawArrays(gl.TRIANGLES,0,arr.length/3);}
+  const down=e=>{pointer=[e.clientX,e.clientY];canvas.setPointerCapture(e.pointerId);};const move=e=>{if(!pointer)return;yaw+=(e.clientX-pointer[0])*.012;pitch=Math.max(-1.2,Math.min(1.2,pitch+(e.clientY-pointer[1])*.012));pointer=[e.clientX,e.clientY];render();};const up=()=>{pointer=null;};const wheel=e=>{e.preventDefault();zoom=Math.max(.3,Math.min(3,zoom*(e.deltaY>0?.9:1.1)));render();};canvas.addEventListener('pointerdown',down);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);canvas.addEventListener('wheel',wheel,{passive:false});const resize=new ResizeObserver(render);resize.observe(canvas);render();current={dispose(){resize.disconnect();canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerup',up);canvas.removeEventListener('pointercancel',up);canvas.removeEventListener('wheel',wheel);gl.deleteBuffer(buffer);gl.deleteShader(vertex);gl.deleteShader(fragment);gl.deleteProgram(program);}};return current;
+}
+export function clearPreview(){current?.dispose();current=null;}
+
+/** Real triangle projection fallback for devices without WebGL2. No synthetic geometry. */
+function mountCanvas2D(canvas,vertices){
+  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Neither WebGL2 nor Canvas2D is available.');
+  canvas.dataset.renderer='Canvas2D real source triangles';
+  const points=new Float32Array(vertices);let low=[Infinity,Infinity,Infinity],high=[-Infinity,-Infinity,-Infinity];
+  for(let i=0;i<points.length;i+=3)for(let k=0;k<3;k++){low[k]=Math.min(low[k],points[i+k]);high[k]=Math.max(high[k],points[i+k]);}
+  const mid=low.map((v,i)=>(v+high[i])/2),span=Math.max(...high.map((v,i)=>v-low[i]),1e-5);
+  for(let i=0;i<points.length;i+=3)for(let k=0;k<3;k++)points[i+k]=(points[i+k]-mid[k])/span;
+  let yaw=.5,pitch=.25,zoom=1,pointer=null;
+  function project(x,y,z){const c=Math.cos(yaw),s=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch),xx=c*x+s*z,zz=-s*x+c*z,yy=cp*y-sp*zz,depth=sp*y+cp*zz;return [xx,yy,depth];}
+  function draw(){const ratio=Math.min(devicePixelRatio||1,2),w=canvas.width=Math.max(1,Math.round(canvas.clientWidth*ratio)),h=canvas.height=Math.max(1,Math.round(canvas.clientHeight*ratio));ctx.fillStyle='#080b16';ctx.fillRect(0,0,w,h);const s=Math.min(w,h)*.83*zoom,origin=[w/2,h/2],tris=[];const n=Math.floor(points.length/9),step=Math.max(1,Math.ceil(n/8000));
+    for(let t=0;t<n;t+=step){const i=t*9,a=project(points[i],points[i+1],points[i+2]),b=project(points[i+3],points[i+4],points[i+5]),c=project(points[i+6],points[i+7],points[i+8]);const cross=(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);tris.push({p:[a,b,c],d:(a[2]+b[2]+c[2])/3,light:Math.min(1,Math.max(.2,.52+cross*2))});}
+    tris.sort((a,b)=>a.d-b.d);for(const tri of tris){ctx.beginPath();for(let j=0;j<3;j++){const [x,y]=tri.p[j];if(j===0)ctx.moveTo(origin[0]+x*s,origin[1]-y*s);else ctx.lineTo(origin[0]+x*s,origin[1]-y*s);}ctx.closePath();const l=Math.round(92+125*tri.light);ctx.fillStyle=`rgb(${Math.round(l*.68)},${Math.round(l*.78)},${l})`;ctx.fill();ctx.lineWidth=ratio*.55;ctx.strokeStyle='rgba(184,143,255,.42)';ctx.stroke();}
+  }
+  const down=ev=>{pointer=[ev.clientX,ev.clientY];canvas.setPointerCapture(ev.pointerId);},move=ev=>{if(!pointer)return;yaw+=(ev.clientX-pointer[0])*.013;pitch=Math.max(-1.35,Math.min(1.35,pitch+(ev.clientY-pointer[1])*.013));pointer=[ev.clientX,ev.clientY];draw();},up=()=>pointer=null,wheel=ev=>{ev.preventDefault();zoom=Math.max(.4,Math.min(3,zoom*(ev.deltaY>0?.9:1.1)));draw();};
+  canvas.addEventListener('pointerdown',down);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);canvas.addEventListener('wheel',wheel,{passive:false});const ro=new ResizeObserver(draw);ro.observe(canvas);draw();
+  current={dispose(){ro.disconnect();canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerup',up);canvas.removeEventListener('pointercancel',up);canvas.removeEventListener('wheel',wheel);delete canvas.dataset.renderer;}};return current;
+}
