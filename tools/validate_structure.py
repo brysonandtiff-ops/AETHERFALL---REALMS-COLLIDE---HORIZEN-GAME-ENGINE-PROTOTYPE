@@ -43,7 +43,7 @@ REQUIRED_DIRS = (
 IGNORED_DIRS = {".git", ".godot", ".import", ".pytest_cache", "__pycache__", "build", "dist", ".venv"}
 PRIVATE_FILENAMES = {"id_rsa", "id_ed25519", "credentials.json", "service-account.json", "service_account.json", ".netrc", ".npmrc", ".pypirc"}
 PRIVATE_EXTENSIONS = {".pem", ".key", ".p12", ".pfx", ".jks", ".keystore"}
-BINARY_ART_EXTENSIONS = {".blend", ".glb", ".fbx", ".gltf", ".png", ".jpg", ".jpeg", ".wav", ".ogg", ".mp4"}
+BINARY_ART_EXTENSIONS = {".blend", ".glb", ".fbx", ".gltf", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif", ".wav", ".ogg", ".mp4"}
 MAX_DIRECT_BINARY_BYTES = 50 * 1024 * 1024
 ID_PATTERN = re.compile(r"^(CHR|WPN)_[A-Za-z][A-Za-z0-9_]*$")
 MAIN_SCENE = re.compile(r'(?m)^\s*run/main_scene\s*=\s*"res://([^"]+)"')

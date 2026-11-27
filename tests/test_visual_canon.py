@@ -27,8 +27,15 @@ class VisualCanonTests(unittest.TestCase):
             dst = self.root / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / rel, dst)
-        for cid in guard.PINNED:
-            (self.root / "art/concepts/characters" / cid).mkdir(parents=True)
+        manifest = json.loads((ROOT / "docs/characters/CANON_LOCKS.json").read_text(encoding="utf-8"))
+        for cid, lock in manifest["locked_characters"].items():
+            (self.root / "art/concepts/characters" / cid).mkdir(parents=True, exist_ok=True)
+            relative = Path(lock["source"]["path"])
+            original = ROOT / relative
+            if original.is_file():
+                target = self.root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(original, target)
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -43,7 +50,7 @@ class VisualCanonTests(unittest.TestCase):
         issues = guard.check(self.root)
         self.assertTrue(any(needle in problem for problem in issues), issues)
 
-    def test_valid_missing_source_stays_pending_not_approved(self):
+    def test_current_source_archive_states_are_valid(self):
         self.assertEqual(guard.check(self.root), [])
 
 
@@ -76,6 +83,8 @@ class VisualCanonTests(unittest.TestCase):
         self.rejected("Approved reference identity/hash drift")
 
     def test_canonical_source_false_claim_is_rejected(self):
+        # Isolate the missing-source case even after a genuine archive is added.
+        (self.root / guard.PINNED["CHR_Vellaris_Bloodshield"]["path"]).unlink(missing_ok=True)
         self.change("docs/characters/CANON_LOCKS.json",
                     lambda d: d["locked_characters"]["CHR_Vellaris_Bloodshield"]["source"].update(state="source_verified"))
         self.rejected("Character source promoted without original image bytes")

@@ -48,3 +48,7 @@ The earlier written Drowned Breakwater design was complete for review at the ori
 ## Repair work order AF-REPO-REPAIR-20261127-001
 
 Owner-approved reference from PR #30 is incorporated into the existing integration branch without discarding any previously integrated policy or handoff validator. Original review branch and source commits retained; no automatic main merge. Dreadhull master fingerprint, weapon, visual traits and six-slot concept kit are pinned. The earlier Drowned Breakwater specification is historical only. Refer to the active plan and approval evidence, not the superseded proposal. Archive bytes remain pending on GitHub; the original is verified in chat and Library. No model/rig/gameplay approval or full roster originality comparison is claimed. New exact-head CI and independent review required. PR #30 overlaps this integrated repair; do not merge both independently without reconciling the changed files.
+
+### Archive fixture repair
+
+Prepared positive/adversarial fixture setup to copy real approved master bytes if present, rather than treating an archived master as absent in tests. Added direct-binary budget checks for WebP, GIF and AVIF and a WebP regression test. Exact Dreadhull binary is still absent remotely; do not promote the source gate until the original is actually in the same reviewed Git tree. Main is unchanged.
