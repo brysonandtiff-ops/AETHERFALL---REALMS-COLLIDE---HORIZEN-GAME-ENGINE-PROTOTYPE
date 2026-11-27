@@ -11,17 +11,17 @@ from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "evidence" / "vault-acceptance"
-DB = """async () => {const v=await import('./model-vault.js');return v;}"""
 A = b"v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n"
-B = b"v 0 0 0\nv 2 0 0\nv 0 2 0\nf 1 2 3\n"
+B = b"v 0 0 0\nv 2 0 0\nv 0 2 0\nv 2 2 0\nf 1 2 3\nf 2 4 3\n"
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
     server = ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(SimpleHTTPRequestHandler, directory=str(ROOT)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     results = []
+    server_running = True
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM", "/usr/bin/chromium"), args=["--no-sandbox"])
+            browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM"), args=["--no-sandbox"])
             ctx = browser.new_context(record_video_dir=str(OUT))
             page = ctx.new_page()
             errors = []
@@ -54,6 +54,9 @@ def run():
                 assert {r["name"]:r["actual"] for r in rows} == {"RETAIN_A.obj":hashlib.sha256(A).hexdigest(),"RETAIN_B.obj":hashlib.sha256(B).hexdigest()}
                 assert all(r["hash"]==r["actual"] for r in rows)
                 results.append("upload_opt_in_hash")
+                server.shutdown()
+                server.server_close()
+                server_running = False
                 ctx.set_offline(True)
                 reload()
                 assert page.evaluate("navigator.onLine") is False
@@ -61,14 +64,35 @@ def run():
                 select("RETAIN_A","REAL LOCAL SOURCE")
                 page.screenshot(path=str(OUT/"offline-restored.png"))
                 results.append("offline_reload")
-                # Delay actual IndexedDB get success delivery, not the stored bytes.
-                page.evaluate("""() => {const orig=IDBObjectStore.prototype.get;IDBObjectStore.prototype.get=function(...args){const r=orig.apply(this,args);const d=Object.getOwnPropertyDescriptor(IDBRequest.prototype,'onsuccess');if(args[0]===window.slowId)Object.defineProperty(r,'onsuccess',{set(fn){d.set.call(r,e=>setTimeout(()=>fn.call(r,e),500));}});return r;};}""")
-                page.evaluate("(id)=>window.slowId=id",next(r["id"] for r in rows if r["name"]=="RETAIN_B.obj"))
+                # Hold B's real file read after IndexedDB transaction completion.
+                page.evaluate("""() => {
+                    const original=File.prototype.arrayBuffer;
+                    let release;
+                    const gate=new Promise(resolve=>release=resolve);
+                    window.releaseSlow=release;
+                    window.slowStarted=false;
+                    window.slowReleased=false;
+                    File.prototype.arrayBuffer=async function(...args){
+                        if(this.name==='RETAIN_B.obj'&&!window.slowStarted){
+                            window.slowStarted=true;
+                            await gate;
+                            window.slowReleased=true;
+                        }
+                        return original.apply(this,args);
+                    };
+                }""")
                 page.locator(".asset-item").filter(has=page.get_by_text("RETAIN_B",exact=True)).click()
+                page.wait_for_function("window.slowStarted")
                 select("RETAIN_A","REAL LOCAL SOURCE")
-                page.wait_for_timeout(800)
+                expect(page.locator("#inspection-details")).to_contain_text("1 source tris")
+                page.evaluate("window.releaseSlow()")
+                page.wait_for_function("window.slowReleased")
+                # Allow asynchronous hashing/inspection to finish; selection and rendered geometry must stay A.
+                page.wait_for_timeout(1000)
                 expect(page.locator("#selected-asset-label")).to_have_text("RETAIN_A")
+                expect(page.locator("#inspection-details")).to_contain_text("1 source tris")
                 expect(page.locator("#preview-state")).to_have_text("REAL LOCAL SOURCE")
+                page.screenshot(path=str(OUT/"delayed-switch.png"))
                 results.append("delayed_switch")
                 reload()
                 select("RETAIN_A","REAL LOCAL SOURCE")
@@ -78,6 +102,7 @@ def run():
                 reload()
                 select("RETAIN_A","NO SOURCE LOADED")
                 select("RETAIN_B","REAL LOCAL SOURCE")
+                expect(page.locator("#inspection-details")).to_contain_text("2 source tris")
                 results.append("correct_file_removal")
                 page.evaluate("""() => {IDBObjectStore.prototype.put=function(){throw new DOMException('Injected quota failure','QuotaExceededError');};}""")
                 upload("FAIL_STORAGE", A, True)
@@ -86,14 +111,35 @@ def run():
                 reload()
                 select("FAIL_STORAGE","NO SOURCE LOADED")
                 results.append("injected_storage_failure")
+                # Corrupt only the disposable test record, preserving its expected receipt.
+                page.evaluate("""async (id) => {
+                    const db=await new Promise((ok,no)=>{const r=indexedDB.open('horizen-model-vault-v1',1);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error);});
+                    try{await new Promise((ok,no)=>{
+                        const tx=db.transaction('originals','readwrite'),store=tx.objectStore('originals'),r=store.get(id);
+                        r.onsuccess=()=>store.put({...r.result,file:new Blob(['corrupt fixture bytes'])});
+                        tx.oncomplete=ok;tx.onerror=()=>no(tx.error);tx.onabort=()=>no(tx.error);
+                    });}finally{db.close();}
+                }""",next(r["id"] for r in rows if r["name"]=="RETAIN_B.obj"))
+                reload()
+                select("RETAIN_B","NO SOURCE LOADED")
+                expect(page.locator("#toast")).to_contain_text("Stored model hash mismatch")
+                expect(page.locator("#model-canvas")).to_be_hidden()
+                page.screenshot(path=str(OUT/"hash-mismatch.png"))
+                results.append("tampered_original_rejected")
                 assert not errors, errors
+                assert len(results) == 6, results
+            except Exception:
+                page.screenshot(path=str(OUT/"failure.png"))
+                raise
             finally:
+                runtime = browser.version
                 ctx.tracing.stop(path=str(OUT/"trace.zip"))
                 ctx.close()
                 browser.close()
-                (OUT/"results.json").write_text(json.dumps({"source":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),"passed":results,"page_errors":errors,"native_tests":"NOT RUN"},indent=2))
+                (OUT/"results.json").write_text(json.dumps({"source":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),"passed":results,"page_errors":errors,"runtime":runtime,"pr_head":os.environ.get("PR_HEAD"),"result":"PASS" if len(results)==6 and not errors else "FAIL","native_tests":"NOT RUN","files":{f.name:{"bytes":f.stat().st_size,"sha256":hashlib.sha256(f.read_bytes()).hexdigest()} for f in OUT.iterdir() if f.is_file() and f.name!="results.json"}},indent=2))
     finally:
-        server.shutdown()
-        server.server_close()
+        if server_running:
+            server.shutdown()
+            server.server_close()
 if __name__ == "__main__":
     run()
