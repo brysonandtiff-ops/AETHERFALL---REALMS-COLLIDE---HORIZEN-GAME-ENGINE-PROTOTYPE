@@ -1,5 +1,7 @@
 # AETHERFALL — Concept-to-game art pipeline
 
+**MANDATORY DESIGN-FIRST GATE — SIRE-ART-INFO-001:** Before a newly planned visual asset can be approved for production, prepare an appropriate infographic development board and an accompanying text/JSON plan. Follow [the universal AETHERFALL infographic standard](UNIVERSAL_INFOGRAPHIC_STANDARD.md), the [machine-readable category policy](INFOGRAPHIC_POLICY.json) and the [per-asset plan template](INFOGRAPHIC_PLAN_TEMPLATE.json). All characters, weapons, levels, props, buildings, creatures, vehicles, environments and UI are covered. Use the Vellaris example's presentation grid, not its character design. Archive exact original sources and require owner review; no generated board counts as native engine proof. Historic assets do not become unfinished solely because they lack a new board; index them separately before further production changes.
+
 1. **Reference / concept:** Save owner-approved, rights-cleared source sheets under `art/concepts/`; record which version is canonical. Do not substitute or edit approved art without permission.
 2. **Blender source:** Save editable models in `art/blender/` using the asset ID; preserve iterations, armatures, UVs, materials, actions and mesh names.
 3. **Scale and orientation:** Use metric units, unit scale 1.0, +Z up and -Y forward in Blender. Confirm the final orientation and scale after importing into Godot.
@@ -24,3 +26,13 @@ Follow `docs/characters/CHARACTER_WORKFLOW.md` and keep `docs/characters/plans/<
 ## Reference-locked art pipeline
 
 Honor docs/characters/CANON_LOCKS.json and VISUAL_CANON_LOCK.md. Preserve exact master source bytes/MIME and owner-approved face, silhouette, palette, weapon and kit. Use Vellaris branded infographic layout but not her personal shield/appearance on other heroes. ThornDell must preserve antlers, green venom and Root Bulwark. No character image becomes canon without source-to-output owner review. Never claim a generated reference is native Blender/Godot evidence.
+
+## S.I.R.E. 1P + 3P hero-shooter handoff (review candidate)
+
+The additive production handoff is in [the cross-team standard](../pipeline/PRODUCTION_STANDARD.md), with [Blender modelling/rigging/texture gates](../pipeline/BLENDER_ART_TEAM.md), [Gameplay Engineering/AI/combat-state gates](../pipeline/GAMEPLAY_AI_ENGINEERING.md) and [release-sovereign evidence/packaging](../pipeline/SOVEREIGN_STAGING_AND_PROOF.md). Its [read-only checker](../../tools/verify_production_contract.py) validates only local spec structure and available file hashes; it does not certify native Blender/Godot work or platform release. This extension does not change any locked character, original reference, existing plan gate, mesh or rig.
+
+## Mandatory raw sculpt → 1P/3P game-ready SOP
+
+Follow [AF-ART-BLENDER-001 — Raw AI sculpt to game-ready model](BLENDER_RAW_SCULPT_TO_GAME_READY.md) for every approved hero, gear or character conversion. It prescribes safe raw-input preservation, metres/ground alignment, pedestal removal, topology and canon-safe symmetry, high-poly → retopo, UV/PBR baking, 1P/3P LOD budgets, rigs, sockets, .glb exports and native Godot verification. The per-asset checklist starts at [BLENDER_HANDOFF_TEMPLATE.json](templates/BLENDER_HANDOFF_TEMPLATE.json); copy it next to the real versioned .blend as `handoff.json` only for a registered character. Run `python3 tools/validate_blender_handoff.py`; the offline structural checker also rejects unsupported PASS/GAME_READY claims. **This is static integrity checking only**: no script can substitute for genuine Blender screenshots, Godot runtime, physical-device tests, source comparison and owner signoff.
+
+**Hardening addendum:** [Native capture and source/approval integrity contract](BLENDER_EVIDENCE_HARDENING.md). A registered character may archive an untouched incoming `.glb` only at `art/blender/characters/<CHR_ID>/raw/`; exported Godot `.glb` files never go under `art/`. Native Blender, Godot and owner proof is required independently of hashes and header checks.

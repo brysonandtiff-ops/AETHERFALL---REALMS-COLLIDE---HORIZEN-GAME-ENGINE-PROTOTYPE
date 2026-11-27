@@ -20,14 +20,22 @@ class VisualCanonTests(unittest.TestCase):
             "docs/characters/CANON_LOCKS.json",
             "docs/characters/plans/CHR_Vellaris_Bloodshield.json",
             "docs/characters/plans/CHR_ThornDell.json",
+            "docs/characters/plans/CHR_Dreadhull.json",
             "art/asset_registry.json",
         ]
         for rel in paths:
             dst = self.root / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / rel, dst)
-        for cid in guard.PINNED:
-            (self.root / "art/concepts/characters" / cid).mkdir(parents=True)
+        manifest = json.loads((ROOT / "docs/characters/CANON_LOCKS.json").read_text(encoding="utf-8"))
+        for cid, lock in manifest["locked_characters"].items():
+            (self.root / "art/concepts/characters" / cid).mkdir(parents=True, exist_ok=True)
+            relative = Path(lock["source"]["path"])
+            original = ROOT / relative
+            if original.is_file():
+                target = self.root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(original, target)
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -42,7 +50,7 @@ class VisualCanonTests(unittest.TestCase):
         issues = guard.check(self.root)
         self.assertTrue(any(needle in problem for problem in issues), issues)
 
-    def test_valid_missing_source_stays_pending_not_approved(self):
+    def test_current_source_archive_states_are_valid(self):
         self.assertEqual(guard.check(self.root), [])
 
 
@@ -75,6 +83,8 @@ class VisualCanonTests(unittest.TestCase):
         self.rejected("Approved reference identity/hash drift")
 
     def test_canonical_source_false_claim_is_rejected(self):
+        # Isolate the missing-source case even after a genuine archive is added.
+        (self.root / guard.PINNED["CHR_Vellaris_Bloodshield"]["path"]).unlink(missing_ok=True)
         self.change("docs/characters/CANON_LOCKS.json",
                     lambda d: d["locked_characters"]["CHR_Vellaris_Bloodshield"]["source"].update(state="source_verified"))
         self.rejected("Character source promoted without original image bytes")
@@ -93,6 +103,56 @@ class VisualCanonTests(unittest.TestCase):
         self.change("docs/characters/plans/CHR_Vellaris_Bloodshield.json",
                     lambda d: d["design"]["active_abilities"][0].update(name="New random spell"))
         self.rejected("Approved character active kit drift")
+
+    def test_dreadhull_reference_is_immutable(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_Dreadhull"]["source"].update(sha256="a"*64))
+        self.rejected("Approved reference identity/hash drift: CHR_Dreadhull")
+
+    def test_dreadhull_dredge_cannot_be_replaced(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"].update(signature_prop="Anchor-scythe"))
+        self.rejected("Approved character design/prop changed in plan: CHR_Dreadhull")
+
+    def test_dreadhull_kit_cannot_be_replaced(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"]["active_abilities"][0].update(name="Tide Chain"))
+        self.rejected("Approved character active kit drift: CHR_Dreadhull")
+
+    def test_dreadhull_approval_cannot_be_downgraded(self):
+        self.change("art/asset_registry.json", lambda d: next(a for a in d["assets"]
+                    if a["id"] == "CHR_Dreadhull").update(concept_status="legacy_owner_approved_candidate_for_aetherfall"))
+        self.rejected("Pinned owner-approved character registry status removed: CHR_Dreadhull")
+
+    def test_dreadhull_weapon_keyword_cannot_hide_replacement(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"].update(signature_prop="Ossuary Dredge converted into an anchor-scythe"))
+        self.rejected("Dreadhull approved design contract drift")
+
+    def test_dreadhull_ability_mechanics_cannot_be_replaced_under_same_name(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"]["active_abilities"][0].update(summary="An unrelated spell"))
+        self.rejected("Dreadhull approved design contract drift")
+
+    def test_dreadhull_passive_mechanics_are_pinned(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"]["passive"].update(summary="Infinite damage immunity"))
+        self.rejected("Dreadhull approved design contract drift")
+
+    def test_dreadhull_visual_traits_cannot_be_silently_extended(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_Dreadhull"]["visual_lock"].append("Replace wreck frame with full galleon"))
+        self.rejected("Dreadhull approved design contract drift")
+
+    def test_dreadhull_visual_identity_cannot_be_rewritten(self):
+        self.change("docs/characters/plans/CHR_Dreadhull.json",
+                    lambda d: d["design"].update(visual_identity="Octopus captain with keel oar"))
+        self.rejected("Dreadhull approved design contract drift")
+
+    def test_dreadhull_mime_cannot_be_changed(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_Dreadhull"]["source"].update(media_type="image/png"))
+        self.rejected("Dreadhull original source provenance drift")
 
     def test_infographic_hierarchy_cannot_be_dropped(self):
         self.change("docs/characters/CANON_LOCKS.json",

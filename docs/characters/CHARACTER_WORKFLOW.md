@@ -4,6 +4,8 @@
 
 The owner-provided **Vellaris — The Bloodshield** master sheet is the **minimum completeness reference**, *not* a verified final game model. Match the sheet's depth and clarity, **not** her shield, colors, abilities, silhouette or species. Every tank must be meaningfully 1-of-1: avoid giving all tanks a shield. Do not change locked art or canonical IDs without owner approval.
 
+**Universal art sheet rule:** All planned game visuals—not only characters—must use the AETHERFALL infographic format from `../art/UNIVERSAL_INFOGRAPHIC_STANDARD.md` under SIRE-ART-INFO-001. Character plans and the 16 existing `sheet_sections` remain the authoritative **character-specific** completeness gate. Infographic presentation does not transfer Vellaris's face, colours, shield or skills to another hero.
+
 ## One character = one registered, searchable plan
 
 1. Inspect `art/asset_registry.json` and `docs/characters/CHARACTER_INTAKE.md`. Reserve a unique `CHR_<Name>` ID and honest `concept_status`; check aliases before renaming anyone (especially Corvex/Korvex).
@@ -55,3 +57,23 @@ FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → P
 ## Absolute visual-drift gate
 
 First read VISUAL_CANON_LOCK.md and CANON_LOCKS.json. Use the exact source image as reference, never memory alone. Any new output is provisional until actual image comparison and owner signoff; protect both source-image hash and character-specific traits. Continue to use the AETHERFALL sheet hierarchy without copying Vellaris's character details to others. CI proves source integrity, not visual likeness.
+
+## Mandatory one-of-one character originality gate — AF-CHAR-ORIGINALITY-001
+
+**Owner directive, 2026-11-27:** Every character must have its own look. Applies to all new and revised heroes, tanks, DPS, supports, enemies, bosses, NPCs, summons and skins. Shared world art direction, faction motifs and the VELLARIS_V1_PLUS sheet layout are allowed; copied character identity is not. This supplements the visual canon lock and does not authorize changing any existing approved source or identity.
+
+Before selecting or promoting a concept:
+
+1. FIND: inspect the asset registry, intake, canonical locks, legacy candidates and actual available approved/proposed roster references. Record references inspected and those unavailable; do not guess their appearance. Check for recognisable external franchise character imitation when relevant. Mythological or historical archetypes may inspire original designs, not reproduce a franchise-specific depiction.
+2. PLAN: define a unique visual identity before generation: silhouette/body proportions, species/face/head shape, hair/headwear, costume/armor construction, material and accent palette, signature weapon/focus, pose/motion and VFX language. Define distinct gameplay identity and readable abilities; shared roles and broad themes are not prohibited.
+3. BUILD: use the common AETHERFALL board hierarchy while designing a character from their own brief. No recoloured/retextured clones, swapped weapons on an otherwise copied body, repeated default armor/shield, face or costume recycling, or renamed recognisable franchise replicas. A deliberate same-character skin may retain that character's identity only; it may not masquerade as a different hero.
+4. TEST / REPAIR / RETEST: compare the actual candidate against the closest roster characters side by side at portrait, four-view and gameplay-camera silhouette scales. Review silhouette, face/head, outfit, materials/colors, prop/focus, motion/VFX and overall identity. For each comparison record PASS / FAIL / NOT TESTED and concrete distinguishing features. Redesign any failed overlap and repeat comparison. Missing critical reference imagery blocks a claim of full roster originality; the draft may stay provisional.
+5. SHOW / HARDEN / PROVE / FINISH: provide the genuine concept board and comparison evidence with source IDs/hashes where available, reviewer, limitations and owner decision. Record the report under `evidence/characters/<ID>/` after the ID is registered. No automatic promotion to identity approval, and no concept-package review with unresolved critical collisions, missing required comparison evidence or missing owner signoff. AI and structural CI cannot prove artistic uniqueness; a human visual review is mandatory. Keep existing canonical art unchanged.
+
+An explicit owner selection of an exact supplied image (such as Dreadhull #07) may be recorded as owner-approved concept identity before the comparison package is complete. This preserves the chosen source, not a claim of proven originality. Keep missing comparison evidence as a production blocker and concept_package_reviewed=false. Neither an agent nor a structural check can grant this exception itself.
+
+Acceptance: a character is immediately distinguishable in silhouette and in full-color art from the closest roster members; shared motifs do not erase its unique identity. Record the decision before production; do not treat concept review as a rig, model or gameplay test.
+
+## Raw AI sculpt visual-quality appendix — 26 November 2026
+
+Owner-supplied Meshy/raw-sculpt screenshots for Razor, Raven and Vellaris, plus two unassigned candidate designs, are documented in [the screenshot reference seal](RAW_SCULPT_REFERENCE_SEAL_2026-11-26.md) and [SHA-256 register](RAW_SCULPT_REFERENCE_REGISTER_2026-11-26.json). Their intended modelling improvements and 1P/3P performance/animation evidence are specified in [the premium fidelity gate](../art/HIGH_FIDELITY_MODEL_STANDARD.md) and [per-hero work orders](../art/RAW_SCULPT_TO_PRODUCTION_WORK_ORDERS.md). This appendix **does not override CANON_LOCKS.json, alter approved appearance, grant source-archived status, or certify Blender/Godot runtime**; screenshot bytes are stored externally in the documented Library archive until original model/master sources are verified and separately approved.

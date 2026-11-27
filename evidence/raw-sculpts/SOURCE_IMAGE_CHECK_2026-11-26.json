@@ -1,0 +1,9 @@
+{
+  "result": "SCREENSHOT_BYTES_VERIFIED_ONLY",
+  "count": 8,
+  "source_bytes_checked": true,
+  "native_blender": "NOT_RUN",
+  "native_godot": "NOT_RUN",
+  "model_ready": false,
+  "errors": []
+}

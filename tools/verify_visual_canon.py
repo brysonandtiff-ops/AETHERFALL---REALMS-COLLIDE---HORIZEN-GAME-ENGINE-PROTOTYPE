@@ -38,7 +38,103 @@ PINNED = {
         "actives": [], "passive": None,
         "traits": ("antlers", "bark", "basalt", "venom", "root bulwark", "fungi"),
     },
+    "CHR_Dreadhull": {
+        "path": "art/concepts/characters/CHR_Dreadhull/Dreadhull_Bonebrine_Reaver_CANONICAL_v1.webp",
+        "sha256": "6d172d578f0d01e5ea126f755ae7c309a4e5d176b801bf11af7de3990a43273c",
+        "format": "WEBP", "width": 1536, "height": 1152, "bytes": 538780,
+        "name": "Dreadhull", "title": "Bonebrine Reaver — The Cursed Salvager", "role": "tank",
+        "focus": "Ossuary Dredge",
+        "actives": ["Dredge Snare","Salvage Recall","Reforge Bulwark","Wreckline Drag","Graveyard Forge"],
+        "passive": "Sunken Claim",
+        "traits": ("hooded", "bone-brine", "cyan", "crimson", "ossuary dredge", "salvage bulwark", "wreck frame"),
+    },
 }
+# Independently pinned owner-selected design contract. Progress gates are not locked here.
+DREADHULL_DESIGN_CONTRACT = {
+    "identity": {
+        "display_name": "Dreadhull",
+        "epithet": "Bonebrine Reaver — The Cursed Salvager",
+        "role_class": "tank",
+        "signature_focus": "Ossuary Dredge",
+        "active_ability_names": [
+            "Dredge Snare",
+            "Salvage Recall",
+            "Reforge Bulwark",
+            "Wreckline Drag",
+            "Graveyard Forge"
+        ],
+        "passive_ability_name": "Sunken Claim"
+    },
+    "visual_lock": [
+        "Broad asymmetrical heavy bipedal tank; hooded undead face with dark recess, narrow cyan glow and exposed cyan-lit skeletal ribs; no tentacle beard.",
+        "Bone-brine plates with ivory curved whale-bone ribs, dark blue-black metal, rusted antique-gold ironwork, chains and bound salvage ropes.",
+        "Tattered crimson-magenta sails and cloth drape over shoulder and waist; cyan brine lantern and magical energy glow.",
+        "Ossuary Dredge: large arm-carried cylindrical salvage winch, circular ribbed bone-claw aperture and glowing cyan brine chamber; preserve exact weapon shape, not an anchor-scythe.",
+        "Opposite arm retains the original strapped jagged timber-and-bone salvage bulwark shown in hero art and turnarounds.",
+        "Original wreck frame mounted behind shoulders: open shipwreck timber rigging, rope webbing, mast fragments and hanging lantern; do NOT substitute a full galleon.",
+        "Preserve the owner-approved dark navy/cyan/gold 4:3 board, its exact hood, armor, proportions, five turnaround views, material studies, weapon breakdown and six ability panels."
+    ],
+    "forbidden_drift": [
+        "Do not change the hooded face to an octopus or tentacle-bearded pirate, substitute a generic knight or alter body proportions.",
+        "No weapon replacement, including anchor-scythe, anchor-harpoon, cutlass or ship bell; no generic shield substitution.",
+        "No full pirate galleon back attachment, new costume, recolor, altered original artwork, or earlier #07/other variant as master without explicit owner approval of a separately versioned change.",
+        "Do not replace the six named kit abilities/passive or change tank role; the earlier Kraken ideas are not part of this approved source.",
+        "Never present concept art as a verified 3D model, animation, gameplay or engine render."
+    ],
+    "visual_identity": "Broad asymmetrical heavy bipedal tank; hooded undead face with dark recess, narrow cyan glow and exposed cyan-lit skeletal ribs; no tentacle beard. Bone-brine plates with ivory curved whale-bone ribs, dark blue-black metal, rusted antique-gold ironwork, chains and bound salvage ropes. Tattered crimson-magenta sails and cloth drape over shoulder and waist; cyan brine lantern and magical energy glow. Ossuary Dredge: large arm-carried cylindrical salvage winch, circular ribbed bone-claw aperture and glowing cyan brine chamber; preserve exact weapon shape, not an anchor-scythe. Opposite arm retains the original strapped jagged timber-and-bone salvage bulwark shown in hero art and turnarounds. Original wreck frame mounted behind shoulders: open shipwreck timber rigging, rope webbing, mast fragments and hanging lantern; do NOT substitute a full galleon. Preserve the owner-approved dark navy/cyan/gold 4:3 board, its exact hood, armor, proportions, five turnaround views, material studies, weapon breakdown and six ability panels.",
+    "palette": [
+        "bone ivory",
+        "dark navy-black",
+        "antique gold",
+        "cyan brine energy",
+        "crimson-magenta sailcloth"
+    ],
+    "materials": [
+        "Bone-brine plates",
+        "Shipwreck timber",
+        "Salvage rigging",
+        "Rusted ironwork",
+        "Whale bone ribs",
+        "Tattered sails"
+    ],
+    "signature_prop": "Ossuary Dredge",
+    "active_abilities": [
+        {
+            "slot": "1",
+            "name": "Dredge Snare",
+            "summary": "Fires chains and bone-ribs from the Ossuary Dredge to latch onto enemies and wreckage, dragging them toward Dreadhull and displacing their position."
+        },
+        {
+            "slot": "2",
+            "name": "Salvage Recall",
+            "summary": "Pulls floating or shattered debris back into himself, restoring armor and briefly healing for a portion of the reclaimed wreckage."
+        },
+        {
+            "slot": "3",
+            "name": "Reforge Bulwark",
+            "summary": "Converts dredged wreckage into a large bonebrine barricade, granting cover and a protective aura that reduces incoming damage for Dreadhull and nearby allies."
+        },
+        {
+            "slot": "4",
+            "name": "Wreckline Drag",
+            "summary": "Whips a chain line from the dredge, dragging a targeted enemy along with nearby wreckage, briefly slowing them on arrival and disrupting their formation."
+        },
+        {
+            "slot": "5_ultimate",
+            "name": "Graveyard Forge",
+            "summary": "Dredges a massive field of wreckage from the seafloor, erupting into a fortified salvage zone. The area becomes a graveyard forge that grants cover, empowers allies' defenses, and continuously reclaims debris over time."
+        }
+    ],
+    "passive": {
+        "name": "Sunken Claim",
+        "summary": "Damage absorbed by his shields stores Salvage Charge. At high charge, his next defensive ability is strengthened (increased shield, duration, and additional effect)."
+    },
+    "archetype": "Battlefield Reclamation Tank",
+    "one_of_one_hook": "Ossuary Dredge reclaims cursed wreckage into temporary cover and protective power using Salvage Charge.",
+    "silhouette_read": "Heavy asymmetrical hooded undead biped, giant circular bone-rib dredge, opposing jagged timber bulwark, open wreck rigging and cyan lantern.",
+    "gameplay_promise": "Protect, reclaim, reforge, control and empower; reclaim debris into defenses and displace enemies."
+}
+
 EXTRA_KNOWN = {
     "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_chat_copy.webp": {
         "format": "WEBP", "width": 1536, "height": 1024, "bytes": 375978,
@@ -211,6 +307,22 @@ def check(root=ROOT):
             cref = {}
         pi = plan.get("identity") or {}
         design = plan.get("design") or {}
+        if identifier == "CHR_Dreadhull":
+            # A keyword match alone would allow a renamed weapon or rewritten mechanics.
+            actual_contract = {
+                "identity": ident,
+                "visual_lock": lock.get("visual_lock"),
+                "forbidden_drift": lock.get("forbidden_drift"),
+                **{key: design.get(key) for key in (
+                    "visual_identity", "palette", "materials", "signature_prop",
+                    "active_abilities", "passive")},
+                **{key: pi.get(key) for key in (
+                    "archetype", "one_of_one_hook", "silhouette_read", "gameplay_promise")},
+            }
+            if actual_contract != DREADHULL_DESIGN_CONTRACT:
+                errors.append("Dreadhull approved design contract drift: " + identifier)
+            if source.get("media_type") != "image/webp" or source.get("uploaded_filename") != "40768.png":
+                errors.append("Dreadhull original source provenance drift: " + identifier)
         if (plan.get("display_name") != pinned["name"] or plan.get("epithet") != pinned["title"]
                 or pi.get("role_class") != pinned["role"]
                 or pinned["focus"].casefold() not in str(design.get("signature_prop", "")).casefold()):
@@ -261,6 +373,8 @@ def check(root=ROOT):
             and entry.get("concept_status") == "aetherfall_approved"
             and isinstance(entry.get("id"), str)
         }
+        for identifier in sorted(set(PINNED) - set(approved)):
+            errors.append("Pinned owner-approved character registry status removed: " + identifier)
         for identifier in sorted(set(approved) - set(locks)):
             errors.append("Approved character missing visual lock: " + identifier)
         for identifier in sorted(set(locks) - set(PINNED)):

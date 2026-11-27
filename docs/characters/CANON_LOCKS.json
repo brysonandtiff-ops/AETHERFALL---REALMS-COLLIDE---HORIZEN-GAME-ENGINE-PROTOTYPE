@@ -3,7 +3,7 @@
   "project": "AETHERFALL: REALMS COLLIDE",
   "lock_id": "AF-VISUAL-CANON-V1",
   "policy": "OWNER_REFERENCE_FIRST_FAIL_CLOSED",
-  "provenance_status": "Original owner-approved image bytes currently external to GitHub; SHA-256 catalogued. Native model/gameplay proof absent.",
+  "provenance_status": "Exact owner-selected master sources are pinned. Consult each source.state and character plan for archival status; native model/gameplay proof absent.",
   "presentation_standard": {
     "reference_character": "CHR_Vellaris_Bloodshield",
     "master_ratio": "4:3",
@@ -106,6 +106,51 @@
         "Antler asymmetry, bark/basalt, venom motif or Root Bulwark removed",
         "Shield silently replaced with an unrelated weapon",
         "Concept promoted to playable/rigged Godot character without proof"
+      ]
+    },
+    "CHR_Dreadhull": {
+      "approval": "owner_approved_aetherfall_concept",
+      "evidence_class": "CONCEPT_ONLY",
+      "source": {
+        "path": "art/concepts/characters/CHR_Dreadhull/Dreadhull_Bonebrine_Reaver_CANONICAL_v1.webp",
+        "uploaded_filename": "40768.png",
+        "format": "WEBP",
+        "media_type": "image/webp",
+        "width": 1536,
+        "height": 1152,
+        "bytes": 538780,
+        "sha256": "6d172d578f0d01e5ea126f755ae7c309a4e5d176b801bf11af7de3990a43273c",
+        "state": "pending_binary_checkin"
+      },
+      "identity": {
+        "display_name": "Dreadhull",
+        "epithet": "Bonebrine Reaver — The Cursed Salvager",
+        "role_class": "tank",
+        "signature_focus": "Ossuary Dredge",
+        "active_ability_names": [
+          "Dredge Snare",
+          "Salvage Recall",
+          "Reforge Bulwark",
+          "Wreckline Drag",
+          "Graveyard Forge"
+        ],
+        "passive_ability_name": "Sunken Claim"
+      },
+      "visual_lock": [
+        "Broad asymmetrical heavy bipedal tank; hooded undead face with dark recess, narrow cyan glow and exposed cyan-lit skeletal ribs; no tentacle beard.",
+        "Bone-brine plates with ivory curved whale-bone ribs, dark blue-black metal, rusted antique-gold ironwork, chains and bound salvage ropes.",
+        "Tattered crimson-magenta sails and cloth drape over shoulder and waist; cyan brine lantern and magical energy glow.",
+        "Ossuary Dredge: large arm-carried cylindrical salvage winch, circular ribbed bone-claw aperture and glowing cyan brine chamber; preserve exact weapon shape, not an anchor-scythe.",
+        "Opposite arm retains the original strapped jagged timber-and-bone salvage bulwark shown in hero art and turnarounds.",
+        "Original wreck frame mounted behind shoulders: open shipwreck timber rigging, rope webbing, mast fragments and hanging lantern; do NOT substitute a full galleon.",
+        "Preserve the owner-approved dark navy/cyan/gold 4:3 board, its exact hood, armor, proportions, five turnaround views, material studies, weapon breakdown and six ability panels."
+      ],
+      "forbidden_drift": [
+        "Do not change the hooded face to an octopus or tentacle-bearded pirate, substitute a generic knight or alter body proportions.",
+        "No weapon replacement, including anchor-scythe, anchor-harpoon, cutlass or ship bell; no generic shield substitution.",
+        "No full pirate galleon back attachment, new costume, recolor, altered original artwork, or earlier #07/other variant as master without explicit owner approval of a separately versioned change.",
+        "Do not replace the six named kit abilities/passive or change tank role; the earlier Kraken ideas are not part of this approved source.",
+        "Never present concept art as a verified 3D model, animation, gameplay or engine render."
       ]
     }
   },

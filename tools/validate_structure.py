@@ -13,7 +13,13 @@ REQUIRED_FILES = (
     "README.md", "AGENTS.md", ".gitignore", ".gitattributes",
     "game/project.godot", "game/scenes/bootstrap/main.tscn",
     "art/asset_registry.json", "docs/architecture/REPO_LAYOUT.md",
-    "docs/art/ASSET_PIPELINE.md", "docs/characters/CHARACTER_REGISTRY.md",
+    "docs/art/ASSET_PIPELINE.md",
+    "docs/art/UNIVERSAL_INFOGRAPHIC_STANDARD.md",
+    "docs/art/INFOGRAPHIC_POLICY.json",
+    "docs/art/INFOGRAPHIC_PLAN_TEMPLATE.json", "docs/characters/CHARACTER_REGISTRY.md",
+    "docs/art/BLENDER_RAW_SCULPT_TO_GAME_READY.md",
+    "docs/art/templates/BLENDER_HANDOFF_TEMPLATE.json",
+    "tools/validate_blender_handoff.py",
     "docs/legacy/shadowspire_migration.json", "docs/legacy/README.md",
     "docs/characters/LEGACY_ROSTER.md",
     "docs/characters/CHARACTER_WORKFLOW.md",
@@ -37,7 +43,7 @@ REQUIRED_DIRS = (
 IGNORED_DIRS = {".git", ".godot", ".import", ".pytest_cache", "__pycache__", "build", "dist", ".venv"}
 PRIVATE_FILENAMES = {"id_rsa", "id_ed25519", "credentials.json", "service-account.json", "service_account.json", ".netrc", ".npmrc", ".pypirc"}
 PRIVATE_EXTENSIONS = {".pem", ".key", ".p12", ".pfx", ".jks", ".keystore"}
-BINARY_ART_EXTENSIONS = {".blend", ".glb", ".fbx", ".gltf", ".png", ".jpg", ".jpeg", ".wav", ".ogg", ".mp4"}
+BINARY_ART_EXTENSIONS = {".blend", ".glb", ".fbx", ".gltf", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif", ".wav", ".ogg", ".mp4"}
 MAX_DIRECT_BINARY_BYTES = 50 * 1024 * 1024
 ID_PATTERN = re.compile(r"^(CHR|WPN)_[A-Za-z][A-Za-z0-9_]*$")
 MAIN_SCENE = re.compile(r'(?m)^\s*run/main_scene\s*=\s*"res://([^"]+)"')
@@ -59,6 +65,16 @@ def safe_path(root, raw):
 
 def scan_source_tree(root, errors):
     """Reject obvious private key files, symlinks, oversized art and case collisions."""
+    # Read-only registry lookup: no unregistered hero can archive raw GLBs under art/.
+    try:
+        registry_data = json.loads((root / "art/asset_registry.json").read_text(encoding="utf-8"))
+        allowed_raw_ids = {
+            item.get("id") for item in registry_data.get("assets", [])
+            if isinstance(item, dict) and item.get("type") == "character"
+            and isinstance(item.get("id"), str) and ID_PATTERN.fullmatch(item["id"])
+        }
+    except (OSError, UnicodeError, ValueError, AttributeError, TypeError):
+        allowed_raw_ids = set()
     seen = {}
     for current, dirs, filenames in os.walk(root, followlinks=False):
         dirs[:] = sorted(name for name in dirs if name not in IGNORED_DIRS)
@@ -81,8 +97,15 @@ def scan_source_tree(root, errors):
                 errors.append("Possible key/credential file: " + rel)
             if rel.startswith("game/") and item.suffix.casefold() == ".blend":
                 errors.append("Editable Blender source inside game/: " + rel)
-            if rel.startswith("art/") and item.suffix.casefold() == ".glb":
-                errors.append("Runtime GLB export inside art/: " + rel)
+            # Preserve original AI sculpt GLBs only in scoped registered character raw/ archives.
+            # Runtime exports elsewhere in art/ still fail the structural safety check.
+            raw_source_glb = re.fullmatch(
+                r"art/blender/characters/(CHR_[A-Za-z][A-Za-z0-9_]*)/raw/[A-Za-z0-9_.-]+\.glb",
+                rel,
+            )
+            is_authorized_raw_source = bool(raw_source_glb and raw_source_glb.group(1) in allowed_raw_ids)
+            if rel.startswith("art/") and item.suffix.casefold() == ".glb" and not is_authorized_raw_source:
+                errors.append("GLB outside approved character raw source archive: " + rel)
             if item.suffix.lower() in BINARY_ART_EXTENSIONS and item.stat().st_size > MAX_DIRECT_BINARY_BYTES:
                 errors.append("Binary exceeds 50 MiB without reviewed LFS/storage plan: " + rel)
 
@@ -382,6 +405,109 @@ def validate_character_plans(root, errors):
                     errors.append("Unregistered character folder: " + child.relative_to(root).as_posix())
 
 
+# SIRE-ART-INFO-001: protect all new visual asset categories, not just characters.
+# A metadata gate proves only existence/identity, NEVER artistic similarity or gameplay.
+INFOGRAPHIC_REQUIRED_PANELS = {
+    "character": ("hero_visual", "four_view_turnaround", "silhouette_studies",
+                  "materials_palette", "unique_equipment", "gameplay_identity",
+                  "abilities_and_movement"),
+    "weapon": ("hero_visual", "multi_angle_views", "materials_palette",
+               "construction_and_operation", "gameplay_effects"),
+    "object": ("hero_visual", "multi_angle_views", "scale_and_silhouette",
+               "materials_palette", "interaction_states"),
+    "level": ("key_environment_art", "top_down_map", "elevations_and_vistas",
+              "routes_cover_and_sightlines", "spawns_objectives_and_exits"),
+    "environment": ("key_environment_art", "layout_and_landmarks",
+                    "elevations_and_vistas", "lighting_and_materials"),
+    "building": ("architectural_hero", "exterior_views", "interior_and_floor_plan",
+                 "scale_and_materials", "traversal_and_interactions"),
+    "creature": ("hero_visual", "four_view_turnaround", "silhouette_and_anatomy",
+                 "locomotion_and_abilities"),
+    "vehicle": ("hero_visual", "multi_angle_views", "parts_and_mechanisms",
+                "controls_and_movement"),
+    "ui": ("hero_screen", "responsive_layouts", "component_variants",
+           "interaction_and_state_flows", "accessibility_and_platform_handoff"),
+    "vfx": ("key_visual", "time_based_sequence", "triggers_and_telegraph",
+            "accessibility_and_performance"),
+}
+
+
+def validate_infographic_policy(root, errors):
+    """Lock source-standard, panel coverage and unapproved template state."""
+    p = root / "docs/art/INFOGRAPHIC_POLICY.json"
+    t = root / "docs/art/INFOGRAPHIC_PLAN_TEMPLATE.json"
+    c = root / "docs/characters/CANON_LOCKS.json"
+    try:
+        policy = json.loads(p.read_text(encoding="utf-8"))
+        template = json.loads(t.read_text(encoding="utf-8"))
+        canon = json.loads(c.read_text(encoding="utf-8"))
+    except (OSError, ValueError, UnicodeError) as exc:
+        errors.append("Missing/invalid infographic policy or template: " + str(exc))
+        return
+    if (not isinstance(policy, dict)
+            or policy.get("schema_version") != 1
+            or policy.get("law_id") != "SIRE-ART-INFO-001"
+            or policy.get("project") != "AETHERFALL: REALMS COLLIDE"
+            or policy.get("policy") != "INFOGRAPHIC_FIRST_NO_CANON_DRIFT"
+            or policy.get("authority") != "docs/art/UNIVERSAL_INFOGRAPHIC_STANDARD.md"):
+        errors.append("Infographic policy authority/identity drift")
+        return
+    ref = policy.get("master_reference")
+    if not isinstance(ref, dict):
+        ref = {}
+    try:
+        approved = canon["locked_characters"]["CHR_Vellaris_Bloodshield"]["source"]
+    except (KeyError, TypeError):
+        approved = {}
+    if not isinstance(approved, dict):
+        approved = {}
+    if (ref.get("character_id") != "CHR_Vellaris_Bloodshield"
+            or ref.get("uploaded_name") != "39403.png"
+            or ref.get("actual_format") != "WEBP"
+            or ref.get("aspect_ratio") != "4:3"
+            or ref.get("width") != 1536 or ref.get("height") != 1152
+            or ref.get("archive_status") != "pending_binary_checkin"
+            or ref.get("sha256") != "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939"
+            or ref.get("sha256") != approved.get("sha256")):
+        errors.append("Infographic master reference identity/hash drift")
+    panels = policy.get("asset_panels")
+    if not isinstance(panels, dict) or set(panels) != set(INFOGRAPHIC_REQUIRED_PANELS):
+        errors.append("Infographic asset type coverage drift")
+        panels = {}
+    for kind, required in INFOGRAPHIC_REQUIRED_PANELS.items():
+        available = panels.get(kind)
+        if (not isinstance(available, list)
+                or not all(isinstance(panel, str) for panel in available)
+                or len(available) != len(set(available))
+                or not set(required).issubset(set(available))):
+            errors.append("Infographic required panels missing: " + kind)
+    frame = policy.get("board_frame")
+    if (not isinstance(frame, dict)
+            or "hero left" not in str(frame.get("layout", "")).lower()
+            or "magenta" not in str(frame.get("palette", "")).lower()
+            or "not final in-game model" not in str(frame.get("required_footer", "")).lower()):
+        errors.append("Infographic board frame/footer drift")
+    if (policy.get("owner_approval_required") is not True
+            or policy.get("allow_inapplicable_panels_only_with_owner_waiver") is not True
+            or policy.get("generated_art_is_runtime_proof") is not False
+            or policy.get("source_integrity_sha256_required_for_archive") is not True
+            or not isinstance(policy.get("statuses"), list)
+            or not policy["statuses"]
+            or policy["statuses"][0] != "PROPOSAL_PENDING_OWNER_REVIEW"):
+        errors.append("Infographic owner review/evidence safety drift")
+    if (not isinstance(template, dict)
+            or template.get("law_id") != "SIRE-ART-INFO-001"
+            or template.get("project") != "AETHERFALL: REALMS COLLIDE"
+            or template.get("status") != "PROPOSAL_PENDING_OWNER_REVIEW"
+            or not isinstance(template.get("owner_review"), dict)
+            or template["owner_review"].get("decision") != "pending"
+            or not isinstance(template.get("runtime_evidence"), dict)
+            or template["runtime_evidence"].get("status") != "NOT_VERIFIED"
+            or not isinstance(template.get("infographic"), dict)
+            or template["infographic"].get("archive_status") != "not_archived"):
+        errors.append("Infographic plan template self-approval or evidence drift")
+
+
 def validate_godot(root, errors):
     project = root / "game/project.godot"
     if not project.is_file():
@@ -444,12 +570,19 @@ def check(root=ROOT):
     scan_source_tree(root, errors)
     validate_registry(root, errors)
     validate_character_plans(root, errors)
+    validate_infographic_policy(root, errors)
     import importlib.util
     canon_file = Path(__file__).with_name("verify_visual_canon.py")
     spec = importlib.util.spec_from_file_location("aetherfall_visual_canon", canon_file)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     errors.extend(module.check(root))
+    # Handoff guard checks only claim/evidence integrity; it cannot inspect native geometry.
+    handoff_file = Path(__file__).with_name("validate_blender_handoff.py")
+    handoff_spec = importlib.util.spec_from_file_location("aetherfall_blender_handoff", handoff_file)
+    handoff = importlib.util.module_from_spec(handoff_spec)
+    handoff_spec.loader.exec_module(handoff)
+    errors.extend(handoff.check(root))
     validate_godot(root, errors)
     validate_legacy_hold(root, errors)
     return errors
@@ -461,7 +594,7 @@ def main():
         for failure in failures:
             print("FAIL: " + failure, file=sys.stderr)
         return 1
-    print("PASS: source/asset paths, character source hashes/canon metadata, gate order, Godot references and migration safety (STATIC ONLY; NO VISUAL LIKENESS PROOF)")
+    print("PASS: structure, infographic policy, character/canon gates, Blender handoff claims, Godot refs and migration safety (STATIC ONLY; NO NATIVE ART OR GAMEPLAY PROOF)")
     return 0
 
 

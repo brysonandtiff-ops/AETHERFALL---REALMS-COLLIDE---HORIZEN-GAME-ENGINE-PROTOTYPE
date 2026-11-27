@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "law_id": "SIRE-ART-INFO-001",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "asset_id": "REPLACE_WITH_STABLE_ID",
+  "asset_type": "object",
+  "display_name": "REPLACE_WITH_ASSET_NAME",
+  "version": "v0.1-proposal",
+  "status": "PROPOSAL_PENDING_OWNER_REVIEW",
+  "identity_reference": {
+    "canonical_ref_path": null,
+    "canonical_sha256": null,
+    "source_notes": "Exact approved source or owner-supplied prompt required"
+  },
+  "infographic": {
+    "image_path": null,
+    "image_sha256": null,
+    "format": null,
+    "archive_status": "not_archived",
+    "reference_master": "CHR_Vellaris_Bloodshield",
+    "required_panels": [
+      {
+        "id": "hero_visual",
+        "status": "pending",
+        "evidence_path": null
+      },
+      {
+        "id": "multi_angle_views",
+        "status": "pending",
+        "evidence_path": null
+      },
+      {
+        "id": "scale_and_silhouette",
+        "status": "pending",
+        "evidence_path": null
+      },
+      {
+        "id": "materials_palette",
+        "status": "pending",
+        "evidence_path": null
+      },
+      {
+        "id": "interaction_states",
+        "status": "pending",
+        "evidence_path": null
+      },
+      {
+        "id": "placement_and_collision",
+        "status": "pending",
+        "evidence_path": null
+      },
+      {
+        "id": "technical_handoff",
+        "status": "pending",
+        "evidence_path": null
+      }
+    ],
+    "waivers": []
+  },
+  "owner_review": {
+    "decision": "pending",
+    "reviewer": null,
+    "evidence_path": null
+  },
+  "runtime_evidence": {
+    "status": "NOT_VERIFIED",
+    "engine": null,
+    "commit_sha": null,
+    "source_asset_path": null,
+    "real_screenshot_path": null,
+    "real_video_path": null
+  },
+  "notes": "Copy for each planned visual asset; change panel list to asset_panels[asset_type]. A proposal cannot self-approve or count as model/gameplay proof."
+}

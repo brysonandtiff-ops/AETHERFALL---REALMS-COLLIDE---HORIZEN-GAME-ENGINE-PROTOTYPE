@@ -1,0 +1,12 @@
+AETHERFALL raw screenshot external Library archive readback, 2026-11-26
+8/8 SHA-256 matches against original in-chat bytes
+Screenshots only; not model, Blender or Godot evidence
+
+40174.jpg | 40174__Raven_color_sculpt_screen.webp | 5f2562e32ad22c4919dacfb613552d500e9c0f4661df250d3e364c1e422bb836 | library_raw_file_sha256_match=YES
+40166.jpg | 40166__Raven_viewer_screen.webp | 4474d206af3a061e2deff701a4d9ff07419c65fb318a8c92c8a6bfcacc63d70e | library_raw_file_sha256_match=YES
+40168.jpg | 40168__Unassigned_red_lantern_woman_screen.webp | 8e3a3b52605b860cc199d9cb9c070812f306613043068d082fa661bbea4c89ea | library_raw_file_sha256_match=YES
+40170.jpg | 40170__Unassigned_monochrome_spectral_sculpt_screen.webp | 1bf470f77fec4e0f82768336ce35f630962e091dccdd669bc3a1ed0a41d20d0a | library_raw_file_sha256_match=YES
+40149.jpg | 40149__Razor_quadruped_color_sculpt_screen.webp | c84cbdae4e6e7a4ed5485378f4da2a662be88555826792dccd4aab20734b22b2 | library_raw_file_sha256_match=YES
+40151.jpg | 40151__Razor_Meshy_topology_report_screen.webp | d994a9d116ea09015bd1d40f9c5bd98497af8bfc94bd6c753c257d0ae9b07081 | library_raw_file_sha256_match=YES
+40136.jpg | 40136__Vellaris_color_sculpt_screen.webp | b67050e84e4a0868c94d85901dac75810b2d7eaa9bb73d35578b47cec54abf44 | library_raw_file_sha256_match=YES
+40132.jpg | 40132__Vellaris_untextured_sculpt_screen.webp | f33ed03fa9926820bbf06e90da517ae5c8289693bace06d1c6f4dbcab7ce5233 | library_raw_file_sha256_match=YES

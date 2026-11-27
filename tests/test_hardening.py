@@ -30,6 +30,16 @@ class HardenedStructureTests(unittest.TestCase):
         for asset in data["assets"]:
             for key in ("concept_dir", "source_dir", "runtime_dir"):
                 (self.root / asset[key]).mkdir(parents=True, exist_ok=True)
+        # Copy actual approved master bytes when present: archival metadata alone
+        # must not invalidate the otherwise positive isolated repository fixture.
+        locks = json.loads((ROOT / "docs/characters/CANON_LOCKS.json").read_text(encoding="utf-8"))
+        for lock in locks["locked_characters"].values():
+            rel = Path(lock["source"]["path"])
+            original = ROOT / rel
+            if original.is_file():
+                dst = self.root / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(original, dst)
 
     def tearDown(self):
         self.temp.cleanup()
@@ -110,6 +120,13 @@ class HardenedStructureTests(unittest.TestCase):
 
 
 
+    def test_large_webp_without_policy_fails(self):
+        path = self.root / "art/concepts/unreviewed.webp"
+        with path.open("wb") as fh:
+            fh.seek(validator.MAX_DIRECT_BINARY_BYTES)
+            fh.write(b"\x00")
+        self.assert_rejected("Binary exceeds 50 MiB")
+
     def rewrite_plan(self, identifier, change):
         path = self.root / "docs/characters/plans" / (identifier + ".json")
         data = json.loads(path.read_text())
@@ -148,6 +165,7 @@ class HardenedStructureTests(unittest.TestCase):
         self.assert_rejected("Character master source checksum mismatch")
 
     def test_unarchived_reference_cannot_fake_section_verification(self):
+        self.reset_pending_master("CHR_Vellaris_Bloodshield")
         self.rewrite_plan("CHR_Vellaris_Bloodshield", lambda d: d["sheet_sections"].update(hero_portrait="source_verified"))
         self.assert_rejected("Unarchived character sheet marked source-verified")
 
@@ -159,7 +177,26 @@ class HardenedStructureTests(unittest.TestCase):
         self.rewrite_plan("CHR_Vellaris_Bloodshield", lambda d: d["sheet_sections"].update(audio_voice="approved_waiver"))
         self.assert_rejected("Undocumented character section waiver")
 
+    def reset_pending_master(self, identifier):
+        manifest_path = self.root / "docs/characters/CANON_LOCKS.json"
+        locks = json.loads(manifest_path.read_text(encoding="utf-8"))
+        source = locks["locked_characters"][identifier]["source"]
+        (self.root / source["path"]).unlink(missing_ok=True)
+        source["state"] = "pending_binary_checkin"
+        manifest_path.write_text(json.dumps(locks), encoding="utf-8")
+        def pending(plan):
+            plan["concept_reference"]["archive_status"] = "pending_source_upload"
+            for gate in list(plan["gates"])[1:]:
+                plan["gates"][gate] = False
+            for section, status in plan["sheet_sections"].items():
+                if status == "source_verified":
+                    plan["sheet_sections"][section] = "visible_in_unarchived_reference"
+            if plan["design"]["kit_status"] == "owner_locked":
+                plan["design"]["kit_status"] = "concept_reference_only"
+        self.rewrite_plan(identifier, pending)
+
     def test_master_image_cannot_arrive_unreviewed(self):
+        self.reset_pending_master("CHR_Vellaris_Bloodshield")
         path = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp"
         path.write_bytes(b"source added without updating dossier")
         self.assert_rejected("Character source present but archive not verified")

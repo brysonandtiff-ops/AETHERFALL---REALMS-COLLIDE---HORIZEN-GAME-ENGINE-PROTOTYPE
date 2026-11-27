@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "status": "TEST_FIXTURE_NOT_HERO_CANON_NOT_IMPLEMENTED",
+  "ability_id": "DEMO_TrainingPulse",
+  "hero_id": "CHR_Vellaris_Bloodshield",
+  "gameplay_permission": "TEST_FIXTURE_ONLY_DO_NOT_ATTACH_TO_APPROVED_HERO_KIT",
+  "slot": "primary",
+  "resource": {"name": "demo_energy", "cost": 1, "max": 10},
+  "phases_ticks": {"windup": 8, "telegraph": 4, "active": 1, "follow_through": 6, "recovery": 7, "cooldown": 30},
+  "targeting": {"team": "enemy", "min_range_m": 0, "max_range_m": 25, "requires_line_of_sight": true, "aim_cone_degrees": 8, "line_of_sight_mask": "WORLD_STATIC"},
+  "hit_volume": {"kind": "sphere", "radius_m": 0.25, "owner": "SERVER_COMBAT_SIMULATION", "collision_layer": "PROJECTILE", "collision_mask": "WORLD_STATIC|PLAYER_HURTBOX"},
+  "projectile": {"spawn_phase": "active", "travel_speed_mps": 40, "lifetime_ticks": 60},
+  "telegraph": {"enemy_shape": "outlined_ring", "ally_shape": "solid_chevron", "caption_cue": "Demo pulse charging", "audible_cue": "demo_tone"},
+  "animation_events": {"first_person": "DEMO_TrainingPulse_ACTIVE", "third_person": "DEMO_TrainingPulse_ACTIVE", "server_hit_event": "DEMO_TrainingPulse_HIT"},
+  "anti_replay": {"event_id_required": true, "server_seed_required": true, "double_commit_rejected": true},
+  "cooldown_model": "SERVER_TICKS",
+  "visual_effects_are_hit_detection": false
+}
