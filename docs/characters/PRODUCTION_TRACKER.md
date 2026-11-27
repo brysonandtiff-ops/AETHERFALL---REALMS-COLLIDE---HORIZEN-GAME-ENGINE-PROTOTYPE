@@ -8,6 +8,7 @@ Current truth is in `plans/<ID>.json`, not this snapshot. No character has verif
 | `CHR_ThornDell` | AETHERFALL concept approved | Source not verified | Not verified |
 | `CHR_Korvex` | Legacy candidate | Source not verified | Not verified |
 | `CHR_Dreadhull` | AETHERFALL concept approved: Bonebrine Reaver #07 | Original verified in chat; GitHub binary pending | Not verified |
+| `CHR_KRAIT` | AETHERFALL visual concept approved: The Sovereign Guardian; replaces Bryskar | Original in Library; GitHub binary pending | Not verified |
 | `CHR_Morrigan` | Legacy candidate | Source not verified | Not verified |
 | `CHR_Pixi` | Legacy candidate | Source not verified | Not verified |
 | `CHR_Noxis` | Legacy candidate | Source not verified | Not verified |
