@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "register_id": "AF-RAW-SCULPT-QUALITY-LOCK-20261126",
+  "source": "Owner-supplied eight mobile screenshots, byte-inspected in ChatGPT sandbox and archived exact snapshots in Library.",
+  "scope": "Immutable reference screenshot provenance and premium model fidelity target; not changing approved hero master or claiming 3D source available.",
+  "status": "SCREENSHOT_BYTES_VERIFIED_IN_CHAT_AND_LIBRARY_BACKUP; GIT_REFERENCE_MANIFEST_DRAFT_REVIEW",
+  "owner_intent": "Keep these sculpt-quality directions documented and improve beyond them while preventing character drift; not a release/model certification.",
+  "immutable_existing_canon": [
+    "CHR_Vellaris_Bloodshield",
+    "CHR_ThornDell"
+  ],
+  "unresolved_identities": [
+    "40168.jpg",
+    "40170.jpg"
+  ],
+  "screenshot_count": 8,
+  "items": [
+    {
+      "original_upload_name": "40174.jpg",
+      "archived_filename": "40174__Raven_color_sculpt_screen.webp",
+      "original_bytes_sha256": "5f2562e32ad22c4919dacfb613552d500e9c0f4661df250d3e364c1e422bb836",
+      "original_bytes": 138076,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40174__Raven_color_sculpt_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": "CHR_Raven",
+      "reference_class": "sculpt_visual_reference",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "Raven standing on a decorative base; layered purple-black feather mantle, silver hair, hood, shoulder corvid, violet spell glyph; front/three-quarter impression",
+      "limitations_and_open_identity_gate": "Raven original exact reference and weapon design not yet checked against new screenshot; original GLB absent",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    },
+    {
+      "original_upload_name": "40166.jpg",
+      "archived_filename": "40166__Raven_viewer_screen.webp",
+      "original_bytes_sha256": "4474d206af3a061e2deff701a4d9ff07419c65fb318a8c92c8a6bfcacc63d70e",
+      "original_bytes": 88972,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40166__Raven_viewer_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": "CHR_Raven",
+      "reference_class": "viewer_screenshot",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "App viewport shows similar raven-hooded purple feather model and display base; side/3-4 silhouette",
+      "limitations_and_open_identity_gate": "Screenshot is not source mesh, rig, texture bake or Godot run evidence",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    },
+    {
+      "original_upload_name": "40168.jpg",
+      "archived_filename": "40168__Unassigned_red_lantern_woman_screen.webp",
+      "original_bytes_sha256": "8e3a3b52605b860cc199d9cb9c070812f306613043068d082fa661bbea4c89ea",
+      "original_bytes": 77104,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40168__Unassigned_red_lantern_woman_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": null,
+      "reference_class": "unassigned_candidate",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "Separate dark-haired teal-tinted fantasy woman, magenta cape, golden armour, hanging lantern; no confirmed approved hero ID",
+      "limitations_and_open_identity_gate": "Do not map to Vellaris, Raven, Morrigan or any other hero without explicit owner identity approval",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    },
+    {
+      "original_upload_name": "40170.jpg",
+      "archived_filename": "40170__Unassigned_monochrome_spectral_sculpt_screen.webp",
+      "original_bytes_sha256": "1bf470f77fec4e0f82768336ce35f630962e091dccdd669bc3a1ed0a41d20d0a",
+      "original_bytes": 40212,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40170__Unassigned_monochrome_spectral_sculpt_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": null,
+      "reference_class": "unassigned_candidate",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "Separate untextured pale spectral/floating humanoid sculpture with flowing hair/tendrils, sculpt display in mobile viewer",
+      "limitations_and_open_identity_gate": "No hero name, final palette, canonical identity or source mesh confirmed",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    },
+    {
+      "original_upload_name": "40149.jpg",
+      "archived_filename": "40149__Razor_quadruped_color_sculpt_screen.webp",
+      "original_bytes_sha256": "c84cbdae4e6e7a4ed5485378f4da2a662be88555826792dccd4aab20734b22b2",
+      "original_bytes": 139828,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40149__Razor_quadruped_color_sculpt_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": "CHR_Razor",
+      "reference_class": "sculpt_visual_reference",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "Razor as quadruped skeletal hunter: spined ridgeline, long tail, fang skull, bony claws, articulated armour, crimson fissures, hanging jaw chain, round display base",
+      "limitations_and_open_identity_gate": "Preserve four-legged anatomy; do not convert to humanoid; extract detached base and chain",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    },
+    {
+      "original_upload_name": "40151.jpg",
+      "archived_filename": "40151__Razor_Meshy_topology_report_screen.webp",
+      "original_bytes_sha256": "d994a9d116ea09015bd1d40f9c5bd98497af8bfc94bd6c753c257d0ae9b07081",
+      "original_bytes": 59218,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40151__Razor_Meshy_topology_report_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": "CHR_Razor",
+      "reference_class": "mesh_statistics_screenshot",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "Meshy 7.1 Generation Info screenshot for same Razor artwork; UI displays Triangle topology, 2,460,470 Faces and 1,229,959 Vertices",
+      "limitations_and_open_identity_gate": "UI numbers only; cannot verify actual file complexity, watertightness, topology, manifold or editability without GLB/OBJ/FBX",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    },
+    {
+      "original_upload_name": "40136.jpg",
+      "archived_filename": "40136__Vellaris_color_sculpt_screen.webp",
+      "original_bytes_sha256": "b67050e84e4a0868c94d85901dac75810b2d7eaa9bb73d35578b47cec54abf44",
+      "original_bytes": 77254,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40136__Vellaris_color_sculpt_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": "CHR_Vellaris_Bloodshield",
+      "reference_class": "sculpt_visual_reference",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "Armoured woman with pale silver-pink long hair, large crimson spiked pauldrons, black silver plate, tall boots, flowing split red cape, round app display base",
+      "limitations_and_open_identity_gate": "Supplemental candidate. Canon face/hair/eyes, exact owner master, gold trim and signature Bloodshield must still match; no shield shown here",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    },
+    {
+      "original_upload_name": "40132.jpg",
+      "archived_filename": "40132__Vellaris_untextured_sculpt_screen.webp",
+      "original_bytes_sha256": "f33ed03fa9926820bbf06e90da517ae5c8289693bace06d1c6f4dbcab7ce5233",
+      "original_bytes": 49248,
+      "detected_media_type": "image/webp",
+      "detected_format": "WEBP",
+      "dimensions_pixels": [
+        1536,
+        1384
+      ],
+      "library_archive_path": "/SIRE Games Concepts/Concept Art and Visuals/AETHERFALL/Raw Sculpt References/2026-11-26/40132__Vellaris_untextured_sculpt_screen.webp",
+      "git_binary_status": "NOT_COMMITTED_IN_GIT",
+      "character_id": "CHR_Vellaris_Bloodshield",
+      "reference_class": "untextured_sculpt_reference",
+      "owner_supplied": "2026-11-26",
+      "observed_content": "Untextured grey model with flowing hair, segmented breastplate, spiked multilayer shoulders, cloak and pedestal; app viewer",
+      "limitations_and_open_identity_gate": "Not proof of clean A-pose, source polygons, rig, textures, shape keys or matching approved face",
+      "approval_scope": "OWNER_PRESENTED_AS_SCULPT_QUALITY_TARGET_ONLY",
+      "canon_replacement": false,
+      "actual_3d_source_file_verified": false,
+      "native_blender_or_godot_verified": false
+    }
+  ],
+  "reported_external_mesh_statistics": {
+    "screenshot": "40151.jpg",
+    "application_shown": "Meshy 7.1",
+    "topology_ui": "Triangle",
+    "faces_ui": 2460470,
+    "vertices_ui": 1229959,
+    "status": "SCREENSHOT_ONLY_UNVERIFIED_SOURCE_MESH"
+  },
+  "production_gate": {
+    "screenshots_archived_library": true,
+    "all_image_bytes_verified_in_current_chat": true,
+    "raw_mesh_file_supplied": false,
+    "blender_native_source_verified": false,
+    "retopo_and_rig_verified": false,
+    "godot_runtime_verified": false,
+    "owner_final_model_approval": false
+  },
+  "model_quality_ambition": "Premium 1P/3P animated hero fidelity beyond statue preview, bounded by performance and author-approved visual canon.",
+  "source_archive_provenance": "Exact uploaded WebP payloads (.jpg user aliases); no re-encode for archive. GitHub docs store hash/path/identity only until an approved binary source commit."
+}
