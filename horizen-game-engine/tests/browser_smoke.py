@@ -60,6 +60,13 @@ try:
         page.locator('#preview-state').get_by_text('REAL LOCAL SOURCE').wait_for()
         assert not page.locator('#model-canvas').is_hidden()
         assert page.locator('#pipeline-summary').inner_text().startswith('0 / 8')
+        # Re-selecting identical bytes must not create a duplicate catalog record.
+        page.locator('#asset-id').fill('CHR_TestTriangle')
+        page.locator('#asset-file').set_input_files(str(ROOT/'tests/fixtures/triangle.obj'))
+        page.locator('#asset-form button[type=submit]').click()
+        page.locator('#toast').get_by_text('Original hash matched',exact=False).wait_for()
+        assert page.locator('.asset-item').count()==1
+
         page.screenshot(path=str(EVIDENCE/'02_forge_real_obj_chromium_1440x900.png'),full_page=True)
         page.locator('.step').first.get_by_role('button').click()
         page.locator('#evidence-file').set_input_files(str(ROOT/'tests/fixtures/evidence.txt'))

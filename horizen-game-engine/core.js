@@ -99,3 +99,24 @@ export function importReceipt(json) {
   if (!Array.isArray(json.worlds)||!Array.isArray(json.assets)||json.worlds.length>200||json.assets.length>100) throw new Error('Invalid manifest structure.');
   return normalizeState(json);
 }
+
+/** Distinguish the engine's directory/index aliases from genuine world entries. */
+export function isEngineShellUrl(candidate,currentUrl){
+  const page=new URL(currentUrl),target=new URL(candidate,page);
+  if(page.origin!==target.origin)return false;
+  const key=u=>decodeURIComponent(u.pathname).replace(/\/+/g,'/').replace(/\/index\.html$/i,'/');
+  return key(target)===key(page)||key(target)===key(new URL('./',page));
+}
+/** Reattach only an exact original. Existing receipts/IDs are never overwritten. */
+export function findExistingSourceAsset(assets,{name,hash,bytes,format,worldId,selectedId}){
+  const matches=assets.filter(a=>a.name===name&&a.sha256===hash&&a.bytes===bytes&&a.format===format);
+  const selected=matches.find(a=>a.id===selectedId);if(selected)return selected;
+  const sameWorld=matches.filter(a=>a.worldId===worldId);
+  if(sameWorld.length===1)return sameWorld[0];
+  if(matches.length===1)return matches[0];
+  if(matches.length>1)throw new Error('Multiple matching originals; select the existing asset before reattaching.');
+  return null;
+}
+export function persistenceMessage(saved,message){
+  return saved?message:'SESSION ONLY — browser storage failed. Export staging JSON before reloading. '+message;
+}
