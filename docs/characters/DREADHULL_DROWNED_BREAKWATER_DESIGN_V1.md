@@ -1,4 +1,6 @@
-# DREADHULL — THE DROWNED BREAKWATER
+# DREADHULL — THE DROWNED BREAKWATER (SUPERSEDED)
+
+> **SUPERSEDED — NOT CANON — 2026-11-27.** Historical written proposal retained for traceability only. Owner explicitly selected Bonebrine Reaver #07 with the Ossuary Dredge. Do not implement or generate artwork from this Keel Oar / Ballast Heart proposal. The active contract is [CHR_Dreadhull.json](plans/CHR_Dreadhull.json), [CANON_LOCKS.json](CANON_LOCKS.json), and [owner approval](../../evidence/characters/CHR_Dreadhull/OWNER_CANON_APPROVAL_2026-11-27.md). The old kit and numeric hypotheses are not approved.
 
 Work order: AF-DREADHULL-DESIGN-001 | Date: 2026-11-27 (AWST)
 Project: AETHERFALL: REALMS COLLIDE | ID: CHR_Dreadhull

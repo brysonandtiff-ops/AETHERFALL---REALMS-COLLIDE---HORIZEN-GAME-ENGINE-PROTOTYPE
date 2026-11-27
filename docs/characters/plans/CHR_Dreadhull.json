@@ -3,90 +3,90 @@
   "project": "AETHERFALL: REALMS COLLIDE",
   "character_id": "CHR_Dreadhull",
   "display_name": "Dreadhull",
-  "epithet": "The Drowned Breakwater",
+  "epithet": "Bonebrine Reaver — The Cursed Salvager",
   "registry_role": "tank_denial_disruption",
-  "registry_concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+  "registry_concept_status": "aetherfall_approved",
   "standard": "VELLARIS_V1_PLUS",
   "identity": {
     "role_class": "tank",
-    "archetype": "Ocean pressure / frontline peel / directional denial",
-    "one_of_one_hook": "An undead shipmaster shapes finite ocean pressure into moving currents and spectral kraken lanes rather than carrying a shield.",
-    "silhouette_read": "Low broad asymmetric wreck-hull shoulder, narrow drowned human skull in open brass pressure collar, hanging stern bell, torn short sailcoat, long single keel-oar; no hat, tentacle beard, crab claw, antlers, cape or shield.",
-    "gameplay_promise": "Protect an approach against ranged fire, pin a retreat line against displacement, and redirect enemies with telegraphed water currents; control space rather than heal or chase.",
-    "counterplay": "Flank the directional current, wait out finite Ballast, interrupt the planted stance, leave marked lanes, break line of sight; no forced environmental kills or repeated ultimate pulls."
+    "archetype": "Battlefield Reclamation Tank",
+    "one_of_one_hook": "Ossuary Dredge reclaims cursed wreckage into temporary cover and protective power using Salvage Charge.",
+    "silhouette_read": "Heavy asymmetrical hooded undead biped, giant circular bone-rib dredge, opposing jagged timber bulwark, open wreck rigging and cyan lantern.",
+    "gameplay_promise": "Protect, reclaim, reforge, control and empower; reclaim debris into defenses and displace enemies.",
+    "counterplay": "Production design pending: fair telegraphs, finite salvage resource, cover destruction and control resistance require explicit design review and real testing."
   },
   "design": {
-    "owner_status": "legacy_candidate_pending_aetherfall_approval",
-    "visual_identity": "Massive drowned undead human pirate captain in armor made from the wreck of his own ship: one curving ribbed teak-and-bronze shoulder prow, opposite skeletal hand and exposed iron ribs, translucent seawater held within a brass chest pressure cage, salt-cracked bone face with one pale sea-glass eye, stern bell and rope ties, torn slate sailcloth coat. No humanoid cephalopod face, familiar franchise costume, handheld shield or claw.",
-    "signature_prop": "Keel Oar: a two-handed, broad blunt steering blade with tidal channels and a distinctive offset shaft, used to sweep and plant ocean currents. The spectral kraken is a separate abyssal creature, not his anatomy.",
+    "owner_status": "approved_concept_only",
+    "visual_identity": "Broad asymmetrical heavy bipedal tank; hooded undead face with dark recess, narrow cyan glow and exposed cyan-lit skeletal ribs; no tentacle beard. Bone-brine plates with ivory curved whale-bone ribs, dark blue-black metal, rusted antique-gold ironwork, chains and bound salvage ropes. Tattered crimson-magenta sails and cloth drape over shoulder and waist; cyan brine lantern and magical energy glow. Ossuary Dredge: large arm-carried cylindrical salvage winch, circular ribbed bone-claw aperture and glowing cyan brine chamber; preserve exact weapon shape, not an anchor-scythe. Opposite arm retains the original strapped jagged timber-and-bone salvage bulwark shown in hero art and turnarounds. Original wreck frame mounted behind shoulders: open shipwreck timber rigging, rope webbing, mast fragments and hanging lantern; do NOT substitute a full galleon. Preserve the owner-approved dark navy/cyan/gold 4:3 board, its exact hood, armor, proportions, five turnaround views, material studies, weapon breakdown and six ability panels.",
+    "signature_prop": "Ossuary Dredge",
     "palette": [
-      "Abyss navy #101F30",
-      "Oxidised bronze #426B65",
-      "Salt bone #D6D1BD",
-      "Water glass #66CFE3",
-      "Storm foam #F0F8F4",
-      "Wet teak #5D4232"
+      "bone ivory",
+      "dark navy-black",
+      "antique gold",
+      "cyan brine energy",
+      "crimson-magenta sailcloth"
     ],
     "materials": [
-      "Salt-pitted aged bronze and ship iron",
-      "Waterlogged teak with ribbed hull construction",
-      "Rough cracked bone",
-      "Torn sailcloth and braided rope",
-      "Translucent contained sea water; controlled foam highlights"
+      "Bone-brine plates",
+      "Shipwreck timber",
+      "Salvage rigging",
+      "Rusted ironwork",
+      "Whale bone ribs",
+      "Tattered sails"
     ],
-    "accessibility_notes": "Readable broad silhouette and single oar from both cameras; patterned friendly/enemy current edges plus shape and audio cues; low-flash motion option; no opaque full-screen water, tentacle camera clipping or color-only targeting. Test real gameplay.",
+    "accessibility_notes": "Check contrast, gameplay-distance silhouette, VFX obstruction, color-blind readability, sound alternatives and safe flashes in real tests.",
     "kit_status": "concept_reference_only",
     "active_abilities": [
       {
-        "slot": "primary",
-        "name": "Keelstroke",
-        "summary": "Slow wide oar sweep (prototype 55 damage, 4 m range, 0.85 s attack cycle); telegraphed melee, no permanent stun."
+        "slot": "1",
+        "name": "Dredge Snare",
+        "summary": "Fires chains and bone-ribs from the Ossuary Dredge to latch onto enemies and wreckage, dragging them toward Dreadhull and displacing their position."
       },
       {
-        "slot": "secondary_defense",
-        "name": "Breakwater",
-        "summary": "Spend Ballast to form a frontal flowing current; hostile ranged hits crossing its plane deal 45% less damage to covered allies and Dreadhull. 20 initial + 30/s; max 2.5 s, 5 s cooldown; melee and flanks bypass."
+        "slot": "2",
+        "name": "Salvage Recall",
+        "summary": "Pulls floating or shattered debris back into himself, restoring armor and briefly healing for a portion of the reclaimed wreckage."
       },
       {
-        "slot": "active_1",
-        "name": "Undertow",
-        "summary": "Project a marked 7 m water lane; after 0.55 s, enemies within are slowed 30% for 1.5 s and drawn up to 2 m toward the marked landing point. 10 s cooldown, safe landing and line of sight required."
+        "slot": "3",
+        "name": "Reforge Bulwark",
+        "summary": "Converts dredged wreckage into a large bonebrine barricade, granting cover and a protective aura that reduces incoming damage for Dreadhull and nearby allies."
       },
       {
-        "slot": "active_2",
-        "name": "Deadman's Mooring",
-        "summary": "Plant the oar as a visible mooring point for 4 s; allies inside 5 m gain 60% resistance to horizontal knockback, not stun immunity. Dreadhull moves 25% slower and cannot attack while planted. 14 s cooldown; cancel early or interrupt with hard CC."
+        "slot": "4",
+        "name": "Wreckline Drag",
+        "summary": "Whips a chain line from the dredge, dragging a targeted enemy along with nearby wreckage, briefly slowing them on arrival and disrupting their formation."
       },
       {
-        "slot": "ultimate",
-        "name": "Kraken's Wake",
-        "summary": "Summon three sequential, clearly marked spectral kraken arms across an 11 m fan. Each lane warns 0.8 s before a single sweep; 65 damage, up to 2 m pull, 35% slow 2 s. Each enemy affected at most once per cast. No physical wall or pit pulls; allies unaffected; prototype 100 ultimate charge cost."
+        "slot": "5_ultimate",
+        "name": "Graveyard Forge",
+        "summary": "Dredges a massive field of wreckage from the seafloor, erupting into a fortified salvage zone. The area becomes a graveyard forge that grants cover, empowers allies' defenses, and continuously reclaims debris over time."
       }
     ],
     "passive": {
-      "name": "Ballast Heart",
-      "summary": "100 Ballast maximum, 15/s regeneration after 2 s without spending. Only Breakwater consumes Ballast; no gains from incoming damage, no idle shielding and no health regeneration. Interrupted or empty current ends immediately."
+      "name": "Sunken Claim",
+      "summary": "Damage absorbed by his shields stores Salvage Charge. At high charge, his next defensive ability is strengthened (increased shield, duration, and additional effect)."
     }
   },
   "concept_reference": {
-    "repo_path": "art/concepts/characters/CHR_Dreadhull/MASTER_CONCEPT_PENDING.png",
+    "repo_path": "art/concepts/characters/CHR_Dreadhull/Dreadhull_Bonebrine_Reaver_CANONICAL_v1.webp",
     "archive_status": "pending_source_upload",
-    "sha256": null,
-    "origin_note": "Historical selected denial/disruption tank; owner requested original undead pirate and ocean/kraken defense. This is a new written design proposal; no exact approved image has been archived. The original source remains pending."
+    "sha256": "6d172d578f0d01e5ea126f755ae7c309a4e5d176b801bf11af7de3990a43273c",
+    "origin_note": "Explicit owner canonical approval of exact chat upload 40768.png on 2026-11-27. Actual format WebP 1536x1152, 538780 bytes. Original bytes preserved in chat and personal Library copy; GitHub binary check-in remains pending. No later generated variant is approved."
   },
   "sheet_sections": {
-    "hero_portrait": "pending",
-    "turnaround_front": "pending",
-    "turnaround_side": "pending",
-    "turnaround_back": "pending",
-    "turnaround_three_quarter": "pending",
-    "silhouette_exploration": "pending",
-    "face_expressions": "pending",
+    "hero_portrait": "visible_in_unarchived_reference",
+    "turnaround_front": "visible_in_unarchived_reference",
+    "turnaround_side": "visible_in_unarchived_reference",
+    "turnaround_back": "visible_in_unarchived_reference",
+    "turnaround_three_quarter": "visible_in_unarchived_reference",
+    "silhouette_exploration": "visible_in_unarchived_reference",
+    "face_expressions": "visible_in_unarchived_reference",
     "palette_swatches": "pending",
-    "materials_callouts": "pending",
-    "weapon_or_focus": "pending",
-    "gameplay_identity": "pending",
-    "ability_kit": "pending",
+    "materials_callouts": "visible_in_unarchived_reference",
+    "weapon_or_focus": "visible_in_unarchived_reference",
+    "gameplay_identity": "visible_in_unarchived_reference",
+    "ability_kit": "visible_in_unarchived_reference",
     "vfx_motion": "pending",
     "audio_voice": "pending",
     "technical_handoff": "pending",
@@ -94,7 +94,7 @@
   },
   "section_waivers": {},
   "gates": {
-    "identity_owner_approved": false,
+    "identity_owner_approved": true,
     "source_archived": false,
     "concept_package_reviewed": false,
     "blockout_approved": false,
@@ -106,9 +106,9 @@
   },
   "stage_evidence": {},
   "blockers": [
-    "Obtain the exact original historical Dreadhull reference and actual roster images; compare this proposed redesign and obtain explicit visual/kit approval.",
-    "Produce the 16-section VELLARIS_V1_PLUS art board with the owner-approved layout reference; archive exact approved image and source hash. No image gate promoted by this text.",
-    "Native Blender sculpt/rig, Godot import, first/third-person combat, balance, accessibility, multiplayer and device evidence are not run."
+    "Archive the exact owner-approved WebP in GitHub and verify its pinned SHA-256; do not substitute later shipwreck/anchor-scythe variants.",
+    "Complete missing palette swatches, motion/audio, technical handoff, accessibility and full concept-package review; no independent visual roster comparison is claimed.",
+    "Do not claim Blender/Godot/gameplay/device evidence without genuine captures."
   ],
-  "provenance_note": "AF-DREADHULL-DESIGN-001, 2026-11-27. Owner direction applied to proposed complete written appearance and ability kit; numerical parameters are starting design targets, not tested or owner-locked. No canonical master art, registry role, stage approvals or native evidence changed."
+  "provenance_note": "Explicit owner-approved concept only; original image unchanged. Not a model, rig, playable character or native runtime evidence."
 }

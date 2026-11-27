@@ -41,6 +41,10 @@ PR 27 originally failed Git preflight on whitespace; corrected two files and new
 
 Review scope: PR metadata, changed paths, known review threads, branch dependency and source-check status where inspected. This is not an independent code-owner approval of every line, nor native 3D/gameplay proof. No branch protection bypass, main-branch merge, release or paid API call. Desktop Commander usage cap prevented local execution. Use GitHub Actions exact-head checks, then independent review and authorized integration into main. Rollback: retain main unchanged and close integration PR if rejected; do not delete original branches or art.
 
-## Dreadhull gate
+## Dreadhull gate — historical, superseded by owner selection
 
-The written design is complete for review; all original image, art comparison, model, rig, Godot gameplay, network, accessibility and physical device gates remain pending. See docs/characters/DREADHULL_DROWNED_BREAKWATER_DESIGN_V1.md and docs/characters/plans/CHR_Dreadhull.json. No concept render or engine media generated in this source-only work order.
+The earlier written Drowned Breakwater design was complete for review at the original integration snapshot. It was never approved and is now superseded by the owner's exact Bonebrine Reaver #07 selection. See docs/characters/DREADHULL_DROWNED_BREAKWATER_DESIGN_V1.md and docs/characters/plans/CHR_Dreadhull.json. No concept render or engine media generated in this source-only work order.
+
+## Repair work order AF-REPO-REPAIR-20261127-001
+
+Owner-approved reference from PR #30 is incorporated into the existing integration branch without discarding any previously integrated policy or handoff validator. Original review branch and source commits retained; no automatic main merge. Dreadhull master fingerprint, weapon, visual traits and six-slot concept kit are pinned. The earlier Drowned Breakwater specification is historical only. Refer to the active plan and approval evidence, not the superseded proposal. Archive bytes remain pending on GitHub; the original is verified in chat and Library. No model/rig/gameplay approval or full roster originality comparison is claimed. New exact-head CI and independent review required. PR #30 overlaps this integrated repair; do not merge both independently without reconciling the changed files.
