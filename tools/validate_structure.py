@@ -13,7 +13,10 @@ REQUIRED_FILES = (
     "README.md", "AGENTS.md", ".gitignore", ".gitattributes",
     "game/project.godot", "game/scenes/bootstrap/main.tscn",
     "art/asset_registry.json", "docs/architecture/REPO_LAYOUT.md",
-    "docs/art/ASSET_PIPELINE.md", "docs/characters/CHARACTER_REGISTRY.md",
+    "docs/art/ASSET_PIPELINE.md",
+    "docs/art/UNIVERSAL_INFOGRAPHIC_STANDARD.md",
+    "docs/art/INFOGRAPHIC_POLICY.json",
+    "docs/art/INFOGRAPHIC_PLAN_TEMPLATE.json", "docs/characters/CHARACTER_REGISTRY.md",
     "docs/art/BLENDER_RAW_SCULPT_TO_GAME_READY.md",
     "docs/art/templates/BLENDER_HANDOFF_TEMPLATE.json",
     "tools/validate_blender_handoff.py",
@@ -402,6 +405,109 @@ def validate_character_plans(root, errors):
                     errors.append("Unregistered character folder: " + child.relative_to(root).as_posix())
 
 
+# SIRE-ART-INFO-001: protect all new visual asset categories, not just characters.
+# A metadata gate proves only existence/identity, NEVER artistic similarity or gameplay.
+INFOGRAPHIC_REQUIRED_PANELS = {
+    "character": ("hero_visual", "four_view_turnaround", "silhouette_studies",
+                  "materials_palette", "unique_equipment", "gameplay_identity",
+                  "abilities_and_movement"),
+    "weapon": ("hero_visual", "multi_angle_views", "materials_palette",
+               "construction_and_operation", "gameplay_effects"),
+    "object": ("hero_visual", "multi_angle_views", "scale_and_silhouette",
+               "materials_palette", "interaction_states"),
+    "level": ("key_environment_art", "top_down_map", "elevations_and_vistas",
+              "routes_cover_and_sightlines", "spawns_objectives_and_exits"),
+    "environment": ("key_environment_art", "layout_and_landmarks",
+                    "elevations_and_vistas", "lighting_and_materials"),
+    "building": ("architectural_hero", "exterior_views", "interior_and_floor_plan",
+                 "scale_and_materials", "traversal_and_interactions"),
+    "creature": ("hero_visual", "four_view_turnaround", "silhouette_and_anatomy",
+                 "locomotion_and_abilities"),
+    "vehicle": ("hero_visual", "multi_angle_views", "parts_and_mechanisms",
+                "controls_and_movement"),
+    "ui": ("hero_screen", "responsive_layouts", "component_variants",
+           "interaction_and_state_flows", "accessibility_and_platform_handoff"),
+    "vfx": ("key_visual", "time_based_sequence", "triggers_and_telegraph",
+            "accessibility_and_performance"),
+}
+
+
+def validate_infographic_policy(root, errors):
+    """Lock source-standard, panel coverage and unapproved template state."""
+    p = root / "docs/art/INFOGRAPHIC_POLICY.json"
+    t = root / "docs/art/INFOGRAPHIC_PLAN_TEMPLATE.json"
+    c = root / "docs/characters/CANON_LOCKS.json"
+    try:
+        policy = json.loads(p.read_text(encoding="utf-8"))
+        template = json.loads(t.read_text(encoding="utf-8"))
+        canon = json.loads(c.read_text(encoding="utf-8"))
+    except (OSError, ValueError, UnicodeError) as exc:
+        errors.append("Missing/invalid infographic policy or template: " + str(exc))
+        return
+    if (not isinstance(policy, dict)
+            or policy.get("schema_version") != 1
+            or policy.get("law_id") != "SIRE-ART-INFO-001"
+            or policy.get("project") != "AETHERFALL: REALMS COLLIDE"
+            or policy.get("policy") != "INFOGRAPHIC_FIRST_NO_CANON_DRIFT"
+            or policy.get("authority") != "docs/art/UNIVERSAL_INFOGRAPHIC_STANDARD.md"):
+        errors.append("Infographic policy authority/identity drift")
+        return
+    ref = policy.get("master_reference")
+    if not isinstance(ref, dict):
+        ref = {}
+    try:
+        approved = canon["locked_characters"]["CHR_Vellaris_Bloodshield"]["source"]
+    except (KeyError, TypeError):
+        approved = {}
+    if not isinstance(approved, dict):
+        approved = {}
+    if (ref.get("character_id") != "CHR_Vellaris_Bloodshield"
+            or ref.get("uploaded_name") != "39403.png"
+            or ref.get("actual_format") != "WEBP"
+            or ref.get("aspect_ratio") != "4:3"
+            or ref.get("width") != 1536 or ref.get("height") != 1152
+            or ref.get("archive_status") != "pending_binary_checkin"
+            or ref.get("sha256") != "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939"
+            or ref.get("sha256") != approved.get("sha256")):
+        errors.append("Infographic master reference identity/hash drift")
+    panels = policy.get("asset_panels")
+    if not isinstance(panels, dict) or set(panels) != set(INFOGRAPHIC_REQUIRED_PANELS):
+        errors.append("Infographic asset type coverage drift")
+        panels = {}
+    for kind, required in INFOGRAPHIC_REQUIRED_PANELS.items():
+        available = panels.get(kind)
+        if (not isinstance(available, list)
+                or not all(isinstance(panel, str) for panel in available)
+                or len(available) != len(set(available))
+                or not set(required).issubset(set(available))):
+            errors.append("Infographic required panels missing: " + kind)
+    frame = policy.get("board_frame")
+    if (not isinstance(frame, dict)
+            or "hero left" not in str(frame.get("layout", "")).lower()
+            or "magenta" not in str(frame.get("palette", "")).lower()
+            or "not final in-game model" not in str(frame.get("required_footer", "")).lower()):
+        errors.append("Infographic board frame/footer drift")
+    if (policy.get("owner_approval_required") is not True
+            or policy.get("allow_inapplicable_panels_only_with_owner_waiver") is not True
+            or policy.get("generated_art_is_runtime_proof") is not False
+            or policy.get("source_integrity_sha256_required_for_archive") is not True
+            or not isinstance(policy.get("statuses"), list)
+            or not policy["statuses"]
+            or policy["statuses"][0] != "PROPOSAL_PENDING_OWNER_REVIEW"):
+        errors.append("Infographic owner review/evidence safety drift")
+    if (not isinstance(template, dict)
+            or template.get("law_id") != "SIRE-ART-INFO-001"
+            or template.get("project") != "AETHERFALL: REALMS COLLIDE"
+            or template.get("status") != "PROPOSAL_PENDING_OWNER_REVIEW"
+            or not isinstance(template.get("owner_review"), dict)
+            or template["owner_review"].get("decision") != "pending"
+            or not isinstance(template.get("runtime_evidence"), dict)
+            or template["runtime_evidence"].get("status") != "NOT_VERIFIED"
+            or not isinstance(template.get("infographic"), dict)
+            or template["infographic"].get("archive_status") != "not_archived"):
+        errors.append("Infographic plan template self-approval or evidence drift")
+
+
 def validate_godot(root, errors):
     project = root / "game/project.godot"
     if not project.is_file():
@@ -464,6 +570,7 @@ def check(root=ROOT):
     scan_source_tree(root, errors)
     validate_registry(root, errors)
     validate_character_plans(root, errors)
+    validate_infographic_policy(root, errors)
     import importlib.util
     canon_file = Path(__file__).with_name("verify_visual_canon.py")
     spec = importlib.util.spec_from_file_location("aetherfall_visual_canon", canon_file)
@@ -487,7 +594,7 @@ def main():
         for failure in failures:
             print("FAIL: " + failure, file=sys.stderr)
         return 1
-    print("PASS: structure, character/canon gates, Blender handoff claims, Godot refs and migration safety (STATIC ONLY; NO NATIVE ART OR GAMEPLAY PROOF)")
+    print("PASS: structure, infographic policy, character/canon gates, Blender handoff claims, Godot refs and migration safety (STATIC ONLY; NO NATIVE ART OR GAMEPLAY PROOF)")
     return 0
 
 

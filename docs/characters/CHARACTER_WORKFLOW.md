@@ -4,6 +4,8 @@
 
 The owner-provided **Vellaris — The Bloodshield** master sheet is the **minimum completeness reference**, *not* a verified final game model. Match the sheet's depth and clarity, **not** her shield, colors, abilities, silhouette or species. Every tank must be meaningfully 1-of-1: avoid giving all tanks a shield. Do not change locked art or canonical IDs without owner approval.
 
+**Universal art sheet rule:** All planned game visuals—not only characters—must use the AETHERFALL infographic format from `../art/UNIVERSAL_INFOGRAPHIC_STANDARD.md` under SIRE-ART-INFO-001. Character plans and the 16 existing `sheet_sections` remain the authoritative **character-specific** completeness gate. Infographic presentation does not transfer Vellaris's face, colours, shield or skills to another hero.
+
 ## One character = one registered, searchable plan
 
 1. Inspect `art/asset_registry.json` and `docs/characters/CHARACTER_INTAKE.md`. Reserve a unique `CHR_<Name>` ID and honest `concept_status`; check aliases before renaming anyone (especially Corvex/Korvex).
