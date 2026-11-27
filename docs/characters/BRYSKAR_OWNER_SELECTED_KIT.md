@@ -1,12 +1,12 @@
 # BRYSKAR — THE FIRST BREACH: OWNER-SELECTED ABILITY KIT
 
-**Project:** AETHERFALL: REALMS COLLIDE  
-**Work order:** AF-BRYSKAR-KIT-SELECTION-20261126  
-**Date:** 2026-11-26 (Australia/Perth)  
-**Owner decision:** **THIS EXACT KIT IS SELECTED.** The owner directly identified the attached Bryskar infographic as the kit to keep.  
-**Scope of approval:** ability names and their core functional descriptions / overall fast dive-rescue tank identity **ONLY**. This is not an approval of final gameplay numbers, native character source, an imported model, or every visual detail.  
-**Source:** owner-uploaded image `40110.png`, actual file format **WebP** (1536 × 1152), SHA-256 `a2529b116ad1e788317e11827df0f55460d43fbcb817e39c0ca66bc3c0eff6c7`. The image was supplied in ChatGPT and is **not yet archived as an original binary in this GitHub repository**. Never claim a GitHub source or art-approval gate is complete until it is independently archived and checked.  
-**Concept-only status:** OWNER_SELECTED_KIT / SOURCE_NOT_ARCHIVED / MODEL_NOT_VERIFIED / GAMEPLAY_NOT_IMPLEMENTED.  
+**Project:** AETHERFALL: REALMS COLLIDE
+**Work order:** AF-BRYSKAR-KIT-SELECTION-20261126
+**Date:** 2026-11-26 (Australia/Perth)
+**Owner decision:** **THIS EXACT KIT IS SELECTED.** The owner directly identified the attached Bryskar infographic as the kit to keep.
+**Scope of approval:** ability names and their core functional descriptions / overall fast dive-rescue tank identity **ONLY**. This is not an approval of final gameplay numbers, native character source, an imported model, or every visual detail.
+**Source:** owner-uploaded image `40110.png`, actual file format **WebP** (1536 × 1152), SHA-256 `a2529b116ad1e788317e11827df0f55460d43fbcb817e39c0ca66bc3c0eff6c7`. The image was supplied in ChatGPT and is **not yet archived as an original binary in this GitHub repository**. Never claim a GitHub source or art-approval gate is complete until it is independently archived and checked.
+**Concept-only status:** OWNER_SELECTED_KIT / SOURCE_NOT_ARCHIVED / MODEL_NOT_VERIFIED / GAMEPLAY_NOT_IMPLEMENTED.
 **Proposed asset ID (not yet registered):** `CHR_Bryskar`. Formal registration and character-plan intake must follow `CHARACTER_WORKFLOW.md`; this note is not an asset registration or a production gate.
 
 ## Character combat identity
