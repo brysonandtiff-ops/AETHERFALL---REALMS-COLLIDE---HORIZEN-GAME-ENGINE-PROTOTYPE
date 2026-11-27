@@ -18,7 +18,7 @@ from pathlib import Path
 SCRIPT_DIR = str(Path(__file__).resolve().parent)
 if SCRIPT_DIR not in sys.path:
     sys.path.insert(0, SCRIPT_DIR)
-from horizen_mesh_io import audit_triangles, binary_stl, safe_asset_id, sha256_file
+from horizen_mesh_io import audit_triangles, binary_stl, safe_asset_id, sha256_file, MAX_BINARY_STL_TRIANGLES
 
 
 def blender_export(args=None):
@@ -30,8 +30,8 @@ def blender_export(args=None):
     asset_id = safe_asset_id(options.asset_id)
     import bpy  # Import ONLY in actual Blender; pure mesh helpers are unit-testable separately.
 
-    if not bpy.data.filepath or not Path(bpy.data.filepath).is_file():
-        raise ValueError("Save the canonical .blend source before generating a traceable export receipt")
+    if not bpy.data.filepath or not Path(bpy.data.filepath).is_file() or bpy.data.is_dirty:
+        raise ValueError("Save all current .blend scene changes before generating a traceable export receipt")
     source_digest = sha256_file(bpy.data.filepath)
     selected = list(bpy.context.selected_objects)
     if len(selected) != 1 or selected[0].type != "MESH":
@@ -51,6 +51,8 @@ def blender_export(args=None):
         matrix = obj_eval.matrix_world
         vertices = [tuple(float(x) for x in (matrix @ v.co)) for v in mesh.vertices]
         faces = [tuple(int(i) for i in tri.vertices) for tri in mesh.loop_triangles]
+        if len(faces) > MAX_BINARY_STL_TRIANGLES:
+            raise ValueError("Selected mesh exceeds the 64 MiB binary STL intake limit; simplify in a separate approved source version")
         audit = audit_triangles(vertices, faces)
         if not audit["triangles"]:
             raise ValueError("Selected mesh has no triangles")

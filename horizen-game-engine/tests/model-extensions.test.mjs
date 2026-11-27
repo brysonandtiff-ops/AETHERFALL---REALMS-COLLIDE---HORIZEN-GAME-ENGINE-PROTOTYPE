@@ -44,3 +44,7 @@ test('no IndexedDB fails honestly, and unsafe source IDs are rejected',async()=>
  await assert.rejects(()=>getRetainedSource('CHR_Test'),/IndexedDB is unavailable/);
  await assert.rejects(()=>retainSource('../oops',new Blob(['some content']),'a'.repeat(64)),/Invalid file/);
 });
+test('valid binary STL above one million triangles is sampled within the 64 MiB limit',()=>{
+ const count=1000001,buffer=new ArrayBuffer(84+count*50),v=new DataView(buffer);v.setUint32(80,count,true);
+ const result=inspectSTL(buffer);assert.equal(result.stats.sourceTriangles,count);assert.ok(result.stats.previewTriangles<=180000);
+});

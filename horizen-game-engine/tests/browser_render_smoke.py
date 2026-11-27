@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Real Chromium DOM rendering via set_content. NO HTTP/SW/engine/browser-build proof."""
+"""Real Chromium DOM rendering via intercepted local module responses. NO HTTP/SW/engine/browser-build proof."""
 from pathlib import Path
 from datetime import datetime, timezone
 import hashlib
@@ -13,23 +13,33 @@ html=(ROOT/'index.html').read_text()
 html=re.sub(r'<link[^>]+(?:manifest|stylesheet|icon)[^>]+>','',html)
 html=re.sub(r'<script type="module"[^>]+></script>','',html)
 css=(ROOT/'styles.css').read_text()
-modules=[]
-for path in ('core.js','model-extra.js','model-vault.js','model-inspect.js','viewer.js','app.js'):
-    text=(ROOT/path).read_text()
-    text=re.sub(r'^import .*? from .*?;\s*','',text,flags=re.M)
-    text=re.sub(r'\bexport (?=(?:const|let|class|function|async)\b)','',text)
-    modules.append(text)
-script='(()=>{\n'+ '\n'.join(modules) +'\nwindow.__horizenSmoke={inspectOBJ,mountPreview};\n})()'
+# Real browser ES modules, intercepted local bytes: no live HTTP or SW proof.
+ORIGIN='https://horizen-smoke.invalid'
+module_files=('core.js','model-extra.js','model-vault.js','model-inspect.js','viewer.js','app.js')
+html=html.replace('</body>', '<script type="module" src="/__smoke.js"></script></body>')
+harness="import './app.js'; import {inspectOBJ} from './model-inspect.js'; import {mountPreview} from './viewer.js'; window.__horizenSmoke={inspectOBJ,mountPreview};"
+def serve_local(route):
+    from urllib.parse import urlparse
+    path=urlparse(route.request.url).path
+    if path=='/':
+        route.fulfill(status=200,content_type='text/html',body=html)
+    elif path=='/__smoke.js':
+        route.fulfill(status=200,content_type='application/javascript',body=harness)
+    elif path.lstrip('/') in module_files:
+        route.fulfill(status=200,content_type='application/javascript',body=(ROOT/path.lstrip('/')).read_text())
+    else:
+        route.fulfill(status=404,body='Not part of DOM smoke fixture')
 with sync_playwright() as p:
   browser=p.chromium.launch(headless=True,executable_path='/usr/bin/chromium',args=['--no-sandbox'])
   context=browser.new_context(viewport={'width':1440,'height':900},device_scale_factor=1,
-      record_video_dir=str(OUT),record_video_size={'width':1440,'height':900})
+      record_video_dir=str(OUT),record_video_size={'width':1440,'height':900},service_workers='block')
   page=context.new_page()
   errors=[]
   page.on('pageerror',lambda exc:errors.append(str(exc)))
-  page.set_content(html)
+  page.route(ORIGIN+'/**',serve_local)
+  page.goto(ORIGIN+'/',wait_until='load')
   page.add_style_tag(content=css)
-  page.add_script_tag(content=script)
+  page.wait_for_function('Boolean(window.__horizenSmoke)')
   page.locator('.world-card').first.wait_for()
   assert page.locator('.world-card').count()==4
   page.screenshot(path=str(OUT/'01_library_CHROMIUM_DOM.png'),full_page=True)

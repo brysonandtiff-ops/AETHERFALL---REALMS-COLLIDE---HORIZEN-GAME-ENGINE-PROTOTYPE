@@ -60,3 +60,7 @@ Run the dependency-free tests first: `python3 -m unittest tests/test_horizen_mes
 On the HORIZEN Model Forge asset form, choose a real GLB/embedded glTF/OBJ/STL file. Tick **Save the original file in this browser** only if you want optional on-device retention. On a later reload, selecting the asset can restore the original from IndexedDB after verifying the same SHA-256. The **Forget saved original** action removes the stored file. If IndexedDB is missing, full or cleared, choose the source again; **a JSON receipt by itself does not restore geometry**. No automatic device scan or remote upload is implemented. Real Android offline/reload/device acceptance remains pending.
 
 Full production state: `../docs/characters/MODEL_STEP_CHECKLIST_2026-11-26.md`. AETHERFALL game name and art-source locks apply; HORIZEN is the tool/app name, not the game.
+
+### Source repair boundaries
+
+Binary STL intake and exporter use the same 64 MiB limit (1,342,175 binary STL triangles maximum). Save all current Blender scene changes before export; hashing an older disk revision is not a valid receipt for an unsaved in-memory model. Reattaching an exact original preserves its existing asset record and evidence. Browser storage failures explicitly report session-only changes. The DOM smoke harness uses actual ES module scopes with intercepted local resources, not a live device or engine test.

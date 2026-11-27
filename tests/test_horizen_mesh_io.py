@@ -3,6 +3,9 @@ import importlib.util
 import struct
 import tempfile
 import unittest
+import sys
+from types import SimpleNamespace
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,6 +58,30 @@ class MeshIOTests(unittest.TestCase):
             path = Path(tmp) / "a.stl"
             path.write_bytes(mod.binary_stl(self.vertices, self.faces))
             self.assertEqual(mod.sha256_file(path), __import__("hashlib").sha256(path.read_bytes()).hexdigest())
+
+
+    def test_binary_stl_limit_matches_64_mib_browser_intake(self):
+        self.assertLessEqual(84 + mod.MAX_BINARY_STL_TRIANGLES * 50, 64 * 1024 * 1024)
+        self.assertGreater(84 + (mod.MAX_BINARY_STL_TRIANGLES + 1) * 50, 64 * 1024 * 1024)
+        class TooManyFaces:
+            def __len__(self):
+                return mod.MAX_BINARY_STL_TRIANGLES + 1
+        with self.assertRaisesRegex(ValueError, "64 MiB"):
+            mod.binary_stl(self.vertices, TooManyFaces())
+
+    def test_export_rejects_unsaved_scene_changes_before_hash_or_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "saved.blend"
+            source.write_bytes(b"offline fixture; not an actual Blender scene")
+            fake_bpy = SimpleNamespace(data=SimpleNamespace(filepath=str(source), is_dirty=True))
+            exporter_spec = importlib.util.spec_from_file_location("horizen_export_test", ROOT / "tools/horizen_blender_export.py")
+            exporter = importlib.util.module_from_spec(exporter_spec)
+            with patch.dict(sys.modules, {"bpy": fake_bpy, "horizen_mesh_io": mod}):
+                exporter_spec.loader.exec_module(exporter)
+                with patch.object(exporter, "sha256_file", side_effect=AssertionError("Must reject before hashing")):
+                    with self.assertRaisesRegex(ValueError, "Save all current"):
+                        exporter.blender_export(["--asset-id", "CHR_Test", "--output-dir", str(Path(tmp) / "exports")])
+            self.assertFalse((Path(tmp) / "exports").exists())
 
 
 if __name__ == "__main__":

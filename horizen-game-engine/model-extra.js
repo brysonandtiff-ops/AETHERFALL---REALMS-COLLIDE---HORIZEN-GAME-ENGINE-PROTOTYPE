@@ -8,7 +8,7 @@ function inspectFiniteTriangle(values){
 export function inspectSTL(buffer){
   if(!(buffer instanceof ArrayBuffer)||buffer.byteLength<84||buffer.byteLength>MAX_BYTES)throw new Error('STL missing or exceeds 64 MiB.');
   const bytes=new Uint8Array(buffer),view=new DataView(buffer),count=view.getUint32(80,true);
-  const binary=count>0&&count<=1_000_000&&84+count*50===buffer.byteLength;
+  const binary=count>0&&count<=Math.floor((MAX_BYTES-84)/50)&&84+count*50===buffer.byteLength;
   let triangles=0,vertices=[],mode='';
   if(binary){
     mode='binary';const step=Math.max(1,Math.ceil(count/MAX_PREVIEW));

@@ -12,6 +12,7 @@ from pathlib import Path
 
 ASSET_ID = re.compile(r"^(?:CHR|WPN|PRP|LVL|ENV)_[A-Za-z][A-Za-z0-9_]{1,70}$")
 MAX_TRIANGLES = 2_000_000
+MAX_BINARY_STL_TRIANGLES = (64 * 1024 * 1024 - 84) // 50
 
 
 def safe_asset_id(value: str) -> str:
@@ -73,6 +74,8 @@ def audit_triangles(vertices, faces) -> dict:
 
 def binary_stl(vertices, faces, *, millimetres_per_metre: float = 1000.0) -> bytes:
     """Write scaled triangles in binary STL (unitless format, output intended in mm)."""
+    if len(faces) > MAX_BINARY_STL_TRIANGLES:
+        raise ValueError("Binary STL would exceed the HORIZEN 64 MiB intake limit")
     positions, indexed = _checked(vertices, faces)
     scale = float(millimetres_per_metre)
     if not math.isfinite(scale) or scale <= 0 or scale > 1_000_000:
