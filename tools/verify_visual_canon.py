@@ -48,6 +48,14 @@ PINNED = {
         "passive": "Sunken Claim",
         "traits": ("hooded", "bone-brine", "cyan", "crimson", "ossuary dredge", "salvage bulwark", "wreck frame"),
     },
+    "CHR_KRAIT": {
+        "path": "art/concepts/characters/CHR_KRAIT/KRAIT_The_Sovereign_Guardian_CANONICAL_v1.webp",
+        "sha256": "129597d1fc89bbbe35a306295ad8239d6ffc05eb39dcb52264355717329fe944",
+        "format": "WEBP", "width": 1536, "height": 1384, "bytes": 191796,
+        "name": "K.R.A.I.T", "title": "The Sovereign Guardian", "role": "tank",
+        "focus": "Rift Knuckles", "actives": [], "passive": None,
+        "traits": ("horn", "cyan", "dragon-shaped", "gauntlets", "reactor", "ascension"),
+    },
 }
 # Independently pinned owner-selected design contract. Progress gates are not locked here.
 DREADHULL_DESIGN_CONTRACT = {
@@ -135,6 +143,50 @@ DREADHULL_DESIGN_CONTRACT = {
     "gameplay_promise": "Protect, reclaim, reforge, control and empower; reclaim debris into defenses and displace enemies."
 }
 
+# K.R.A.I.T visual approval only; do not infer gameplay from the cropped source.
+KRAIT_VISUAL_CONTRACT = {
+    "visual_lock": [
+        "Exact owner-selected primary portrait: tall, heavily built humanoid tank, broad upper torso, large fists and thick articulated leg armor.",
+        "Closed angular helmet with two swept upward dark horns and a pointed luminous cyan face visor; preserve the visible helmet contours, no exposed human face.",
+        "Silver-blue layered metallic armor; dragon-shaped pauldrons with swept spikes, circular cyan shoulder joints and dark recessed flexible sections.",
+        "Bright circular cyan chest reactor and smaller illuminated torso and waist cores; cyan lighting follows the source portrait.",
+        "Rift Knuckles: preserve the large armored gauntlets, segmented fingers and pointed forearm fins shown in the approved portrait.",
+        "Preserve the visible ascension study: wing-like energy projections on the armor, with cyan/blue and orange-gold states shown. Exact stage names, progression and mechanics are unreadable or incomplete and not approved by inference.",
+        "Preserve the supplied screenshot without crop, cleanup, reconstruction or removal of its phone UI overlay. Its darker turnaround/red accents are reference evidence, not permission to replace the primary portrait."
+    ],
+    "forbidden_drift": [
+        "No replacement with Bryskar's earlier character art, another hero's silhouette, a generic knight, an external franchise character, a different helmet or unrelated equipment.",
+        "No silent changes to the dragon-shaped pauldrons, horned helmet, cyan visor, chest reactor, gauntlets, armor proportions or visible ascension appearance.",
+        "Do not infer an acronym expansion, final transformation mechanics, unreadable ability descriptions, unseen angles or complete palette from the cropped screenshot.",
+        "Do not register Bryskar as another active hero or promote the historical Bryskar design file as K.R.A.I.T's visual master.",
+        "No model, rig, runtime, full roster uniqueness or completed concept-package claim without corresponding proof."
+    ],
+    "visual_identity": "Exact owner-selected primary portrait: tall, heavily built humanoid tank, broad upper torso, large fists and thick articulated leg armor. Closed angular helmet with two swept upward dark horns and a pointed luminous cyan face visor; preserve the visible helmet contours, no exposed human face. Silver-blue layered metallic armor; dragon-shaped pauldrons with swept spikes, circular cyan shoulder joints and dark recessed flexible sections. Bright circular cyan chest reactor and smaller illuminated torso and waist cores; cyan lighting follows the source portrait. Rift Knuckles: preserve the large armored gauntlets, segmented fingers and pointed forearm fins shown in the approved portrait. Preserve the visible ascension study: wing-like energy projections on the armor, with cyan/blue and orange-gold states shown. Exact stage names, progression and mechanics are unreadable or incomplete and not approved by inference. Preserve the supplied screenshot without crop, cleanup, reconstruction or removal of its phone UI overlay. Its darker turnaround/red accents are reference evidence, not permission to replace the primary portrait.",
+    "signature_prop": "Rift Knuckles",
+    "palette": [
+        "silver-blue metal (portrait)",
+        "dark navy/black recesses",
+        "cyan emissive energy",
+        "red accents in turnaround studies",
+        "orange-gold energy in ascension study"
+    ],
+    "materials": [
+        "Segmented metallic armor",
+        "Dark recessed joints",
+        "Luminous cyan cores"
+    ],
+    "approval_scope": "Exact owner-selected visual screenshot and replacement identity only; full gameplay kit/ascension mechanics pending."
+}
+KRAIT_REPLACEMENT = {
+    "previous_name": "Bryskar",
+    "previous_proposed_id": "CHR_Bryskar",
+    "canonical_id": "CHR_KRAIT",
+    "canonical_name": "K.R.A.I.T",
+    "status": "superseded_not_active",
+    "owner_approval_date": "2026-11-27",
+    "historical_kit_path": "docs/characters/BRYSKAR_OWNER_SELECTED_KIT.md",
+    "scope": "Owner approved K.R.A.I.T visual design and replacement identity; complete inherited gameplay kit and ascension rules require separate confirmation."
+}
 EXTRA_KNOWN = {
     "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_chat_copy.webp": {
         "format": "WEBP", "width": 1536, "height": 1024, "bytes": 375978,
@@ -259,6 +311,11 @@ def check(root=ROOT):
     if not isinstance(locks, dict) or not set(PINNED).issubset(set(locks)):
         errors.append("Pinned owner-approved character canon lock missing")
         locks = {}
+    replacements = manifest.get("character_replacements")
+    if not isinstance(replacements, dict) or replacements.get("CHR_Bryskar") != KRAIT_REPLACEMENT:
+        errors.append("K.R.A.I.T owner replacement decision drift")
+    if "CHR_Bryskar" in locks:
+        errors.append("Superseded Bryskar cannot be active canon")
     allowlisted = set(EXTRA_KNOWN)
     for identifier, pinned in PINNED.items():
         lock = locks.get(identifier)
@@ -307,6 +364,22 @@ def check(root=ROOT):
             cref = {}
         pi = plan.get("identity") or {}
         design = plan.get("design") or {}
+        if identifier == "CHR_KRAIT":
+            actual_visual = {
+                "visual_lock": lock.get("visual_lock"),
+                "forbidden_drift": lock.get("forbidden_drift"),
+                **{key: design.get(key) for key in (
+                    "visual_identity", "signature_prop", "palette", "materials")},
+                "approval_scope": lock.get("approval_scope"),
+            }
+            if actual_visual != KRAIT_VISUAL_CONTRACT or ident.get("signature_focus") != pinned["focus"]:
+                errors.append("K.R.A.I.T approved visual contract drift")
+            if source.get("media_type") != "image/webp" or source.get("uploaded_filename") != "1795779132409.jpeg":
+                errors.append("K.R.A.I.T original source provenance drift")
+            if plan.get("replaces_proposed_id") != "CHR_Bryskar":
+                errors.append("K.R.A.I.T owner replacement plan drift")
+            if design.get("kit_status") != "pending" or design.get("active_abilities") != [] or design.get("passive") is not None:
+                errors.append("K.R.A.I.T unapproved gameplay kit promotion")
         if identifier == "CHR_Dreadhull":
             # A keyword match alone would allow a renamed weapon or rewritten mechanics.
             actual_contract = {
@@ -361,6 +434,8 @@ def check(root=ROOT):
     registry = _json(root / "art/asset_registry.json")
     if isinstance(registry, dict) and isinstance(registry.get("assets"), list):
         ids = {entry.get("id") for entry in registry["assets"] if isinstance(entry, dict)}
+        if any(isinstance(value, str) and value.casefold() == "chr_bryskar" for value in ids):
+            errors.append("Superseded Bryskar cannot be registered as an active hero")
         if "CHR_Corvex" in ids and "CHR_Korvex" in ids:
             errors.append("Unresolved Corvex/Korvex alias collision")
 

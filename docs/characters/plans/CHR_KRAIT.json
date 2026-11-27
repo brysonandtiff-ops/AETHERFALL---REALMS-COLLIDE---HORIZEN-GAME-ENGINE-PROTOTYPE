@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "character_id": "CHR_KRAIT",
+  "display_name": "K.R.A.I.T",
+  "epithet": "The Sovereign Guardian",
+  "registry_role": "tank_dive_rescue",
+  "registry_concept_status": "aetherfall_approved",
+  "standard": "VELLARIS_V1_PLUS",
+  "identity": {
+    "role_class": "tank",
+    "archetype": "High-mobility frontline guardian / dive-rescue tank",
+    "one_of_one_hook": "Dragon-pauldron armored guardian with Rift Knuckles, cyan reactor and visible ascension forms; exact source-led design, not a second Bryskar hero.",
+    "silhouette_read": "Broad humanoid armored body, swept horns, dragon-shaped shoulders, oversized segmented fists and pointed forearm fins.",
+    "gameplay_promise": "Mobile frontline rescue and protection; detailed gameplay contract pending confirmation.",
+    "counterplay": "Pending approved gameplay design and real testing."
+  },
+  "design": {
+    "owner_status": "approved_concept_only",
+    "visual_identity": "Exact owner-selected primary portrait: tall, heavily built humanoid tank, broad upper torso, large fists and thick articulated leg armor. Closed angular helmet with two swept upward dark horns and a pointed luminous cyan face visor; preserve the visible helmet contours, no exposed human face. Silver-blue layered metallic armor; dragon-shaped pauldrons with swept spikes, circular cyan shoulder joints and dark recessed flexible sections. Bright circular cyan chest reactor and smaller illuminated torso and waist cores; cyan lighting follows the source portrait. Rift Knuckles: preserve the large armored gauntlets, segmented fingers and pointed forearm fins shown in the approved portrait. Preserve the visible ascension study: wing-like energy projections on the armor, with cyan/blue and orange-gold states shown. Exact stage names, progression and mechanics are unreadable or incomplete and not approved by inference. Preserve the supplied screenshot without crop, cleanup, reconstruction or removal of its phone UI overlay. Its darker turnaround/red accents are reference evidence, not permission to replace the primary portrait.",
+    "signature_prop": "Rift Knuckles",
+    "palette": [
+      "silver-blue metal (portrait)",
+      "dark navy/black recesses",
+      "cyan emissive energy",
+      "red accents in turnaround studies",
+      "orange-gold energy in ascension study"
+    ],
+    "materials": [
+      "Segmented metallic armor",
+      "Dark recessed joints",
+      "Luminous cyan cores"
+    ],
+    "accessibility_notes": "Cropped source contains phone overlay and unreadable text. Use exact image, not invented details; test silhouette, flash, contrast, movement and alternative cues later.",
+    "kit_status": "pending",
+    "active_abilities": [],
+    "passive": null,
+    "visible_ability_labels": [
+      "Rift Knuckles",
+      "Vault Drive",
+      "Guardian Intercept (partially obscured)"
+    ],
+    "ascension_visual_reference": "Visible wing-like energy studies in cyan/blue and orange-gold. Exact stage labels and mechanics unconfirmed.",
+    "historical_kit_reference": "docs/characters/BRYSKAR_OWNER_SELECTED_KIT.md"
+  },
+  "concept_reference": {
+    "repo_path": "art/concepts/characters/CHR_KRAIT/KRAIT_The_Sovereign_Guardian_CANONICAL_v1.webp",
+    "archive_status": "pending_source_upload",
+    "sha256": "129597d1fc89bbbe35a306295ad8239d6ffc05eb39dcb52264355717329fe944",
+    "origin_note": "Owner explicitly approved exact uploaded 1795779132409.jpeg on 2026-11-27 to replace Bryskar with K.R.A.I.T. Actual WebP 1536x1384; original screenshot preserved byte-for-byte including phone overlay. Stored in ChatGPT Library; GitHub binary transfer pending."
+  },
+  "sheet_sections": {
+    "hero_portrait": "visible_in_unarchived_reference",
+    "turnaround_front": "visible_in_unarchived_reference",
+    "turnaround_side": "visible_in_unarchived_reference",
+    "turnaround_back": "visible_in_unarchived_reference",
+    "turnaround_three_quarter": "pending",
+    "silhouette_exploration": "visible_in_unarchived_reference",
+    "face_expressions": "pending",
+    "palette_swatches": "pending",
+    "materials_callouts": "pending",
+    "weapon_or_focus": "visible_in_unarchived_reference",
+    "gameplay_identity": "visible_in_unarchived_reference",
+    "ability_kit": "pending",
+    "vfx_motion": "pending",
+    "audio_voice": "pending",
+    "technical_handoff": "pending",
+    "accessibility_readability": "pending"
+  },
+  "section_waivers": {},
+  "gates": {
+    "identity_owner_approved": true,
+    "source_archived": false,
+    "concept_package_reviewed": false,
+    "blockout_approved": false,
+    "model_verified": false,
+    "rig_animation_verified": false,
+    "godot_import_verified": false,
+    "gameplay_verified": false,
+    "release_verified": false
+  },
+  "stage_evidence": {},
+  "blockers": [
+    "Commit exact original WebP bytes at pinned path and verify SHA-256 before source archive gate.",
+    "Obtain uncropped original/full concept board and owner-approved ability/ascension details; source screenshot contains truncated/obscured content and inconsistent portrait/turnaround accents. No inferred kit is locked.",
+    "Complete independent visual roster comparison and concept package; native blockout, Blender, Godot, gameplay and device gates remain pending."
+  ],
+  "provenance_note": "Owner-approved exact visual concept and replacement identity; no final kit, model or runtime approval. Historical Bryskar kit retained separately for traceability.",
+  "replaces_proposed_id": "CHR_Bryskar"
+}

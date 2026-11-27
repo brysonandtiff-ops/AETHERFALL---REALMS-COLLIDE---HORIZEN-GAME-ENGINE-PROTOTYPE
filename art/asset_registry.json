@@ -113,6 +113,16 @@
       "concept_dir": "art/concepts/characters/CHR_Symbion",
       "source_dir": "art/blender/characters/CHR_Symbion",
       "runtime_dir": "game/assets/characters/heroes/CHR_Symbion"
+    },
+    {
+      "id": "CHR_KRAIT",
+      "type": "character",
+      "role": "tank_dive_rescue",
+      "status": "reserved_no_source",
+      "concept_status": "aetherfall_approved",
+      "concept_dir": "art/concepts/characters/CHR_KRAIT",
+      "source_dir": "art/blender/characters/CHR_KRAIT",
+      "runtime_dir": "game/assets/characters/heroes/CHR_KRAIT"
     }
   ]
 }

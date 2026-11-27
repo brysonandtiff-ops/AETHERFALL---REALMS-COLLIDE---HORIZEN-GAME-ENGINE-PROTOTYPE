@@ -152,6 +152,46 @@
         "Do not replace the six named kit abilities/passive or change tank role; the earlier Kraken ideas are not part of this approved source.",
         "Never present concept art as a verified 3D model, animation, gameplay or engine render."
       ]
+    },
+    "CHR_KRAIT": {
+      "approval": "owner_approved_aetherfall_concept",
+      "evidence_class": "CONCEPT_ONLY",
+      "source": {
+        "path": "art/concepts/characters/CHR_KRAIT/KRAIT_The_Sovereign_Guardian_CANONICAL_v1.webp",
+        "uploaded_filename": "1795779132409.jpeg",
+        "format": "WEBP",
+        "media_type": "image/webp",
+        "width": 1536,
+        "height": 1384,
+        "bytes": 191796,
+        "sha256": "129597d1fc89bbbe35a306295ad8239d6ffc05eb39dcb52264355717329fe944",
+        "state": "pending_binary_checkin"
+      },
+      "identity": {
+        "display_name": "K.R.A.I.T",
+        "epithet": "The Sovereign Guardian",
+        "role_class": "tank",
+        "signature_focus": "Rift Knuckles",
+        "active_ability_names": [],
+        "passive_ability_name": null
+      },
+      "visual_lock": [
+        "Exact owner-selected primary portrait: tall, heavily built humanoid tank, broad upper torso, large fists and thick articulated leg armor.",
+        "Closed angular helmet with two swept upward dark horns and a pointed luminous cyan face visor; preserve the visible helmet contours, no exposed human face.",
+        "Silver-blue layered metallic armor; dragon-shaped pauldrons with swept spikes, circular cyan shoulder joints and dark recessed flexible sections.",
+        "Bright circular cyan chest reactor and smaller illuminated torso and waist cores; cyan lighting follows the source portrait.",
+        "Rift Knuckles: preserve the large armored gauntlets, segmented fingers and pointed forearm fins shown in the approved portrait.",
+        "Preserve the visible ascension study: wing-like energy projections on the armor, with cyan/blue and orange-gold states shown. Exact stage names, progression and mechanics are unreadable or incomplete and not approved by inference.",
+        "Preserve the supplied screenshot without crop, cleanup, reconstruction or removal of its phone UI overlay. Its darker turnaround/red accents are reference evidence, not permission to replace the primary portrait."
+      ],
+      "forbidden_drift": [
+        "No replacement with Bryskar's earlier character art, another hero's silhouette, a generic knight, an external franchise character, a different helmet or unrelated equipment.",
+        "No silent changes to the dragon-shaped pauldrons, horned helmet, cyan visor, chest reactor, gauntlets, armor proportions or visible ascension appearance.",
+        "Do not infer an acronym expansion, final transformation mechanics, unreadable ability descriptions, unseen angles or complete palette from the cropped screenshot.",
+        "Do not register Bryskar as another active hero or promote the historical Bryskar design file as K.R.A.I.T's visual master.",
+        "No model, rig, runtime, full roster uniqueness or completed concept-package claim without corresponding proof."
+      ],
+      "approval_scope": "Exact owner-selected visual screenshot and replacement identity only; full gameplay kit/ascension mechanics pending."
     }
   },
   "alternate_references": {
@@ -170,5 +210,17 @@
     "new_id": "CHR_Corvex",
     "existing_id": "CHR_Korvex",
     "state": "requires_explicit_owner_identity_resolution"
+  },
+  "character_replacements": {
+    "CHR_Bryskar": {
+      "previous_name": "Bryskar",
+      "previous_proposed_id": "CHR_Bryskar",
+      "canonical_id": "CHR_KRAIT",
+      "canonical_name": "K.R.A.I.T",
+      "status": "superseded_not_active",
+      "owner_approval_date": "2026-11-27",
+      "historical_kit_path": "docs/characters/BRYSKAR_OWNER_SELECTED_KIT.md",
+      "scope": "Owner approved K.R.A.I.T visual design and replacement identity; complete inherited gameplay kit and ascension rules require separate confirmation."
+    }
   }
 }

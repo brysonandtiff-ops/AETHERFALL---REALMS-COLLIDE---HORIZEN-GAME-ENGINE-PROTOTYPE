@@ -21,6 +21,7 @@ class VisualCanonTests(unittest.TestCase):
             "docs/characters/plans/CHR_Vellaris_Bloodshield.json",
             "docs/characters/plans/CHR_ThornDell.json",
             "docs/characters/plans/CHR_Dreadhull.json",
+            "docs/characters/plans/CHR_KRAIT.json",
             "art/asset_registry.json",
         ]
         for rel in paths:
@@ -153,6 +154,38 @@ class VisualCanonTests(unittest.TestCase):
         self.change("docs/characters/CANON_LOCKS.json",
                     lambda d: d["locked_characters"]["CHR_Dreadhull"]["source"].update(media_type="image/png"))
         self.rejected("Dreadhull original source provenance drift")
+
+    def test_krait_master_fingerprint_cannot_drift(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_KRAIT"]["source"].update(sha256="a"*64))
+        self.rejected("Approved reference identity/hash drift: CHR_KRAIT")
+
+    def test_krait_visual_contract_cannot_drift(self):
+        self.change("docs/characters/plans/CHR_KRAIT.json",
+                    lambda d: d["design"].update(signature_prop="Replacement sword"))
+        self.rejected("K.R.A.I.T approved visual contract drift")
+
+    def test_krait_replacement_record_cannot_be_removed(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["character_replacements"].pop("CHR_Bryskar"))
+        self.rejected("K.R.A.I.T owner replacement decision drift")
+
+    def test_bryskar_cannot_return_as_active_hero(self):
+        def add(d):
+            d["assets"].append({**d["assets"][0], "id": "CHR_Bryskar"})
+        self.change("art/asset_registry.json", add)
+        self.rejected("Superseded Bryskar cannot be registered")
+
+    def test_krait_unreadable_kit_cannot_be_promoted(self):
+        self.change("docs/characters/plans/CHR_KRAIT.json",
+                    lambda d: d["design"].update(kit_status="owner_locked"))
+        self.rejected("K.R.A.I.T unapproved gameplay kit promotion")
+
+    def test_krait_missing_master_cannot_be_marked_archived(self):
+        (self.root / guard.PINNED["CHR_KRAIT"]["path"]).unlink(missing_ok=True)
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_KRAIT"]["source"].update(state="source_verified"))
+        self.rejected("Character source promoted without original image bytes: CHR_KRAIT")
 
     def test_infographic_hierarchy_cannot_be_dropped(self):
         self.change("docs/characters/CANON_LOCKS.json",

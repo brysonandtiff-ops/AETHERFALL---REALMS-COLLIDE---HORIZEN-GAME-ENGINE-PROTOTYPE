@@ -1,0 +1,5 @@
+# AF-CHR-KRAIT-CANON-V1 — owner selection
+
+Project: AETHERFALL: REALMS COLLIDE. Executor: ChatGPT connected GitHub tools, no independent agent claimed. Owner statement on 2026-11-27: "Lock this in for conical art design for replaced bryskar with my own hero k.r.a.i.t lock it in". Attached source: 1795779132409.jpeg. Local raw bytes verified: WebP 1536x1384, 191796 bytes, SHA-256 `129597d1fc89bbbe35a306295ad8239d6ffc05eb39dcb52264355717329fe944`; git blob SHA `edfb67ef0de842627a6d3864e16b46e55f617e1e`. Byte-identical local copy saved to personal Library. The screenshot is partially cropped and has a phone overlay; no reconstruction was generated.
+
+Actual repository intake found Bryskar only in an earlier historical kit note, not registered. New stable ID: CHR_KRAIT. Owner explicitly approved visual reference and replacement; all gameplay, ascension mechanics, full concept package, source-archive and model/runtime gates remain pending. Exact source upload to GitHub must be verified before archive status changes. Do not change other heroes. Rollback via reviewed revert if owner changes direction; preserve historical source.
