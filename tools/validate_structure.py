@@ -14,6 +14,9 @@ REQUIRED_FILES = (
     "game/project.godot", "game/scenes/bootstrap/main.tscn",
     "art/asset_registry.json", "docs/architecture/REPO_LAYOUT.md",
     "docs/art/ASSET_PIPELINE.md", "docs/characters/CHARACTER_REGISTRY.md",
+    "docs/art/BLENDER_RAW_SCULPT_TO_GAME_READY.md",
+    "docs/art/templates/BLENDER_HANDOFF_TEMPLATE.json",
+    "tools/validate_blender_handoff.py",
     "docs/legacy/shadowspire_migration.json", "docs/legacy/README.md",
     "docs/characters/LEGACY_ROSTER.md",
     "docs/characters/CHARACTER_WORKFLOW.md",
@@ -59,6 +62,16 @@ def safe_path(root, raw):
 
 def scan_source_tree(root, errors):
     """Reject obvious private key files, symlinks, oversized art and case collisions."""
+    # Read-only registry lookup: no unregistered hero can archive raw GLBs under art/.
+    try:
+        registry_data = json.loads((root / "art/asset_registry.json").read_text(encoding="utf-8"))
+        allowed_raw_ids = {
+            item.get("id") for item in registry_data.get("assets", [])
+            if isinstance(item, dict) and item.get("type") == "character"
+            and isinstance(item.get("id"), str) and ID_PATTERN.fullmatch(item["id"])
+        }
+    except (OSError, UnicodeError, ValueError, AttributeError, TypeError):
+        allowed_raw_ids = set()
     seen = {}
     for current, dirs, filenames in os.walk(root, followlinks=False):
         dirs[:] = sorted(name for name in dirs if name not in IGNORED_DIRS)
@@ -81,8 +94,15 @@ def scan_source_tree(root, errors):
                 errors.append("Possible key/credential file: " + rel)
             if rel.startswith("game/") and item.suffix.casefold() == ".blend":
                 errors.append("Editable Blender source inside game/: " + rel)
-            if rel.startswith("art/") and item.suffix.casefold() == ".glb":
-                errors.append("Runtime GLB export inside art/: " + rel)
+            # Preserve original AI sculpt GLBs only in scoped registered character raw/ archives.
+            # Runtime exports elsewhere in art/ still fail the structural safety check.
+            raw_source_glb = re.fullmatch(
+                r"art/blender/characters/(CHR_[A-Za-z][A-Za-z0-9_]*)/raw/[A-Za-z0-9_.-]+\.glb",
+                rel,
+            )
+            is_authorized_raw_source = bool(raw_source_glb and raw_source_glb.group(1) in allowed_raw_ids)
+            if rel.startswith("art/") and item.suffix.casefold() == ".glb" and not is_authorized_raw_source:
+                errors.append("GLB outside approved character raw source archive: " + rel)
             if item.suffix.lower() in BINARY_ART_EXTENSIONS and item.stat().st_size > MAX_DIRECT_BINARY_BYTES:
                 errors.append("Binary exceeds 50 MiB without reviewed LFS/storage plan: " + rel)
 
@@ -450,6 +470,12 @@ def check(root=ROOT):
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     errors.extend(module.check(root))
+    # Handoff guard checks only claim/evidence integrity; it cannot inspect native geometry.
+    handoff_file = Path(__file__).with_name("validate_blender_handoff.py")
+    handoff_spec = importlib.util.spec_from_file_location("aetherfall_blender_handoff", handoff_file)
+    handoff = importlib.util.module_from_spec(handoff_spec)
+    handoff_spec.loader.exec_module(handoff)
+    errors.extend(handoff.check(root))
     validate_godot(root, errors)
     validate_legacy_hold(root, errors)
     return errors
@@ -461,7 +487,7 @@ def main():
         for failure in failures:
             print("FAIL: " + failure, file=sys.stderr)
         return 1
-    print("PASS: source/asset paths, character source hashes/canon metadata, gate order, Godot references and migration safety (STATIC ONLY; NO VISUAL LIKENESS PROOF)")
+    print("PASS: structure, character/canon gates, Blender handoff claims, Godot refs and migration safety (STATIC ONLY; NO NATIVE ART OR GAMEPLAY PROOF)")
     return 0
 
 

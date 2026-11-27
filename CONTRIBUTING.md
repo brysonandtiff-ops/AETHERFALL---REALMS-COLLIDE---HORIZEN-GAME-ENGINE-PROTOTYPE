@@ -9,3 +9,5 @@ Start at [GIT_HERE.md](GIT_HERE.md), [AGENTS.md](AGENTS.md) and the real [Godot 
 - Do not force-push shared branches, bypass S.I.R.E. Git Stop, leak credentials, deploy services, add paid integrations or approve a release automatically.
 
 The repository-local `tools/git_preflight.py` is only a read-only supplement to existing S.I.R.E. Git authority. The active main ruleset still requires no approving reviews; an owner-admin must complete independent review rules ([Issue #11](https://github.com/brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE/issues/11)).
+
+- Blender sculpt handoffs: follow [AF-ART-BLENDER-001](docs/art/BLENDER_RAW_SCULPT_TO_GAME_READY.md), create a versioned [handoff checklist](docs/art/templates/BLENDER_HANDOFF_TEMPLATE.json), and run `python3 tools/validate_blender_handoff.py`. This can reject false status claims, but actual native Blender/Godot capture and owner review remain separate requirements.
