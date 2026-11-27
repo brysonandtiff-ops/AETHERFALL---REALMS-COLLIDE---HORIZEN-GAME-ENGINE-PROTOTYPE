@@ -24,3 +24,7 @@ Follow `docs/characters/CHARACTER_WORKFLOW.md` and keep `docs/characters/plans/<
 ## Reference-locked art pipeline
 
 Honor docs/characters/CANON_LOCKS.json and VISUAL_CANON_LOCK.md. Preserve exact master source bytes/MIME and owner-approved face, silhouette, palette, weapon and kit. Use Vellaris branded infographic layout but not her personal shield/appearance on other heroes. ThornDell must preserve antlers, green venom and Root Bulwark. No character image becomes canon without source-to-output owner review. Never claim a generated reference is native Blender/Godot evidence.
+
+## S.I.R.E. 1P + 3P hero-shooter handoff (review candidate)
+
+The additive production handoff is in [the cross-team standard](../pipeline/PRODUCTION_STANDARD.md), with [Blender modelling/rigging/texture gates](../pipeline/BLENDER_ART_TEAM.md), [Gameplay Engineering/AI/combat-state gates](../pipeline/GAMEPLAY_AI_ENGINEERING.md) and [release-sovereign evidence/packaging](../pipeline/SOVEREIGN_STAGING_AND_PROOF.md). Its [read-only checker](../../tools/verify_production_contract.py) validates only local spec structure and available file hashes; it does not certify native Blender/Godot work or platform release. This extension does not change any locked character, original reference, existing plan gate, mesh or rig.

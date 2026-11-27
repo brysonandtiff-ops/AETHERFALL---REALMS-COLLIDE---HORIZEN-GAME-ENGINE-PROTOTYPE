@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "work_order": "AF-PIPELINE-3D-COMBAT-001",
+  "approval_state": "SPEC_ONLY",
+  "hero_id": "CHR_Vellaris_Bloodshield",
+  "concept": {
+    "source_path": "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp",
+    "source_sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+    "binary_in_repo": false,
+    "owner_visual_approval": true,
+    "art_lock_checked": true,
+    "original_ai_mesh_path": null,
+    "original_ai_mesh_sha256": null,
+    "source_license_reviewed": false
+  },
+  "blender": {
+    "unit_scale": 1.0,
+    "up_axis": "+Z",
+    "forward_axis": "-Y",
+    "target_pose": "A_POSE_OR_NEUTRAL_SPECIES_STANCE",
+    "pedestal_policy": "EXCLUDE_FROM_CHARACTER_EXPORT_SAVE_SEPARATELY",
+    "model_parts": ["GEO_Head", "GEO_Hair", "GEO_Armor", "GEO_Limbs", "GEO_Cape"],
+    "three_p": {"asset_id": "CHR_Vellaris_Bloodshield", "lod0_triangle_target_min": 40000, "lod0_triangle_target_max": 70000, "lod1_fraction_max": 0.55, "lod2_fraction_max": 0.25, "source_blend": null, "export_glb": null, "observed_lod0_triangles": null},
+    "one_p": {"asset_id": "VM_CHR_Vellaris_Bloodshield", "triangle_target_min": 20000, "triangle_target_max": 35000, "source_blend": null, "export_glb": null, "observed_triangles": null, "render_only": true},
+    "materials": {"atlases_max": 3, "atlas_dimension_max": 2048, "required_bakes": ["normal", "ao", "roughness", "metallic", "emissive"], "material_import_verified": false},
+    "rig": {"skeleton_required": true, "max_vertex_weights_target": 4, "named_clips": ["Idle", "Walk", "Sprint", "Jump", "Land", "Attack_Primary", "HitReact", "Death"], "deformation_test_verified": false},
+    "sockets": ["SOCK_Hand_L", "SOCK_Hand_R", "SOCK_Muzzle", "SOCK_Camera_1P", "SOCK_Chest", "SOCK_Ground", "SOCK_AoE_Origin", "SOCK_VFX_Focus"]
+  },
+  "gameplay": {"single_authoritative_combat": true, "pvp_server_authority_required": true, "camera_variants": ["1P", "3P"], "locomotion_states": ["Idle", "Walk", "Sprint", "Strafe", "Jump", "Airborne", "Crouch", "Slide", "Disabled"], "collision_uses_vfx": false, "abilities_contract_path": "docs/pipeline/contracts/ABILITY_CONTRACT_EXAMPLE.json", "ai_navigation_state": "NOT_IMPLEMENTED"},
+  "evidence": {"native_blender_0_90_180_270": "NOT_RUN", "native_godot_4_7_2": "NOT_RUN", "one_p_camera_proof": "NOT_RUN", "three_p_camera_proof": "NOT_RUN", "full_ability_clip": "NOT_RUN", "independent_signed_law108": "NOT_AVAILABLE", "phone_acceptance": "NOT_RUN"},
+  "release_state": "BLOCKED"
+}
