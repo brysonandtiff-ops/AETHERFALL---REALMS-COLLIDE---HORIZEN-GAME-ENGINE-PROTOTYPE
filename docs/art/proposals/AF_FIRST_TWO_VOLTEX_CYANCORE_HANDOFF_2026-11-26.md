@@ -1,6 +1,6 @@
 # AETHERFALL: REALMS COLLIDE — FIRST TWO SOURCE-IMAGE TO REAL GLB BLOCKOUTS
 
-**Work order:** AF-CHR-BLOCKOUT-40172-40158-001  
+**Work order:** AF-CHR-BLOCKOUT-40172-40158-001
 **Status:** PROCEDURAL SHAPE BLOCKOUT / NOT CANON-APPROVED / NOT GAME-READY
 **Executor:** Local procedural mesh construction and independent GLB parser; native S.I.R.E. Blender/Godot team execution not established.
 
