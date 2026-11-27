@@ -15,27 +15,33 @@ export function inspectGLB(buffer){
   if(offset!==buffer.byteLength||!doc||!bin||doc.asset?.version!=='2.0')throw new Error('GLB must contain glTF 2.0 JSON and embedded BIN data.');
   const req=doc.extensionsRequired||[];if(req.length)throw new Error(`Required GLB extensions need dedicated decoder: ${req.slice(0,5).join(', ')}`);
   if((doc.buffers||[]).some(b=>b.uri))throw new Error('External buffers are not allowed for isolated local preview.');
-  let sourceTriangles=0,renderedTriangles=0,primitiveCount=0,ignoredModes=0;const primitives=[];
+  let sourceTriangles=0,primitiveCount=0,ignoredModes=0;const primitives=[];
   for(let mi=0;mi<(doc.meshes||[]).length;mi++)for(const p of(doc.meshes[mi].primitives||[])){
     primitiveCount++;if((p.mode??4)!==4){ignoredModes++;continue;}if(p.attributes?.POSITION===undefined)continue;
     const vertices=posAccessor(doc,bin,p.attributes.POSITION);const indices=p.indices===undefined?vertices.map((_,i)=>i):indexAccessor(doc,bin,p.indices);if(indices.length%3)throw new Error('Triangle indices must be grouped in threes.');for(const idx of indices)if(idx>=vertices.length)throw new Error('Triangle references missing vertex.');
     sourceTriangles+=indices.length/3;primitives.push({mesh:mi,vertices,indices});
   }
-  const output=[],nodes=doc.nodes||[],referenced=new Set(),scene=doc.scenes?.[doc.scene??0];
-  function walk(id,parent,ancestors){if(!Number.isInteger(id)||!nodes[id]||ancestors.has(id))throw new Error('Invalid or cyclic GLB node graph.');const n=nodes[id],mat=multiply(parent,nodeMatrix(n));referenced.add(n.mesh);if(n.mesh!==undefined)for(const prim of primitives.filter(p=>p.mesh===n.mesh))addPrimitive(prim,mat);for(const c of(n.children||[]))walk(c,mat,new Set([...ancestors,id]));}
-  function addPrimitive(prim,mat){const n=prim.indices.length/3,step=Math.max(1,Math.ceil((renderedTriangles+n)/MAX_PREVIEW_TRIANGLES));for(let t=0;t<n;t+=step){const arr=[];for(let k=0;k<3;k++)arr.push(...transform(mat,...prim.vertices[prim.indices[t*3+k]]));if(arr.every(Number.isFinite))output.push(...arr);}renderedTriangles=output.length/9;}
+  const output=[],nodes=doc.nodes||[],scene=doc.scenes?.[doc.scene??0],draws=[],byMesh=new Map();
+  for(const prim of primitives){if(!byMesh.has(prim.mesh))byMesh.set(prim.mesh,[]);byMesh.get(prim.mesh).push(prim);}
+  let sceneTriangles=0,visits=0;
+  function queuePrimitive(prim,mat){if(draws.length>=100000)throw new Error('GLB scene draw limit exceeded.');draws.push({prim,mat});sceneTriangles+=prim.indices.length/3;if(!Number.isSafeInteger(sceneTriangles))throw new Error('GLB scene triangle count overflow.');}
+  function walk(id,parent,ancestors){if(++visits>100000||ancestors.size>=256)throw new Error('GLB scene graph inspection limit exceeded.');if(!Number.isInteger(id)||!nodes[id]||ancestors.has(id))throw new Error('Invalid or cyclic GLB node graph.');const n=nodes[id],mat=multiply(parent,nodeMatrix(n));if(n.mesh!==undefined)for(const prim of byMesh.get(n.mesh)||[])queuePrimitive(prim,mat);const next=new Set([...ancestors,id]);for(const c of(n.children||[]))walk(c,mat,next);}
   if(scene?.nodes?.length){for(const id of scene.nodes)walk(id,identity(),new Set());}
-  else {for(const prim of primitives)addPrimitive(prim,identity());}
+  else {for(const prim of primitives)queuePrimitive(prim,identity());}
+  // Sample across the whole instanced scene before expansion, never per instance.
+  const step=Math.max(1,Math.ceil(sceneTriangles/MAX_PREVIEW_TRIANGLES));let first=0;
+  for(const {prim,mat} of draws){const count=prim.indices.length/3;const offset=(step-first%step)%step;for(let t=offset;t<count&&output.length/9<MAX_PREVIEW_TRIANGLES;t+=step){const arr=[];for(let k=0;k<3;k++)arr.push(...transform(mat,...prim.vertices[prim.indices[t*3+k]]));if(arr.every(Number.isFinite))output.push(...arr);}first+=count;}
   if(!sourceTriangles)throw new Error('GLB has no supported triangle mesh primitive.');
-  return {format:'GLB',vertices:Float32Array.from(output),stats:{meshes:(doc.meshes||[]).length,primitives:primitiveCount,sourceTriangles,previewTriangles:output.length/9,materials:(doc.materials||[]).length,animations:(doc.animations||[]).length,skins:(doc.skins||[]).length,ignoredModes,extensions:doc.extensionsUsed||[],note:'Actual embedded triangle geometry; untextured WebGL preview only. No rig, texture, engine import or visual canon verification.'}};
+  return {format:'GLB',vertices:Float32Array.from(output),stats:{meshes:(doc.meshes||[]).length,primitives:primitiveCount,sourceTriangles,sceneTriangles,previewTriangles:output.length/9,materials:(doc.materials||[]).length,animations:(doc.animations||[]).length,skins:(doc.skins||[]).length,ignoredModes,extensions:doc.extensionsUsed||[],note:'Actual embedded triangle geometry; untextured WebGL preview only. No rig, texture, engine import or visual canon verification.'}};
 }
 export function inspectOBJ(text){
   if(typeof text!=='string'||text.length>MAX_SOURCE_BYTES)throw new Error('Invalid or oversize OBJ.');
   const points=[],faces=[];let sourceTriangles=0;for(const raw of text.split(/\r?\n/)){const l=raw.trim();if(l.startsWith('v ')){const p=l.split(/\s+/).slice(1,4).map(Number);if(p.length===3&&p.every(Number.isFinite))points.push(p);}
-    else if(l.startsWith('f ')){const face=l.split(/\s+/).slice(1).map(s=>Number(s.split('/')[0]));if(face.length<3||face.some(n=>!Number.isInteger(n)||n===0))throw new Error('Invalid OBJ polygon.');faces.push(face);sourceTriangles+=face.length-2;}}
+    else if(l.startsWith('f ')){const face=l.split(/\s+/).slice(1).map(s=>Number(s.split('/')[0]));if(face.length<3||face.some(n=>!Number.isInteger(n)||n===0))throw new Error('Invalid OBJ polygon.');const absolute=face.map(n=>n<0?points.length+n+1:n);if(absolute.some(n=>n<=0))throw new Error('OBJ face references missing vertex.');faces.push(absolute);sourceTriangles+=face.length-2;}}
   if(!points.length||!faces.length)throw new Error('OBJ has no vertex faces.');if(sourceTriangles>1000000)throw new Error('OBJ polygon count exceeds local inspection limit.');
   const out=[],step=Math.max(1,Math.ceil(sourceTriangles/MAX_PREVIEW_TRIANGLES));let seen=0;
-  const resolved=n=>{const i=n>0?n-1:points.length+n;if(i<0||i>=points.length)throw new Error('OBJ face references missing vertex.');return points[i];};
+  const resolved=n=>{const i=n-1;if(i<0||i>=points.length)throw new Error('OBJ face references missing vertex.');return points[i];};
+  for(const f of faces)for(const n of f)resolved(n);
   for(const f of faces)for(let t=1;t<f.length-1;t++){if((seen++%step)!==0)continue;out.push(...resolved(f[0]),...resolved(f[t]),...resolved(f[t+1]));}
   return {format:'OBJ',vertices:Float32Array.from(out),stats:{meshes:1,sourceVertices:points.length,sourceTriangles,previewTriangles:out.length/9,materials:0,animations:0,skins:0,note:'Actual OBJ triangles; untextured WebGL preview only. No animation, PBR, engine import or visual-canon verification.'}};
 }
