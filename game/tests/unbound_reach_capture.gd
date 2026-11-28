@@ -32,6 +32,8 @@ func run() -> void:
 		push_error("Wrong startup scene"); quit(1); return
 	level.pad.defaults()
 	var aim_seen := false
+	var stick_seen := false
+	var yaw_before := 0.0
 	var menu_seen := false
 	var start: Vector3 = level.player.position
 	var moved := false
@@ -50,6 +52,12 @@ func run() -> void:
 			60: axis(JOY_AXIS_TRIGGER_RIGHT,0.0)
 			64: axis(JOY_AXIS_TRIGGER_LEFT,0.0)
 			67: level.warp("A")
+			70:
+				yaw_before = level.player.rotation.y
+				axis(JOY_AXIS_RIGHT_X,0.40)
+			79:
+				axis(JOY_AXIS_RIGHT_X,0.0)
+				stick_seen = absf(angle_difference(yaw_before,level.player.rotation.y)) > 0.03
 			83: level.camera.look_at(level.drones[0].global_position,Vector3.UP)
 			101: level.warp("Rescue")
 			107:
@@ -76,7 +84,7 @@ func run() -> void:
 			push_error("Could not write actual viewport frame %d"%i); quit(1); return
 		if i == 169 and image.save_png(out.get_base_dir().path_join("xbox-settings.png")) != OK:
 			push_error("Missing controller settings capture"); quit(1); return
-	if not moved or not aim_seen or not menu_seen or level.pad.menu or level.hits!=1 or level.rescued!=1 or level.player.position.distance_to(level.stops.Hub)>2.0:
-		push_error("Capture assertions failed: move=%s aim=%s menu=%s hits=%d rescue=%d" % [moved,aim_seen,menu_seen,level.hits,level.rescued]); quit(1); return
-	print("UNBOUND_REACH_GRAPHICAL_CAPTURE: 180 real viewport frames; synthetic Xbox aim/fire, rescue, return, menu focus and cancel; renderer=", RenderingServer.get_video_adapter_name())
+	if not moved or not aim_seen or not stick_seen or not menu_seen or level.pad.menu or level.hits!=1 or level.rescued!=1 or level.player.position.distance_to(level.stops.Hub)>2.0:
+		push_error("Capture assertions failed: move=%s aim=%s stick=%s menu=%s hits=%d rescue=%d" % [moved,aim_seen,stick_seen,menu_seen,level.hits,level.rescued]); quit(1); return
+	print("UNBOUND_REACH_GRAPHICAL_CAPTURE: 180 real viewport frames; synthetic Xbox locomotion, right-stick look, LT ADS, RT fire, rescue, return and menu navigation; renderer=", RenderingServer.get_video_adapter_name())
 	quit(0)
