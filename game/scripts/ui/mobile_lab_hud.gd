@@ -2,7 +2,7 @@ extends Control
 ## Input-only phone/tablet HUD for the temporary mechanics lab.
 ## This is NOT the approved final AETHERFALL HUD/artwork.
 
-var player: CharacterBody3D
+var player = null
 var _move_finger := -1
 var _look_finger := -1
 var _move_origin := Vector2.ZERO
@@ -16,7 +16,7 @@ func _ready() -> void:
     _build_interface()
 
 
-func bind_player(value: CharacterBody3D) -> void:
+func bind_player(value: Node) -> void:
     player = value
 
 
