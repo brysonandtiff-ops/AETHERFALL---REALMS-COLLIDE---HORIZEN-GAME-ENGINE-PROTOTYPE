@@ -333,14 +333,14 @@ func update_hud() -> void:
 	elif nearest(pods,3.0)>=0: ctx = use_key+"   Revive / heal ally"
 	elif player.position.distance_to(Vector3(-36,3,1))<3.5: ctx = use_key+"   Return to Hero Hub"
 	elif clock<notice_until: ctx = notice
-	var hints := "WASD MOVE   CLICK FIRE\\nSHIFT RUN   SPACE JUMP"
+	var hints := "WASD MOVE   CLICK FIRE\nSHIFT RUN   SPACE JUMP"
 	if pad.active:
-		hints = "%s AIM   %s FIRE\\n%s JUMP   %s USE" % [pad.glyph("Aim"),pad.glyph("Fire"),pad.glyph("Jump"),use_key]
-	var text := "THE UNBOUND REACH\\nHITS %d / %d     REVIVES %d / 4" % [hits,shots,rescued]
+		hints = "%s AIM   %s FIRE\n%s JUMP   %s USE" % [pad.glyph("Aim"),pad.glyph("Fire"),pad.glyph("Jump"),use_key]
+	var text := "THE UNBOUND REACH\nHITS %d / %d     REVIVES %d / 4" % [hits,shots,rescued]
 	if text!=previous_hud:
 		hud.text = text
 		previous_hud = text
-	portal_hint.text = "PRACTICE RANGE\\nPORTAL  /  "+DEST[destination].to_upper()
+	portal_hint.text = "PRACTICE RANGE\nPORTAL  /  "+DEST[destination].to_upper()
 	control_hint.text = hints
 	action_hint.text = ctx if not ctx.is_empty() else ("MENU  •  CONTROLS" if pad.active else "E  •  INTERACT")
 	sight.add_theme_color_override("font_color",Color("ce8dff") if pad.aiming() else Color("d6faff"))
