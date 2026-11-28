@@ -1,0 +1,28 @@
+test_canon_override_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_canon_override_rejected) ... ok
+test_cli_missing_files_blocked (test_raw_sculpt_intake.OwnerSculptSealTests.test_cli_missing_files_blocked) ... ok
+test_duplicate_screenshot_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_duplicate_screenshot_rejected) ... ok
+test_eight_exact_screens (test_raw_sculpt_intake.OwnerSculptSealTests.test_eight_exact_screens) ... ok
+test_fake_glb_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_fake_glb_rejected) ... ok
+test_fake_godot_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_fake_godot_rejected) ... ok
+test_false_final_model_gate_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_false_final_model_gate_rejected) ... ok
+test_false_github_binary_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_false_github_binary_rejected) ... ok
+test_missing_screenshot_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_missing_screenshot_rejected) ... ok
+test_missing_source_files_fails_closed (test_raw_sculpt_intake.OwnerSculptSealTests.test_missing_source_files_fails_closed) ... ok
+test_path_traversal_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_path_traversal_rejected) ... ok
+test_razor_humanoid_identity_swap_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_razor_humanoid_identity_swap_rejected) ... ok
+test_readonly_manifest_cli_passes_without_source (test_raw_sculpt_intake.OwnerSculptSealTests.test_readonly_manifest_cli_passes_without_source) ... ok
+test_stat_ui_promotion_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_stat_ui_promotion_rejected) ... ok
+test_unnamed_hero_misassigned_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_unnamed_hero_misassigned_rejected) ... ok
+test_valid_spec_only (test_raw_sculpt_intake.OwnerSculptSealTests.test_valid_spec_only) ... ok
+test_wrong_dimensions_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_wrong_dimensions_rejected) ... ok
+test_wrong_mime_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_wrong_mime_rejected) ... ok
+test_wrong_original_size_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_wrong_original_size_rejected) ... ok
+test_wrong_source_sha_rejected (test_raw_sculpt_intake.OwnerSculptSealTests.test_wrong_source_sha_rejected) ... ok
+test_wrong_webp_payload_fails_closed (test_raw_sculpt_intake.OwnerSculptSealTests.test_wrong_webp_payload_fails_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.011s
+
+OK
+BLOCKED: missing/unreadable source screenshot: 40174.jpg; missing/unreadable source screenshot: 40166.jpg; missing/unreadable source screenshot: 40168.jpg; missing/unreadable source screenshot: 40170.jpg; missing/unreadable source screenshot: 40149.jpg; missing/unreadable source screenshot: 40151.jpg; missing/unreadable source screenshot: 40136.jpg; missing/unreadable source screenshot: 40132.jpg
+METADATA_VALIDATED_ONLY — no raw 3D or gameplay proof

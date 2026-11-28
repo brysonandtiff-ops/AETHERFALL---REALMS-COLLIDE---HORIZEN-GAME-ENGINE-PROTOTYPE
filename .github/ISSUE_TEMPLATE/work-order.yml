@@ -1,0 +1,42 @@
+name: Development work order
+description: Request one bounded game, art, QA or S.I.R.E. integration change
+title: "[AF] "
+body:
+  - type: input
+    id: deliverable
+    attributes:
+      label: One concrete deliverable
+    validations:
+      required: true
+  - type: dropdown
+    id: team
+    attributes:
+      label: Discipline
+      options:
+        - Godot gameplay
+        - Blender / character art
+        - World / level
+        - UI / accessibility
+        - QA / evidence
+        - S.I.R.E. Git / integration
+        - Security / release
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Protected files, source SHA, owner art references and parent PR
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Actual acceptance tests and original runtime evidence
+    validations:
+      required: true
+  - type: textarea
+    id: recovery
+    attributes:
+      label: Risk, rollback and what must remain unchanged
+    validations:
+      required: true

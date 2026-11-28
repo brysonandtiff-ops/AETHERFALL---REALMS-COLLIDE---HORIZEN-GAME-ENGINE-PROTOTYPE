@@ -25,3 +25,5 @@ python3 tools/aetherfall.py check
 ```
 
 Each command is offline. A handoff is printed to the operator only; it does not call an external agent. `native-smoke` optionally runs already-installed Godot 4.7.2 headlessly; if no correct engine is installed it exits BLOCKED with code 2. Graphical/device proof is separate.
+
+`python3 tools/sire_bridge.py contract` checks the public version lock; `doctor` and `catalog` accept `--sire-root` only for a separate, authorised private checkout. The catalogue must not be uploaded to public CI.

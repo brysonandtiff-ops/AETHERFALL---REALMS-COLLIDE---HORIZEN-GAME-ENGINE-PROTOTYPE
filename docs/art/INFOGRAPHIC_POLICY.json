@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "law_id": "SIRE-ART-INFO-001",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "policy": "INFOGRAPHIC_FIRST_NO_CANON_DRIFT",
+  "authority": "docs/art/UNIVERSAL_INFOGRAPHIC_STANDARD.md",
+  "master_reference": {
+    "character_id": "CHR_Vellaris_Bloodshield",
+    "uploaded_name": "39403.png",
+    "actual_format": "WEBP",
+    "width": 1536,
+    "height": 1152,
+    "aspect_ratio": "4:3",
+    "sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+    "archive_status": "pending_binary_checkin"
+  },
+  "board_frame": {
+    "palette": "gothic black-violet; magenta-lavender luminous borders; character-specific materials/colours remain independent",
+    "layout": "hero left; top multi-view and silhouettes; middle detail/materials; lower identity/function; bottom mechanics strip; disclaimer footer",
+    "min_sections": [
+      "asset_identity_and_status",
+      "hero_visual",
+      "source_and_approval",
+      "technical_handoff",
+      "concept_not_runtime_footer"
+    ],
+    "required_footer": "CONCEPT ART / DEVELOPMENT SHEET / NOT FINAL IN-GAME MODEL"
+  },
+  "asset_panels": {
+    "character": [
+      "hero_visual",
+      "four_view_turnaround",
+      "silhouette_studies",
+      "expressions_or_helmet",
+      "materials_palette",
+      "unique_equipment",
+      "gameplay_identity",
+      "abilities_and_movement",
+      "technical_handoff"
+    ],
+    "weapon": [
+      "hero_visual",
+      "multi_angle_views",
+      "scale_and_silhouette",
+      "materials_palette",
+      "construction_and_operation",
+      "gameplay_effects",
+      "technical_handoff"
+    ],
+    "object": [
+      "hero_visual",
+      "multi_angle_views",
+      "scale_and_silhouette",
+      "materials_palette",
+      "interaction_states",
+      "placement_and_collision",
+      "technical_handoff"
+    ],
+    "level": [
+      "key_environment_art",
+      "top_down_map",
+      "elevations_and_vistas",
+      "routes_cover_and_sightlines",
+      "spawns_objectives_and_exits",
+      "lighting_and_materials",
+      "traversal_and_performance"
+    ],
+    "environment": [
+      "key_environment_art",
+      "layout_and_landmarks",
+      "elevations_and_vistas",
+      "lighting_and_materials",
+      "navigation_and_interactions",
+      "readability_and_performance"
+    ],
+    "building": [
+      "architectural_hero",
+      "exterior_views",
+      "interior_and_floor_plan",
+      "scale_and_materials",
+      "traversal_and_interactions",
+      "technical_handoff"
+    ],
+    "creature": [
+      "hero_visual",
+      "four_view_turnaround",
+      "silhouette_and_anatomy",
+      "materials_palette",
+      "locomotion_and_abilities",
+      "technical_handoff"
+    ],
+    "vehicle": [
+      "hero_visual",
+      "multi_angle_views",
+      "parts_and_mechanisms",
+      "materials_palette",
+      "controls_and_movement",
+      "scale_and_technical_handoff"
+    ],
+    "ui": [
+      "hero_screen",
+      "responsive_layouts",
+      "component_variants",
+      "interaction_and_state_flows",
+      "typography_and_palette",
+      "accessibility_and_platform_handoff"
+    ],
+    "vfx": [
+      "key_visual",
+      "time_based_sequence",
+      "materials_and_palette",
+      "triggers_and_telegraph",
+      "accessibility_and_performance",
+      "technical_handoff"
+    ]
+  },
+  "statuses": [
+    "PROPOSAL_PENDING_OWNER_REVIEW",
+    "OWNER_APPROVED_CONCEPT",
+    "NATIVE_MODEL_VERIFIED",
+    "GODOT_RUNTIME_VERIFIED"
+  ],
+  "owner_approval_required": true,
+  "allow_inapplicable_panels_only_with_owner_waiver": true,
+  "generated_art_is_runtime_proof": false,
+  "source_integrity_sha256_required_for_archive": true,
+  "non_visual_code_changes_exempt": true
+}

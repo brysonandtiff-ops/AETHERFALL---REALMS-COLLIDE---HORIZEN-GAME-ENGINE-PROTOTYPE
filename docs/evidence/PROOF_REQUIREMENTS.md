@@ -10,3 +10,7 @@ Store genuine original captures in the corresponding `evidence/` folder, named w
 | `evidence/performance/` | Real FPS/frame-time and memory measurements with test configuration. |
 
 Static syntax or folder tests are STRUCTURE_ONLY; screenshots of concept art are CONCEPT_ONLY; neither is gameplay or native-engine proof. Never generate imitation runtime screenshots/videos. Before release, validate actual build, play, saves, accessibility, regression, security and device performance.
+
+## Character-specific Blender / Godot handoff receipts
+
+Follow [AF-ART-BLENDER-001 hardening](../art/BLENDER_EVIDENCE_HARDENING.md). Approved `PASS` stages use source-commit matching, full SHA-256, declared `capture_source` and actual application version. Put captures in `evidence/blender/<CHR_ID>/`, `evidence/godot/<CHR_ID>/` or `evidence/characters/<CHR_ID>/`; a matching filename or file header **does not prove native capture authenticity**. Require actual source-to-output review and owner decision record before gameplay readiness claims.

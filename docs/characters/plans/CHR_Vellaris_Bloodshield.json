@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "character_id": "CHR_Vellaris_Bloodshield",
+  "display_name": "Vellaris",
+  "epithet": "The Bloodshield",
+  "registry_role": "hero_tank",
+  "registry_concept_status": "aetherfall_approved",
+  "standard": "VELLARIS_V1_PLUS",
+  "identity": {
+    "role_class": "tank",
+    "archetype": "Bloodshield / frontline protection / sustain",
+    "one_of_one_hook": "Regal vampiric blood magic turned into an ally-protecting shield and repeatable sustain",
+    "silhouette_read": "Pale long hair, pointed ears, layered blood-red cape, spikes and radiant blood-magic crescent",
+    "gameplay_promise": "Protect frontline allies and convert combat pressure into protective Ichor",
+    "counterplay": "Create openings when barrier/bond are unavailable; numeric tuning untested"
+  },
+  "design": {
+    "owner_status": "approved_concept_only",
+    "visual_identity": "Lavender-white hair, red eyes, gothic black-purple plate, crimson enamel, antique gold, luminous magenta ichor",
+    "signature_prop": "Ornate gold-and-crimson magical bloodshield; shield is Vellaris's unique identity, not a tank default",
+    "palette": [
+      "ivory hair",
+      "crimson",
+      "black-violet",
+      "antique gold",
+      "magenta glow"
+    ],
+    "materials": [
+      "polished plate",
+      "crimson enamel",
+      "cloth cape",
+      "emissive ichor"
+    ],
+    "accessibility_notes": "Check contrast, gameplay-distance silhouette, VFX obstruction, color-blind readability, sound alternatives and safe flashes in real tests.",
+    "kit_status": "concept_reference_only",
+    "active_abilities": [
+      {
+        "slot": "active_1",
+        "name": "Blood Barrier",
+        "summary": "Project a protective blood shield that absorbs damage and guards allies."
+      },
+      {
+        "slot": "active_2",
+        "name": "Crimson Riposte",
+        "summary": "Counter incoming attacks and return blood energy."
+      },
+      {
+        "slot": "active_3",
+        "name": "Sanguine Pact",
+        "summary": "Bond nearby allies, sharing sustain and gradual healing."
+      },
+      {
+        "slot": "active_4",
+        "name": "Hemorrhage Veil",
+        "summary": "Create blood mist that weakens enemy damage output."
+      }
+    ],
+    "passive": {
+      "name": "Royal Ichor",
+      "summary": "Abilities generate Ichor, giving resilience and increased self-sustain over time."
+    }
+  },
+  "concept_reference": {
+    "repo_path": "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp",
+    "archive_status": "pending_source_upload",
+    "sha256": "4d100d50cf0769da47cbe1b782deeb842d15a11c1c46a08f8bd5bd090fa34939",
+    "origin_note": "Owner-uploaded 39403.png is actually WEBP, 1536x1152 and 340668 bytes, SHA-256 verified locally. Exact source binary not yet archived in GitHub; never transcode or rename to fake PNG."
+  },
+  "sheet_sections": {
+    "hero_portrait": "visible_in_unarchived_reference",
+    "turnaround_front": "visible_in_unarchived_reference",
+    "turnaround_side": "visible_in_unarchived_reference",
+    "turnaround_back": "visible_in_unarchived_reference",
+    "turnaround_three_quarter": "visible_in_unarchived_reference",
+    "silhouette_exploration": "visible_in_unarchived_reference",
+    "face_expressions": "visible_in_unarchived_reference",
+    "palette_swatches": "visible_in_unarchived_reference",
+    "materials_callouts": "visible_in_unarchived_reference",
+    "weapon_or_focus": "visible_in_unarchived_reference",
+    "gameplay_identity": "visible_in_unarchived_reference",
+    "ability_kit": "visible_in_unarchived_reference",
+    "vfx_motion": "visible_in_unarchived_reference",
+    "audio_voice": "pending",
+    "technical_handoff": "pending",
+    "accessibility_readability": "pending"
+  },
+  "section_waivers": {},
+  "gates": {
+    "identity_owner_approved": true,
+    "source_archived": false,
+    "concept_package_reviewed": false,
+    "blockout_approved": false,
+    "model_verified": false,
+    "rig_animation_verified": false,
+    "godot_import_verified": false,
+    "gameplay_verified": false,
+    "release_verified": false
+  },
+  "stage_evidence": {},
+  "blockers": [
+    "Archive the original rights-cleared master sheet and verify its SHA-256.",
+    "Complete the full distinctive character-sheet package and owner approval.",
+    "Do not claim Blender/Godot/gameplay/device evidence without genuine captures."
+  ],
+  "provenance_note": "Concept or proposed design, NOT a model, rig, playable character or native runtime evidence."
+}

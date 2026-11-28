@@ -1,26 +1,44 @@
-## One bounded work order
-Work order ID (e.g. `AETHERFALL-DEVOPS-001`):
-Executor/specialist (existing S.I.R.E. systems only):
-Exact project scope and acceptance:
+## Change
 
-## What changed (FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH)
-Describe source files changed, canonical art locks, dependencies and how to roll back.
+Describe what changed and link the work order.
 
-## Verified test evidence
-- [ ] `python3 tools/aetherfall.py doctor --json` (source contracts, not S.I.R.E. runtime)
-- [ ] `python3 tools/aetherfall.py check` (validator + unit tests)
-- [ ] GitHub CI headless Godot 4.7.2 run for the exact candidate commit
-- [ ] Real Godot graphic gameplay captured, if claiming a playable/visual change
-- [ ] Blender original geometry/rig/animation proof, if changing 3D assets
-- [ ] Physical-device evidence, if claiming device readiness
+## Tests performed (exact commands and results)
 
-List exact exit codes, CI run links, tested commit SHA, screenshot/video originals and evidence limits. Unrun tests are NOT_RUN; no simulated passes.
+- [ ] Structure validator run (or explain why not)
+- [ ] Native Godot project opened and main scene run (only check if really performed)
+- [ ] Native Blender import/export tested (if relevant)
+- [ ] Physical device tested (if relevant)
 
-## Security / integrations
-- [ ] No secrets/tokens, unsafe untrusted commands, new paid APIs or unnecessary plugin installs
-- [ ] No second master agent or unverified connected runner claims
-- [ ] Existing S.I.R.E. Git/permissions/security stewards respected
-- [ ] Original art, game files and drafts preserved; no auto-merge or deploy
+## Art and evidence
 
-## Risks, recovery and next
-Known limitations, rollback instructions, next bounded step and release hold:
+- [ ] No approved reference artwork overwritten
+- [ ] Original art and exported GLB stored separately
+- [ ] Genuine screenshots/video/hashes attached when actual visual/runtime change is claimed
+- [ ] Not-run or blocked checks clearly identified
+
+## Risks / rollback
+
+State known limitations and exact revert instructions. No auto-deploy or merge.
+
+## Character-specific signoff if relevant
+
+- [ ] All changed characters have registered unique IDs and matching `docs/characters/plans/<ID>.json`.
+- [ ] Owner-approved unique silhouette, ability kit, palette and focus; not a generic shield copy.
+- [ ] Original concept binary, hash and provenance committed, **or gate honestly pending**.
+- [ ] Genuine Blender/Godot/device evidence for any production status claims, or explicitly not run.
+- [ ] No legacy character silently promoted; Corvex/Korvex spelling checked.
+
+## Visual canon drift gate (for character art)
+
+- [ ] Viewed exact source media and locked manifest, not merely a remembered text prompt.
+- [ ] Verified actual file signature/extension, SHA-256 and pinned source identity; did not replace original.
+- [ ] Provided genuine side-by-side source-to-output comparison: face, hair, shape, silhouette, materials, props, four views, infographic layout and role/kit.
+- [ ] Owner approval explicitly recorded; until then saved as proposal, not new canon.
+- [ ] Cross-PR conflict (including Razor/Raven weapons) and alias (including Corvex/Korvex) reconciled.
+- [ ] Native engine/model/device status reported accurately.
+
+## S.I.R.E. work-order and dependency gate
+
+- [ ] Bounded work order and existing authorised executor recorded; `python3 tools/aetherfall.py doctor --json` and `python3 tools/sire_bridge.py contract` run.
+- [ ] Private master source, credentials and private catalogues not copied into public Git or CI; exact upstream source version and runner status separate.
+- [ ] No automatic merge, deployment, spending or new master agent.

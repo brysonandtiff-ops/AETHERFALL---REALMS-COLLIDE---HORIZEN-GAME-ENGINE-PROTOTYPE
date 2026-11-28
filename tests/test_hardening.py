@@ -22,10 +22,24 @@ class HardenedStructureTests(unittest.TestCase):
             target = self.root / rel
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / rel, target)
+        for plan_file in (ROOT / "docs/characters/plans").glob("*.json"):
+            target = self.root / plan_file.relative_to(ROOT)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(plan_file, target)
         data = json.loads((self.root / "art/asset_registry.json").read_text())
         for asset in data["assets"]:
             for key in ("concept_dir", "source_dir", "runtime_dir"):
                 (self.root / asset[key]).mkdir(parents=True, exist_ok=True)
+        # Copy actual approved master bytes when present: archival metadata alone
+        # must not invalidate the otherwise positive isolated repository fixture.
+        locks = json.loads((ROOT / "docs/characters/CANON_LOCKS.json").read_text(encoding="utf-8"))
+        for lock in locks["locked_characters"].values():
+            rel = Path(lock["source"]["path"])
+            original = ROOT / rel
+            if original.is_file():
+                dst = self.root / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(original, dst)
 
     def tearDown(self):
         self.temp.cleanup()
@@ -103,6 +117,89 @@ class HardenedStructureTests(unittest.TestCase):
             fh.seek(validator.MAX_DIRECT_BINARY_BYTES)
             fh.write(b"\x00")
         self.assert_rejected("Binary exceeds 50 MiB")
+
+
+
+    def test_large_webp_without_policy_fails(self):
+        path = self.root / "art/concepts/unreviewed.webp"
+        with path.open("wb") as fh:
+            fh.seek(validator.MAX_DIRECT_BINARY_BYTES)
+            fh.write(b"\x00")
+        self.assert_rejected("Binary exceeds 50 MiB")
+
+    def rewrite_plan(self, identifier, change):
+        path = self.root / "docs/characters/plans" / (identifier + ".json")
+        data = json.loads(path.read_text())
+        change(data)
+        path.write_text(json.dumps(data))
+
+    def test_missing_character_plan_fails(self):
+        (self.root / "docs/characters/plans/CHR_Vellaris_Bloodshield.json").unlink()
+        self.assert_rejected("Missing character plan")
+
+    def test_unregistered_character_folder_fails(self):
+        (self.root / "art/concepts/characters/CHR_Unregistered").mkdir()
+        self.assert_rejected("Unregistered character folder")
+
+    def test_character_role_forgery_fails(self):
+        self.rewrite_plan("CHR_Vellaris_Bloodshield", lambda d: d["identity"].update(role_class="support"))
+        self.assert_rejected("Character role class mismatch")
+
+    def test_candidate_concept_approval_forgery_fails(self):
+        self.rewrite_plan("CHR_Korvex", lambda d: d["gates"].update(identity_owner_approved=True))
+        self.assert_rejected("Character identity gate mismatch")
+
+    def test_duplicate_unique_hook_fails(self):
+        approved = json.loads((self.root / "docs/characters/plans/CHR_Vellaris_Bloodshield.json").read_text())
+        self.rewrite_plan("CHR_ThornDell", lambda d: d["identity"].update(
+            one_of_one_hook=approved["identity"]["one_of_one_hook"]))
+        self.assert_rejected("Duplicate character one-of-one identity")
+
+    def test_corrupted_master_source_hash_fails(self):
+        path = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp"
+        path.write_bytes(b"not the owner-approved image")
+        def mutate(d):
+            d["concept_reference"]["archive_status"] = "source_verified"
+            d["gates"]["source_archived"] = True
+        self.rewrite_plan("CHR_Vellaris_Bloodshield", mutate)
+        self.assert_rejected("Character master source checksum mismatch")
+
+    def test_unarchived_reference_cannot_fake_section_verification(self):
+        self.reset_pending_master("CHR_Vellaris_Bloodshield")
+        self.rewrite_plan("CHR_Vellaris_Bloodshield", lambda d: d["sheet_sections"].update(hero_portrait="source_verified"))
+        self.assert_rejected("Unarchived character sheet marked source-verified")
+
+    def test_skipped_godot_gate_fails(self):
+        self.rewrite_plan("CHR_Vellaris_Bloodshield", lambda d: d["gates"].update(godot_import_verified=True))
+        self.assert_rejected("Character production gate skipped")
+
+    def test_undocumented_waiver_fails(self):
+        self.rewrite_plan("CHR_Vellaris_Bloodshield", lambda d: d["sheet_sections"].update(audio_voice="approved_waiver"))
+        self.assert_rejected("Undocumented character section waiver")
+
+    def reset_pending_master(self, identifier):
+        manifest_path = self.root / "docs/characters/CANON_LOCKS.json"
+        locks = json.loads(manifest_path.read_text(encoding="utf-8"))
+        source = locks["locked_characters"][identifier]["source"]
+        (self.root / source["path"]).unlink(missing_ok=True)
+        source["state"] = "pending_binary_checkin"
+        manifest_path.write_text(json.dumps(locks), encoding="utf-8")
+        def pending(plan):
+            plan["concept_reference"]["archive_status"] = "pending_source_upload"
+            for gate in list(plan["gates"])[1:]:
+                plan["gates"][gate] = False
+            for section, status in plan["sheet_sections"].items():
+                if status == "source_verified":
+                    plan["sheet_sections"][section] = "visible_in_unarchived_reference"
+            if plan["design"]["kit_status"] == "owner_locked":
+                plan["design"]["kit_status"] = "concept_reference_only"
+        self.rewrite_plan(identifier, pending)
+
+    def test_master_image_cannot_arrive_unreviewed(self):
+        self.reset_pending_master("CHR_Vellaris_Bloodshield")
+        path = self.root / "art/concepts/characters/CHR_Vellaris_Bloodshield/Vellaris_Bloodshield_concept_v1.webp"
+        path.write_bytes(b"source added without updating dossier")
+        self.assert_rejected("Character source present but archive not verified")
 
 
 if __name__ == "__main__":

@@ -8,3 +8,14 @@
 - `evidence/PROOF_REQUIREMENTS.md`: genuine capture requirements.
 
 All unfinished or unconfirmed features remain proposed, not built. Changes to visual canon require owner approval.
+
+- `characters/CHARACTER_WORKFLOW.md`: mandatory Vellaris-plus per-character sheet and real production gates.
+- `characters/plans/<ID>.json`: exact recorded status/provenance for every registered character.
+- `characters/CHARACTER_INTAKE.md`: unresolved hero briefs, spellings and approval decisions.
+- `characters/PRODUCTION_TRACKER.md`: initial snapshot only; records are authoritative.
+
+- `characters/CANON_LOCKS.json` and `characters/VISUAL_CANON_LOCK.md`: exact approved source/provenance, visual template, character locks and failure rules.
+- `characters/DRIFT_REVIEW_TEMPLATE.md`: source-to-output comparison required before a proposed visual variant becomes canon.
+- `architecture/MAIN_BRANCH_LOCK_SETUP.md`: required GitHub admin ruleset and honest protection status.
+
+- `art/BLENDER_RAW_SCULPT_TO_GAME_READY.md`: owner-directed, canon-safe five-stage Blender cleanup → retopo → UV/PBR → rig → Godot handoff standard for 1P/3P hero shooter characters; use `art/templates/BLENDER_HANDOFF_TEMPLATE.json` and `tools/validate_blender_handoff.py`.

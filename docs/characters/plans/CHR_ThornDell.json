@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "character_id": "CHR_ThornDell",
+  "display_name": "ThornDell",
+  "epithet": "The Venomroot",
+  "registry_role": "venom_tank_disruptor",
+  "registry_concept_status": "aetherfall_approved",
+  "standard": "VELLARIS_V1_PLUS",
+  "identity": {
+    "role_class": "tank",
+    "archetype": "Venom / root disruption",
+    "one_of_one_hook": "Antlered forest Venomroot titan with enormous thorn-wrapped Root Bulwark and venom/root disruption instead of generic tank mechanics.",
+    "silhouette_read": "Owner-approved monumental forest guardian: asymmetric stag antlers, beard, bark/basalt/bronze armour, fungus, roots and a huge thorn-wrapped Root Bulwark.",
+    "gameplay_promise": "Deny routes with poison and roots",
+    "counterplay": "Still to design and test"
+  },
+  "design": {
+    "owner_status": "approved_concept_only",
+    "visual_identity": "Approved antlered forest titan: asymmetrical stag antlers, monumental shoulders, beard, living bark, fractured basalt, aged bronze, fungi, poison-sap vials and bright lime venom pathways.",
+    "signature_prop": "The unique thorn-wrapped root-grown Root Bulwark; never silently replace it with unrelated weapon.",
+    "palette": [],
+    "materials": [],
+    "accessibility_notes": "Check contrast, gameplay-distance silhouette, VFX obstruction, color-blind readability, sound alternatives and safe flashes in real tests.",
+    "kit_status": "pending",
+    "active_abilities": [],
+    "passive": null
+  },
+  "concept_reference": {
+    "repo_path": "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_APPROVED_v1.png",
+    "archive_status": "pending_source_upload",
+    "sha256": "34056a337ebfa67f413375a757f837a247938a3897aabf5e06b0683b48ba89d5",
+    "origin_note": "Owner-approved original true 1536x1024 PNG (3219162 bytes) from prior concept, inventoried PR #7; exact binary not yet archived in this GitHub repo; concept only."
+  },
+  "sheet_sections": {
+    "hero_portrait": "pending",
+    "turnaround_front": "pending",
+    "turnaround_side": "pending",
+    "turnaround_back": "pending",
+    "turnaround_three_quarter": "pending",
+    "silhouette_exploration": "pending",
+    "face_expressions": "pending",
+    "palette_swatches": "pending",
+    "materials_callouts": "pending",
+    "weapon_or_focus": "pending",
+    "gameplay_identity": "pending",
+    "ability_kit": "pending",
+    "vfx_motion": "pending",
+    "audio_voice": "pending",
+    "technical_handoff": "pending",
+    "accessibility_readability": "pending"
+  },
+  "section_waivers": {},
+  "gates": {
+    "identity_owner_approved": true,
+    "source_archived": false,
+    "concept_package_reviewed": false,
+    "blockout_approved": false,
+    "model_verified": false,
+    "rig_animation_verified": false,
+    "godot_import_verified": false,
+    "gameplay_verified": false,
+    "release_verified": false
+  },
+  "stage_evidence": {},
+  "blockers": [
+    "Archive the original rights-cleared master sheet and verify its SHA-256.",
+    "Complete the full distinctive character-sheet package and owner approval.",
+    "Do not claim Blender/Godot/gameplay/device evidence without genuine captures."
+  ],
+  "provenance_note": "Concept or proposed design, NOT a model, rig, playable character or native runtime evidence."
+}
