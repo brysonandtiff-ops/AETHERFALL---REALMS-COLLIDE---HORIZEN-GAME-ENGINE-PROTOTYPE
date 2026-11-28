@@ -61,3 +61,24 @@ Read docs/characters/VISUAL_CANON_LOCK.md and CANON_LOCKS.json before character 
 ## 1P + 3P production standards (candidate for review)
 
 See [S.I.R.E. 1P/3P production standard](docs/pipeline/PRODUCTION_STANDARD.md) for the Blender Art Team and Gameplay AI/Engineering contract: [Blender handoff](docs/pipeline/BLENDER_ART_TEAM.md), [combat/AI states](docs/pipeline/GAMEPLAY_AI_ENGINEERING.md), [proof and platform release gates](docs/pipeline/SOVEREIGN_STAGING_AND_PROOF.md). This is **specification/staging only**; it does not add a game-ready hero, a verified first-person viewmodel, native animation tests or a released game. Existing [visual canon](docs/characters/VISUAL_CANON_LOCK.md) and [character workflow](docs/characters/CHARACTER_WORKFLOW.md) remain binding.
+
+## Daily development with S.I.R.E. (configuration pending review)
+
+This work lives on a development branch until its tests pass and it is reviewed. Once approved, use:
+
+```sh
+python3 tools/aetherfall.py doctor
+python3 tools/aetherfall.py routes
+python3 tools/aetherfall.py work list
+python3 tools/aetherfall.py cmd T
+python3 tools/aetherfall.py check
+python3 tools/aetherfall.py handoff AETHERFALL-DEVOPS-001 --json
+```
+
+`handoff` is **a safe JSON proposal**, never a remote call. The existing S.I.R.E AI master, GENESIS AI/HORIZON, Git/permission stewards and MCP/Plugin services remain external, and are **NOT_CONNECTED** until a real authorised session proves otherwise.
+
+Read [START HERE](docs/development/START_HERE.md) and [S.I.R.E. integration boundaries](docs/development/SIRE_INTEGRATION.md). The CI job on pull requests runs standard-library tests plus a genuine official Godot 4.7.2 **headless** startup. This does not produce native visual/device evidence or automatically merge or deploy anything.
+
+For the next safe job, run `python3 tools/aetherfall.py work new AETHERFALL-GAME-002 --team gameplay --goal "Implement one approved playable encounter" --criterion "Real native Godot capture and accepted tests"`. Use `python3 tools/aetherfall.py calls --json` to inspect **suggested upstream S.I.R.E. calls**, which are never executed automatically.
+
+The shared S.I.R.E. software stays in its private canonical repository. See [private source integration](docs/development/SIRE_PRIVATE_SOURCE.md) for the version pin, local catalogue and authenticated-runner boundaries.

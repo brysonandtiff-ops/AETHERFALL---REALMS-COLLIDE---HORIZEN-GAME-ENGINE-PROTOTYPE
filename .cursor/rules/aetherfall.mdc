@@ -1,0 +1,7 @@
+---
+description: AETHERFALL: follow existing S.I.R.E. governance and one-task proof pipeline.
+alwaysApply: true
+---
+Read `AGENTS.md` and `docs/development/SIRE_INTEGRATION.md` at the repository root. S.I.R.E AI is the existing master; GENESIS AI/HORIZON are routed specialists, not duplicate local agents.
+
+Develop one bounded work order on a review branch. Run `python3 tools/aetherfall.py check`, preserve approved artwork, require actual Godot evidence and keep unverified execution states honest. No secrets, automatic merges or deployments.

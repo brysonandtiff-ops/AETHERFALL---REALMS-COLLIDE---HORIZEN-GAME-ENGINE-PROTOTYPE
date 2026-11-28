@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository": "brysonandtiff-ops/SIRE",
+  "commit": "061943f2dd67c1d5cfd943f1739348346b433636",
+  "visibility": "private",
+  "distribution": "external_authorised_checkout_only",
+  "registry_path": "sire/capability_registry.py",
+  "registry_blob": "d6b85514057adc6ef706552149f6d69197bca18a",
+  "studio_path": "sire/sire/professional_game_build_capabilities.py",
+  "studio_blob": "034e4d46f285d13cd6cfa1005fca088c53097d5c",
+  "runtime_status": "NOT_VERIFIED",
+  "auto_fetch": false,
+  "auto_dispatch": false,
+  "auto_spend": false,
+  "auto_merge": false,
+  "auto_deploy": false
+}

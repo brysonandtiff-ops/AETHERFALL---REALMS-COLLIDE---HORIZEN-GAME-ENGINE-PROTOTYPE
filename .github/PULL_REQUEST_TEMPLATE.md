@@ -36,3 +36,9 @@ State known limitations and exact revert instructions. No auto-deploy or merge.
 - [ ] Owner approval explicitly recorded; until then saved as proposal, not new canon.
 - [ ] Cross-PR conflict (including Razor/Raven weapons) and alias (including Corvex/Korvex) reconciled.
 - [ ] Native engine/model/device status reported accurately.
+
+## S.I.R.E. work-order and dependency gate
+
+- [ ] Bounded work order and existing authorised executor recorded; `python3 tools/aetherfall.py doctor --json` and `python3 tools/sire_bridge.py contract` run.
+- [ ] Private master source, credentials and private catalogues not copied into public Git or CI; exact upstream source version and runner status separate.
+- [ ] No automatic merge, deployment, spending or new master agent.

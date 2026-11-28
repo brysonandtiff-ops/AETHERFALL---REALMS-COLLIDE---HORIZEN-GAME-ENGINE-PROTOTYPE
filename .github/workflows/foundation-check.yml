@@ -20,6 +20,10 @@ jobs:
           persist-credentials: false
       - name: Validate source and migration boundary
         run: python3 tools/validate_structure.py
+      - name: Check S.I.R.E. contract and work-order honesty
+        run: python3 tools/aetherfall.py doctor --json
+      - name: Verify private S.I.R.E. dependency lock (no credentials or network)
+        run: python3 tools/sire_bridge.py contract
       - name: Run adversarial standard-library tests
         run: python3 -m unittest discover -s tests -v
 

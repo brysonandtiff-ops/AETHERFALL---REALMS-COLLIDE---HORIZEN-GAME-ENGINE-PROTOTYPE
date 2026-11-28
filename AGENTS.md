@@ -59,3 +59,14 @@ Every new or revised character, including all heroes, enemies, bosses, NPCs, sum
 All raw AI sculpt → approved character conversions must follow [the detailed Blender 1P/3P production SOP](docs/art/BLENDER_RAW_SCULPT_TO_GAME_READY.md) and its [per-asset evidence checklist](docs/art/templates/BLENDER_HANDOFF_TEMPLATE.json). Source geometry, locked reference hashes, retopology, UV/PBR maps, weights/animation, separate viewmodels and authentic Godot imports are mandatory before a game-ready claim. The offline `tools/validate_blender_handoff.py` gate checks that manifest stage PASS, file hashes and GAME_READY claims are not unsupported; it **does not** validate meshes, art style, native render, runtime gameplay, licence legitimacy or human approvals. No automatic source overwrite, canon promotion or evidence fabrication.
 
 **Handoff hardening:** Also follow `docs/art/BLENDER_EVIDENCE_HARDENING.md` before marking any Blender handoff stage `PASS`, `READY_FOR_OWNER_REVIEW` or `GAME_READY`. Original raw GLB files belong only in registered character `art/blender/characters/<CHR_ID>/raw/` archives, never mixed with finished runtime exports. These are source integrity gates, not evidence of engine execution.
+
+## AETHERFALL continual development and S.I.R.E. team routing
+
+- Master is the **existing S.I.R.E AI**; gameplay/art route to **GENESIS AI / HORIZON**, Git to S.I.R.E. Git Team, security/plugins to the existing stewards. No local definition is a new running AI.
+- Use `.sire/integration.json` and `.sire/work-orders/` for bounded authorisation, honest connection status, explicit tests and acceptance. `docs/development/SIRE_INTEGRATION.md` documents the source paths and routing.
+- Repeatable pipeline: FIND → PLAN → BUILD → TEST → REPAIR → RETEST → SHOW → HARDEN → PROVE → FINISH. One change/PR at a time.
+- Local command: `python3 tools/aetherfall.py doctor|status|routes|skills|check|work|handoff|cmd`. None of these automatically contacts S.I.R.E. agents/plugins or grants a runner.
+- Keep revisions in a review branch/draft PR. CI is source-contract/native headless verification only; genuine graphical/device/Blender/video evidence must be reported separately.
+- No new spending, undisclosed networks, remote control, user credential copying, automatic merge, auto-release or destructive cleanups. Only use verified upstream S.I.R.E. connections and existing permissions.
+
+- Use `python3 tools/sire_bridge.py contract` for the public integration contract, and `python3 tools/sire_bridge.py doctor --sire-root <private-checkout>` for an authorised external source check. See `docs/development/SIRE_PRIVATE_SOURCE.md`. Never copy private master code or credentials into this public repository.

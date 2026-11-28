@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "project_id": "AETHERFALL_REALMS_COLLIDE",
+  "project": "AETHERFALL: REALMS COLLIDE",
+  "repository": "brysonandtiff-ops/AETHERFALL---REALMS-COLLIDE---HORIZEN-GAME-ENGINE-PROTOTYPE",
+  "game_path": "game/project.godot",
+  "expected_engine": "4.7.2.stable",
+  "upstream": {
+    "repository": "brysonandtiff-ops/SIRE",
+    "interface": "S.I.R.E AI",
+    "governance": "S.I.R.E constitutional law + owner authorisation",
+    "connection_status": "NOT_CONNECTED",
+    "verified_live_executor": false
+  },
+  "stage": "REVIEW_ONLY",
+  "release_policy": {
+    "auto_merge": false,
+    "auto_deploy": false,
+    "paid_apis": false,
+    "destructive_actions": false,
+    "trust_repository_status_only": false
+  },
+  "routes": {
+    "gameplay": {
+      "specialist": "GENESIS AI",
+      "subsystem": "HORIZON GAME ENGINE",
+      "team": "gameplay",
+      "skill": ".sire/skills/gameplay.md",
+      "upstream_cli": "python -m sire agent status"
+    },
+    "character_art": {
+      "specialist": "GENESIS AI",
+      "subsystem": "HORIZON GAME ENGINE",
+      "team": "art",
+      "skill": ".sire/skills/art.md",
+      "upstream_cli": "python -m sire agent status"
+    },
+    "runtime_qa": {
+      "specialist": "GENESIS AI",
+      "subsystem": "HORIZON GAME ENGINE",
+      "team": "qa",
+      "skill": ".sire/skills/proof.md",
+      "upstream_cli": "python -m sire proof"
+    },
+    "git": {
+      "specialist": "S.I.R.E. Git Team",
+      "subsystem": "Git Stop Authority",
+      "team": "git",
+      "skill": ".sire/skills/git.md",
+      "upstream_cli": "python -m sire git-stop check"
+    },
+    "security": {
+      "specialist": "S.I.R.E. Secrets Steward",
+      "subsystem": "Plugin Permission Matrix",
+      "team": "security",
+      "skill": ".sire/skills/security.md",
+      "upstream_cli": "python -m sire.plugins.permission_matrix"
+    },
+    "integrations": {
+      "specialist": "S.I.R.E. Plugin Steward",
+      "subsystem": "S.I.R.E. MCP / Connections",
+      "team": "integrations",
+      "skill": ".sire/skills/integrations.md",
+      "upstream_cli": "python -m sire plugins list"
+    }
+  },
+  "connection_boundaries": {
+    "agent_supervisor": {
+      "status": "DEFINED_NOT_CONNECTED",
+      "source": "sire/agent/",
+      "evidence": "none for this AETHERFALL session"
+    },
+    "plugin_registry": {
+      "status": "DEFINED_NOT_CONNECTED",
+      "source": "sire/plugins/",
+      "evidence": "upstream code confirmed, no local runtime connected"
+    },
+    "mcp": {
+      "status": "DEFINED_NOT_CONNECTED",
+      "source": "sire/mcp/server.py",
+      "evidence": "no authenticated MCP handshake"
+    },
+    "remote_runner": {
+      "status": "NOT_CONNECTED",
+      "source": "S.I.R.E. runner bridge",
+      "evidence": "no runner ID or session for this repo"
+    },
+    "github_ci": {
+      "status": "CONFIGURED",
+      "source": ".github/workflows/foundation-check.yml",
+      "evidence": "test run required at branch head"
+    },
+    "godot": {
+      "status": "TARGET_VERSION",
+      "source": "game/project.godot",
+      "evidence": "existing main native headless test; new head must run"
+    }
+  }
+}
