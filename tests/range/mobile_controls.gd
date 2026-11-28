@@ -40,6 +40,9 @@ func run() -> void:
     var pilot = level.pilot
     var hud = level.hud
     check(hud.touch_enabled and hud.touch_actions.size() >= 7,"touch controls built")
+    check(root.content_scale_aspect == Window.CONTENT_SCALE_ASPECT_EXPAND,"mobile viewport expands without letterboxing")
+    check(root.content_scale_size.x == root.content_scale_size.y,"square touch design basis")
+
     check(hud.touch_actions.has("BEGIN") and hud.touch_actions.has("RESET"),"begin and reset reachable by touch")
     for viewport_size in [Vector2(844,390), Vector2(390,844), Vector2(1280,800)]:
         hud.layout_touch(viewport_size)

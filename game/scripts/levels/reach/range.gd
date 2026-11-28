@@ -37,6 +37,16 @@ var message := "Follow the teal courier across the bridge."
 var last_result := "No completed trial"
 
 func _ready() -> void:
+    # A square design basis lets touch HUD remain usable in portrait, landscape and tablets.
+    # Godot otherwise scales a fixed 16:9 UI into tiny letterboxed phone controls.
+    if DisplayServer.is_touchscreen_available() or OS.get_environment("AF_FORCE_TOUCH_UI") == "1":
+        var physical := DisplayServer.window_get_size()
+        var short_side := mini(physical.x,physical.y)
+        var design_side := 390 if short_side < 600 else 640
+        var window := get_window()
+        window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+        window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+        window.content_scale_size = Vector2i(design_side,design_side)
     add_child(valley)
     valley.build()
     var env := Environment.new()
