@@ -1,0 +1,67 @@
+name: Unbound Reach playable slice
+on:
+  pull_request:
+    paths:
+      - 'game/scenes/levels/arenas/**'
+      - 'game/scripts/levels/reach/**'
+      - 'tests/range/**'
+      - 'tools/range/**'
+      - '.github/workflows/unbound-reach.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  playtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Verify engine and import game
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/reach-engine" "$RUNNER_TEMP/reach-proof"
+          curl -fsSL --retry 3 https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip -o "$RUNNER_TEMP/reach-engine/engine.zip"
+          cd "$RUNNER_TEMP/reach-engine"
+          echo 'cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  engine.zip' | sha256sum -c -
+          unzip -q engine.zip
+          mv Godot_v4.7.2-stable_linux.x86_64 godot
+          chmod +x godot
+          echo "$PWD" >> "$GITHUB_PATH"
+          cd "$GITHUB_WORKSPACE"
+          "$RUNNER_TEMP/reach-engine/godot" --version | tee "$RUNNER_TEMP/reach-proof/version.txt"
+          grep -q '^4\.7\.2\.stable' "$RUNNER_TEMP/reach-proof/version.txt"
+          git rev-parse HEAD > "$RUNNER_TEMP/reach-proof/source-sha.txt"
+          "$RUNNER_TEMP/reach-engine/godot" --headless --path game --editor --import --quit
+      - name: Play the bridge drill through production controls
+        run: |
+          set -euo pipefail
+          godot --headless --fixed-fps 60 --path game --script "$GITHUB_WORKSPACE/tests/range/bridge_drill.gd" 2>&1 | tee "$RUNNER_TEMP/reach-proof/playtest.log"
+          grep -Fq 'AF_RANGE_RESULT PASS' "$RUNNER_TEMP/reach-proof/playtest.log"
+          ! grep -Ei 'SCRIPT ERROR|^ERROR:' "$RUNNER_TEMP/reach-proof/playtest.log"
+      - name: Capture real software-rendered Godot frames and interaction video
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          AF_CAPTURE_DIR: ${{ runner.temp }}/reach-proof
+        run: |
+          set -euo pipefail
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y ffmpeg xvfb xauth libgl1-mesa-dri
+          xvfb-run -a -s '-screen 0 1280x720x24' godot --path game --rendering-method gl_compatibility --audio-driver Dummy --resolution 960x540 --write-movie "$AF_CAPTURE_DIR/session.avi" --fixed-fps 30 --script "$GITHUB_WORKSPACE/tests/range/capture.gd" 2>&1 | tee "$AF_CAPTURE_DIR/capture.log"
+          grep -Fq 'AF_CAPTURE_PASS' "$AF_CAPTURE_DIR/capture.log"
+          test -s "$AF_CAPTURE_DIR/bridge.png"
+          ffmpeg -v error -i "$AF_CAPTURE_DIR/session.avi" -c:v libx264 -crf 23 -pix_fmt yuv420p -an -movflags +faststart "$AF_CAPTURE_DIR/bridge.mp4"
+          ffprobe -v error -show_entries stream=codec_name,width,height,duration -of json "$AF_CAPTURE_DIR/bridge.mp4" > "$AF_CAPTURE_DIR/video.json"
+          rm "$AF_CAPTURE_DIR/session.avi"
+          python3 tools/range/package_build.py "$AF_CAPTURE_DIR"
+          (cd "$AF_CAPTURE_DIR" && sha256sum *.png *.mp4 *.zip > SHA256SUMS.txt)
+      - name: Upload playtest evidence and importable range project
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: Unbound-Reach-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/reach-proof/
+          retention-days: 14
+          if-no-files-found: error
