@@ -22,6 +22,14 @@ class HardenedStructureTests(unittest.TestCase):
             target = self.root / rel
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / rel, target)
+        # The real bootstrap scene now references a navigation script.
+        # Copy this existing dependency into the isolated positive fixture;
+        # deliberately do not copy any paths introduced by adversarial tests.
+        bootstrap_dependency = Path("game/scripts/core/bootstrap.gd")
+        if (ROOT / bootstrap_dependency).is_file():
+            target = self.root / bootstrap_dependency
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / bootstrap_dependency, target)
         for plan_file in (ROOT / "docs/characters/plans").glob("*.json"):
             target = self.root / plan_file.relative_to(ROOT)
             target.parent.mkdir(parents=True, exist_ok=True)

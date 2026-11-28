@@ -56,3 +56,38 @@ jobs:
             exit 1
           fi
           echo 'PASS: exact-version native Godot import/boot; no graphic, animation, device or gameplay proof'
+
+      - name: Native headless practice lab touch-action smoke (not phone or graphical proof)
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT=/tmp/aetherfall-godot/Godot_v4.7.2-stable_linux.x86_64
+          "$GODOT" --headless --path game --script res://tests/practice_lab_smoke.gd 2>&1 | tee /tmp/aetherfall-practice-smoke.log
+          if grep -Eiq '(^|[[:space:]])(ERROR|FATAL):' /tmp/aetherfall-practice-smoke.log; then
+            echo 'Godot logged an error during practice lab smoke' >&2
+            exit 1
+          fi
+
+      - name: Attempt real Godot viewport capture in virtual display
+        id: visual_capture
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v xvfb-run
+          GODOT=/tmp/aetherfall-godot/Godot_v4.7.2-stable_linux.x86_64
+          mkdir -p /tmp/aetherfall-evidence
+          LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' "$GODOT" --path game --script res://tests/practice_lab_capture.gd 2>&1 | tee /tmp/aetherfall-visual-capture.log
+          test -s /tmp/aetherfall-evidence/practice-lab-native.png
+          file /tmp/aetherfall-evidence/practice-lab-native.png
+          sha256sum /tmp/aetherfall-evidence/practice-lab-native.png
+
+      - name: Archive genuine CI-rendered greybox image if capture succeeded
+        if: steps.visual_capture.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: aetherfall-native-greybox
+          path: |
+            /tmp/aetherfall-evidence/practice-lab-native.png
+            /tmp/aetherfall-evidence/frames/
+          if-no-files-found: error
