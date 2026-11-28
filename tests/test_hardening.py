@@ -22,6 +22,8 @@ class HardenedStructureTests(unittest.TestCase):
             target = self.root / rel
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / rel, target)
+        range_dir = Path("game/scenes/levels/realms/unbound_reach")
+        shutil.copytree(ROOT / range_dir, self.root / range_dir, dirs_exist_ok=True)
         for plan_file in (ROOT / "docs/characters/plans").glob("*.json"):
             target = self.root / plan_file.relative_to(ROOT)
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -56,6 +58,10 @@ class HardenedStructureTests(unittest.TestCase):
 
     def test_positive_layout_and_legacy_hold(self):
         self.assertEqual(validator.check(self.root), [])
+
+    def test_missing_first_level_fails(self):
+        (self.root / "game/scenes/levels/realms/unbound_reach/unbound_reach.tscn").unlink()
+        self.assert_rejected("Missing/unsafe Godot ext_resource")
 
     def test_escape_main_scene_fails(self):
         path = self.root / "game/project.godot"
@@ -204,4 +210,3 @@ class HardenedStructureTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
