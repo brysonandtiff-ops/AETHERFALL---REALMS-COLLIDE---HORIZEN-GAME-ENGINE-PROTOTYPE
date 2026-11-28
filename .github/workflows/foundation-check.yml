@@ -56,3 +56,14 @@ jobs:
             exit 1
           fi
           echo 'PASS: exact-version native Godot import/boot; no graphic, animation, device or gameplay proof'
+
+      - name: Native headless practice lab touch-action smoke (not phone or graphical proof)
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT=/tmp/aetherfall-godot/Godot_v4.7.2-stable_linux.x86_64
+          "$GODOT" --headless --path game --script res://tests/practice_lab_smoke.gd 2>&1 | tee /tmp/aetherfall-practice-smoke.log
+          if grep -Eiq '(^|[[:space:]])(ERROR|FATAL):' /tmp/aetherfall-practice-smoke.log; then
+            echo 'Godot logged an error during practice lab smoke' >&2
+            exit 1
+          fi
