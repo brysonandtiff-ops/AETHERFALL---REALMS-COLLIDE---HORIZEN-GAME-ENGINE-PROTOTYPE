@@ -126,7 +126,7 @@ func setup(s) -> void:
 func setup_touch(s) -> void:
     # Independent touch targets avoid the original 11-button horizontal overflow.
     action("BEGIN","BEGIN",s.start_trial)
-    action("SAVE","SAVE SPOT",s.save_checkpoint)
+    action("SAVE","SAVE",s.save_checkpoint)
     action("RESET","RESET",s.reset_trial)
     action("JUMP","JUMP",func(): s.pilot.jump_queued = true)
     action("FIRE","FIRE",func(): s.fire())
@@ -179,6 +179,13 @@ func layout_touch(view: Vector2) -> void:
     joystick_base.size = Vector2(148,148)
     joystick_base.custom_minimum_size = Vector2(148,148)
     joystick_knob.position = Vector2(53,53)
+    var layout_receipt := {
+        "viewport": [w,h],
+        "begin": [touch_actions["BEGIN"].position.x,touch_actions["BEGIN"].position.y],
+        "reset": [touch_actions["RESET"].position.x,touch_actions["RESET"].position.y],
+        "size": [78,48]
+    }
+    print("AF_TOUCH_LAYOUT ",JSON.stringify(layout_receipt))
 
 func _process(_dt: float) -> void:
     if touch_enabled:
