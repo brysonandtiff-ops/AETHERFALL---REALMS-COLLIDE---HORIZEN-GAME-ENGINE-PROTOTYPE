@@ -146,7 +146,31 @@ class HardenedStructureTests(unittest.TestCase):
         self.assert_rejected("Character role class mismatch")
 
     def test_candidate_concept_approval_forgery_fails(self):
-        self.rewrite_plan("CHR_Korvex", lambda d: d["gates"].update(identity_owner_approved=True))
+        # A real hero can become owner-approved. Keep the negative case
+        # isolated from the changing production roster.
+        cid = "CHR_TestApprovalForgery"
+        candidate_status = "legacy_owner_approved_candidate_for_aetherfall"
+        role = "tank_test_fixture"
+        dirs = {
+            "concept_dir": "art/concepts/characters/" + cid,
+            "source_dir": "art/blender/characters/" + cid,
+            "runtime_dir": "game/assets/characters/heroes/" + cid,
+        }
+        self.rewrite_registry(lambda d: d["assets"].append({
+            "id": cid, "type": "character", "role": role,
+            "status": "reserved_no_source", "concept_status": candidate_status,
+            **dirs,
+        }))
+        for rel in dirs.values():
+            (self.root / rel).mkdir(parents=True)
+        plan = json.loads((self.root / "docs/characters/templates/CHARACTER_PLAN_TEMPLATE.json").read_text())
+        plan.update(character_id=cid, display_name="Test approval candidate",
+                    registry_role=role, registry_concept_status=candidate_status)
+        plan["identity"].update(role_class="tank", one_of_one_hook="Isolated approval forgery fixture")
+        plan["concept_reference"]["repo_path"] = dirs["concept_dir"] + "/MASTER_CONCEPT_PENDING.png"
+        (self.root / "docs/characters/plans" / (cid + ".json")).write_text(json.dumps(plan))
+        self.assertEqual(validator.check(self.root), [])
+        self.rewrite_plan(cid, lambda d: d["gates"].update(identity_owner_approved=True))
         self.assert_rejected("Character identity gate mismatch")
 
     def test_duplicate_unique_hook_fails(self):

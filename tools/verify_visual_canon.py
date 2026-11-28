@@ -48,6 +48,23 @@ PINNED = {
         "passive": "Sunken Claim",
         "traits": ("hooded", "bone-brine", "cyan", "crimson", "ossuary dredge", "salvage bulwark", "wreck frame"),
     },
+    "CHR_KRAIT": {
+        "path": "art/concepts/characters/CHR_KRAIT/KRAIT_The_Sovereign_Guardian_CANONICAL_v1.webp",
+        "sha256": "129597d1fc89bbbe35a306295ad8239d6ffc05eb39dcb52264355717329fe944",
+        "format": "WEBP", "width": 1536, "height": 1384, "bytes": 191796,
+        "name": "K.R.A.I.T", "title": "The Sovereign Guardian", "role": "tank",
+        "focus": "Rift Knuckles", "actives": [], "passive": None,
+        "traits": ("horn", "cyan", "dragon-shaped", "gauntlets", "reactor", "ascension"),
+    },
+    "CHR_Korvex": {
+        "path": "art/concepts/characters/CHR_Korvex/Korvex_The_Hollow_Titan_CANONICAL_v1.png",
+        "sha256": "697796f1da2a4561c19671ee20e44f38e830634e61f803a71206204f5d615ec6",
+        "format": "PNG", "width": 1448, "height": 1086, "bytes": 3166920,
+        "name": "Korvex", "title": "The Hollow Titan", "role": "tank",
+        "focus": "Grave Maul", "actives": ["Grave Maul","Bone Bastion","Decay Field","Titan's Roar"],
+        "passive": "Hollow Endurance",
+        "traits": ("mausoleum", "horned", "purple", "chains", "lanterns", "grave maul", "funeral cloth"),
+    },
 }
 # Independently pinned owner-selected design contract. Progress gates are not locked here.
 DREADHULL_DESIGN_CONTRACT = {
@@ -135,6 +152,129 @@ DREADHULL_DESIGN_CONTRACT = {
     "gameplay_promise": "Protect, reclaim, reforge, control and empower; reclaim debris into defenses and displace enemies."
 }
 
+# K.R.A.I.T visual approval only; do not infer gameplay from the cropped source.
+KRAIT_VISUAL_CONTRACT = {
+    "visual_lock": [
+        "Exact owner-selected primary portrait: tall, heavily built humanoid tank, broad upper torso, large fists and thick articulated leg armor.",
+        "Closed angular helmet with two swept upward dark horns and a pointed luminous cyan face visor; preserve the visible helmet contours, no exposed human face.",
+        "Silver-blue layered metallic armor; dragon-shaped pauldrons with swept spikes, circular cyan shoulder joints and dark recessed flexible sections.",
+        "Bright circular cyan chest reactor and smaller illuminated torso and waist cores; cyan lighting follows the source portrait.",
+        "Rift Knuckles: preserve the large armored gauntlets, segmented fingers and pointed forearm fins shown in the approved portrait.",
+        "Preserve the visible ascension study: wing-like energy projections on the armor, with cyan/blue and orange-gold states shown. Exact stage names, progression and mechanics are unreadable or incomplete and not approved by inference.",
+        "Preserve the supplied screenshot without crop, cleanup, reconstruction or removal of its phone UI overlay. Its darker turnaround/red accents are reference evidence, not permission to replace the primary portrait."
+    ],
+    "forbidden_drift": [
+        "No replacement with Bryskar's earlier character art, another hero's silhouette, a generic knight, an external franchise character, a different helmet or unrelated equipment.",
+        "No silent changes to the dragon-shaped pauldrons, horned helmet, cyan visor, chest reactor, gauntlets, armor proportions or visible ascension appearance.",
+        "Do not infer an acronym expansion, final transformation mechanics, unreadable ability descriptions, unseen angles or complete palette from the cropped screenshot.",
+        "Do not register Bryskar as another active hero or promote the historical Bryskar design file as K.R.A.I.T's visual master.",
+        "No model, rig, runtime, full roster uniqueness or completed concept-package claim without corresponding proof."
+    ],
+    "visual_identity": "Exact owner-selected primary portrait: tall, heavily built humanoid tank, broad upper torso, large fists and thick articulated leg armor. Closed angular helmet with two swept upward dark horns and a pointed luminous cyan face visor; preserve the visible helmet contours, no exposed human face. Silver-blue layered metallic armor; dragon-shaped pauldrons with swept spikes, circular cyan shoulder joints and dark recessed flexible sections. Bright circular cyan chest reactor and smaller illuminated torso and waist cores; cyan lighting follows the source portrait. Rift Knuckles: preserve the large armored gauntlets, segmented fingers and pointed forearm fins shown in the approved portrait. Preserve the visible ascension study: wing-like energy projections on the armor, with cyan/blue and orange-gold states shown. Exact stage names, progression and mechanics are unreadable or incomplete and not approved by inference. Preserve the supplied screenshot without crop, cleanup, reconstruction or removal of its phone UI overlay. Its darker turnaround/red accents are reference evidence, not permission to replace the primary portrait.",
+    "signature_prop": "Rift Knuckles",
+    "palette": [
+        "silver-blue metal (portrait)",
+        "dark navy/black recesses",
+        "cyan emissive energy",
+        "red accents in turnaround studies",
+        "orange-gold energy in ascension study"
+    ],
+    "materials": [
+        "Segmented metallic armor",
+        "Dark recessed joints",
+        "Luminous cyan cores"
+    ],
+    "approval_scope": "Exact owner-selected visual screenshot and replacement identity only; full gameplay kit/ascension mechanics pending."
+}
+KRAIT_REPLACEMENT = {
+    "previous_name": "Bryskar",
+    "previous_proposed_id": "CHR_Bryskar",
+    "canonical_id": "CHR_KRAIT",
+    "canonical_name": "K.R.A.I.T",
+    "status": "superseded_not_active",
+    "owner_approval_date": "2026-11-27",
+    "historical_kit_path": "docs/characters/BRYSKAR_OWNER_SELECTED_KIT.md",
+    "scope": "Owner approved K.R.A.I.T visual design and replacement identity; complete inherited gameplay kit and ascension rules require separate confirmation."
+}
+# Independent owner-selected Korvex concept contract.
+KORVEX_DESIGN_CONTRACT = {
+    "identity": {
+        "display_name": "Korvex",
+        "epithet": "The Hollow Titan",
+        "role_class": "tank",
+        "signature_focus": "Grave Maul",
+        "active_ability_names": [
+            "Grave Maul",
+            "Bone Bastion",
+            "Decay Field",
+            "Titan's Roar"
+        ],
+        "passive_ability_name": "Hollow Endurance"
+    },
+    "visual_lock": [
+        "Massive graveborn humanoid juggernaut, walking mausoleum silhouette, broad shoulders, heavy armored limbs, wide stance.",
+        "Closed angular horned helmet with vertical purple glowing visor slits; retain exact face/helmet shapes in the four expression studies.",
+        "Layered aged iron and mausoleum stone armor with bronze-gold edging, jagged spikes, bone carving and shoulder skull ornaments.",
+        "Purple void-soul energy glows through rib-like chest armor and gothic window-like openings; preserve the pointed-arch illuminated structure on his back.",
+        "Heavy chains, suspended purple soul lanterns, tattered purple funeral cloth and front tabard; no pirate rigging or generic cape substitution.",
+        "Grave Maul is the signature long-handled gothic mausoleum-shaped hammer with spiked roof, glowing pointed-arch purple windows and hanging lanterns.",
+        "Preserve the exact 4:3 AETHERFALL source sheet, front/side/back turnaround and materials/palette, not an earlier alternative or a generated approximation."
+    ],
+    "forbidden_drift": [
+        "No replacement helmet, different silhouette, human face, generic knight or copied hero armor.",
+        "No Grave Maul substitution with an axe, shield, sword, anchor or unrelated weapon.",
+        "No removal of gothic mausoleum motifs, chains, skulls, lanterns, purple funeral cloth or void-soul energy.",
+        "Do not silently rename Korvex to Corvex or resolve the separate unapproved alias/collision record.",
+        "No changes to approved source bytes or concept kit without explicit owner review; no final tuning, model or runtime claims."
+    ],
+    "visual_identity": "Massive graveborn humanoid juggernaut, walking mausoleum silhouette, broad shoulders, heavy armored limbs, wide stance. Closed angular horned helmet with vertical purple glowing visor slits; retain exact face/helmet shapes in the four expression studies. Layered aged iron and mausoleum stone armor with bronze-gold edging, jagged spikes, bone carving and shoulder skull ornaments. Purple void-soul energy glows through rib-like chest armor and gothic window-like openings; preserve the pointed-arch illuminated structure on his back. Heavy chains, suspended purple soul lanterns, tattered purple funeral cloth and front tabard; no pirate rigging or generic cape substitution. Grave Maul is the signature long-handled gothic mausoleum-shaped hammer with spiked roof, glowing pointed-arch purple windows and hanging lanterns. Preserve the exact 4:3 AETHERFALL source sheet, front/side/back turnaround and materials/palette, not an earlier alternative or a generated approximation.",
+    "palette": [
+        "bone ivory",
+        "aged iron gray",
+        "violet",
+        "deep plum",
+        "charcoal",
+        "bronze-gold"
+    ],
+    "materials": [
+        "Aged iron",
+        "Mausoleum stone",
+        "Bone carving",
+        "Funeral cloth (tattered)",
+        "Void-soul energy"
+    ],
+    "signature_prop": "Grave Maul",
+    "active_abilities": [
+        {
+            "slot": "primary",
+            "name": "Grave Maul",
+            "summary": "A devastating, empowered maul strike that crushes enemies, dealing heavy damage (increased against high-durability targets)."
+        },
+        {
+            "slot": "active_1",
+            "name": "Bone Bastion",
+            "summary": "Raises jagged grave-spires or tombstone barricades from the ground, blocking paths and controlling space."
+        },
+        {
+            "slot": "active_2",
+            "name": "Decay Field",
+            "summary": "Corrupts the ground in an area, dealing damage over time and weakening enemies' defenses."
+        },
+        {
+            "slot": "active_3",
+            "name": "Titan's Roar",
+            "summary": "Unleashes a monumental roar that staggers enemies and slows their movement and attack speed."
+        }
+    ],
+    "passive": {
+        "name": "Hollow Endurance",
+        "summary": "Converts a portion of incoming damage into temporary armor (Endurance), bolstering Korvex's durability."
+    },
+    "archetype": "Anti-tank / zone denial / frontline juggernaut",
+    "one_of_one_hook": "Walking mausoleum with Grave Maul, tombstone barricades, defense-eroding decay and temporary Endurance armor.",
+    "silhouette_read": "Broad spiked gothic mausoleum armor, horned visor, purple lantern chains, long-handled mausoleum hammer and tattered funeral cloth.",
+    "gameplay_promise": "Pressure high-durability targets, control space with tomb barriers, weaken enemies in corrupted ground and survive extended fights."
+}
 EXTRA_KNOWN = {
     "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_chat_copy.webp": {
         "format": "WEBP", "width": 1536, "height": 1024, "bytes": 375978,
@@ -259,6 +399,11 @@ def check(root=ROOT):
     if not isinstance(locks, dict) or not set(PINNED).issubset(set(locks)):
         errors.append("Pinned owner-approved character canon lock missing")
         locks = {}
+    replacements = manifest.get("character_replacements")
+    if not isinstance(replacements, dict) or replacements.get("CHR_Bryskar") != KRAIT_REPLACEMENT:
+        errors.append("K.R.A.I.T owner replacement decision drift")
+    if "CHR_Bryskar" in locks:
+        errors.append("Superseded Bryskar cannot be active canon")
     allowlisted = set(EXTRA_KNOWN)
     for identifier, pinned in PINNED.items():
         lock = locks.get(identifier)
@@ -307,6 +452,37 @@ def check(root=ROOT):
             cref = {}
         pi = plan.get("identity") or {}
         design = plan.get("design") or {}
+        if identifier == "CHR_Korvex":
+            actual_contract = {
+                "identity": ident,
+                "visual_lock": lock.get("visual_lock"),
+                "forbidden_drift": lock.get("forbidden_drift"),
+                **{key: design.get(key) for key in (
+                    "visual_identity", "palette", "materials", "signature_prop",
+                    "active_abilities", "passive")},
+                **{key: pi.get(key) for key in (
+                    "archetype", "one_of_one_hook", "silhouette_read", "gameplay_promise")},
+            }
+            if actual_contract != KORVEX_DESIGN_CONTRACT:
+                errors.append("Korvex approved design contract drift")
+            if source.get("media_type") != "image/png" or source.get("uploaded_filename") != "AETHERFALL_Korvex_The_Hollow_Titan_Review.png":
+                errors.append("Korvex original source provenance drift")
+        if identifier == "CHR_KRAIT":
+            actual_visual = {
+                "visual_lock": lock.get("visual_lock"),
+                "forbidden_drift": lock.get("forbidden_drift"),
+                **{key: design.get(key) for key in (
+                    "visual_identity", "signature_prop", "palette", "materials")},
+                "approval_scope": lock.get("approval_scope"),
+            }
+            if actual_visual != KRAIT_VISUAL_CONTRACT or ident.get("signature_focus") != pinned["focus"]:
+                errors.append("K.R.A.I.T approved visual contract drift")
+            if source.get("media_type") != "image/webp" or source.get("uploaded_filename") != "1795779132409.jpeg":
+                errors.append("K.R.A.I.T original source provenance drift")
+            if plan.get("replaces_proposed_id") != "CHR_Bryskar":
+                errors.append("K.R.A.I.T owner replacement plan drift")
+            if design.get("kit_status") != "pending" or design.get("active_abilities") != [] or design.get("passive") is not None:
+                errors.append("K.R.A.I.T unapproved gameplay kit promotion")
         if identifier == "CHR_Dreadhull":
             # A keyword match alone would allow a renamed weapon or rewritten mechanics.
             actual_contract = {
@@ -361,6 +537,8 @@ def check(root=ROOT):
     registry = _json(root / "art/asset_registry.json")
     if isinstance(registry, dict) and isinstance(registry.get("assets"), list):
         ids = {entry.get("id") for entry in registry["assets"] if isinstance(entry, dict)}
+        if any(isinstance(value, str) and value.casefold() == "chr_bryskar" for value in ids):
+            errors.append("Superseded Bryskar cannot be registered as an active hero")
         if "CHR_Corvex" in ids and "CHR_Korvex" in ids:
             errors.append("Unresolved Corvex/Korvex alias collision")
 

@@ -37,7 +37,7 @@ For upstream governance consult the existing S.I.R.E. repository's canonical eng
 ## Source migration, truth and hardening
 
 - Shadowspire is a legacy concept source; no owned standalone Shadowspire repository is currently verified. Do not delete third-party repositories or unreachable local original Unreal/Godot source.
-- Vellaris Bloodshield, ThornDell and Dreadhull (Bonebrine Reaver #07, Ossuary Dredge) are AETHERFALL-approved concepts. Seven other reserved character IDs represent historical selected *Shadowspire* hero concepts, not playable models or automatic new AETHERFALL approvals.
+- Vellaris Bloodshield, ThornDell, Dreadhull (Bonebrine Reaver #07, Ossuary Dredge), K.R.A.I.T (The Sovereign Guardian) and Korvex (The Hollow Titan, Grave Maul) are AETHERFALL-approved visual concepts. Six other reserved character IDs represent historical selected *Shadowspire* hero concepts, not playable models or automatic new AETHERFALL approvals.
 - Protect original art, model versions, file paths, local saves and reference history. Do not fabricate assets or runtime media to fill missing source.
 - `tools/validate_structure.py`, adversarial tests and actual Godot headless CI are mandatory source-level gates. Only genuine graphical/native engine and actual device captures can establish visual acceptance. Never claim a playable game from a headless placeholder.
 - No new paid APIs, merges, deployments or destructive repository operations without the relevant independent evidence and owner authorisation.
@@ -59,3 +59,7 @@ Every new or revised character, including all heroes, enemies, bosses, NPCs, sum
 All raw AI sculpt → approved character conversions must follow [the detailed Blender 1P/3P production SOP](docs/art/BLENDER_RAW_SCULPT_TO_GAME_READY.md) and its [per-asset evidence checklist](docs/art/templates/BLENDER_HANDOFF_TEMPLATE.json). Source geometry, locked reference hashes, retopology, UV/PBR maps, weights/animation, separate viewmodels and authentic Godot imports are mandatory before a game-ready claim. The offline `tools/validate_blender_handoff.py` gate checks that manifest stage PASS, file hashes and GAME_READY claims are not unsupported; it **does not** validate meshes, art style, native render, runtime gameplay, licence legitimacy or human approvals. No automatic source overwrite, canon promotion or evidence fabrication.
 
 **Handoff hardening:** Also follow `docs/art/BLENDER_EVIDENCE_HARDENING.md` before marking any Blender handoff stage `PASS`, `READY_FOR_OWNER_REVIEW` or `GAME_READY`. Original raw GLB files belong only in registered character `art/blender/characters/<CHR_ID>/raw/` archives, never mixed with finished runtime exports. These are source integrity gates, not evidence of engine execution.
+
+## Owner hero replacement — K.R.A.I.T
+
+`CHR_KRAIT` replaces the unregistered Bryskar proposal. Read `docs/characters/KRAIT_CANONICAL_V1.md` and the pinned original source before any K.R.A.I.T artwork or model task. Preserve the exact owner-selected horned helmet, dragon-shaped pauldrons, cyan reactor and Rift Knuckles. Bryskar is not a separate active hero. Historical Bryskar kit remains intact; full K.R.A.I.T gameplay and ascension mechanics need confirmation. Do not infer missing screenshot details or re-create the master from memory.

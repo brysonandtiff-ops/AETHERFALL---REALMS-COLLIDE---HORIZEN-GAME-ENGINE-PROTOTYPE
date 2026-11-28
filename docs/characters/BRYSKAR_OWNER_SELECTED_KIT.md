@@ -1,4 +1,6 @@
-# BRYSKAR — THE FIRST BREACH: OWNER-SELECTED ABILITY KIT
+# BRYSKAR — THE FIRST BREACH: HISTORICAL OWNER-SELECTED ABILITY KIT
+
+> **SUPERSEDED HERO IDENTITY — 2026-11-27.** Owner replaced Bryskar with K.R.A.I.T — The Sovereign Guardian (`CHR_KRAIT`). This earlier selected ability kit is retained verbatim for history and possible owner-confirmed adaptation, not a separate active hero or authority to reconstruct K.R.A.I.T artwork. The new visual source is [K.R.A.I.T canonical reference](KRAIT_CANONICAL_V1.md). Do not infer that all previous gameplay details or unseen ascension mechanics are approved for K.R.A.I.T.
 
 **Project:** AETHERFALL: REALMS COLLIDE
 **Work order:** AF-BRYSKAR-KIT-SELECTION-20261126

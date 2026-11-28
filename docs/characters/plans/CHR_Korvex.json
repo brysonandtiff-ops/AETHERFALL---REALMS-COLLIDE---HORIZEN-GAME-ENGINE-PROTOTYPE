@@ -3,48 +3,85 @@
   "project": "AETHERFALL: REALMS COLLIDE",
   "character_id": "CHR_Korvex",
   "display_name": "Korvex",
-  "epithet": "Not yet approved for AETHERFALL",
+  "epithet": "The Hollow Titan",
   "registry_role": "tank_attrition_zone_control",
-  "registry_concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+  "registry_concept_status": "aetherfall_approved",
   "standard": "VELLARIS_V1_PLUS",
   "identity": {
     "role_class": "tank",
-    "archetype": "Attrition / zone control",
-    "one_of_one_hook": "Slow attrition that erodes control of territory",
-    "silhouette_read": "New AETHERFALL silhouette pending",
-    "gameplay_promise": "Claim zones over time",
-    "counterplay": "Pending"
+    "archetype": "Anti-tank / zone denial / frontline juggernaut",
+    "one_of_one_hook": "Walking mausoleum with Grave Maul, tombstone barricades, defense-eroding decay and temporary Endurance armor.",
+    "silhouette_read": "Broad spiked gothic mausoleum armor, horned visor, purple lantern chains, long-handled mausoleum hammer and tattered funeral cloth.",
+    "gameplay_promise": "Pressure high-durability targets, control space with tomb barriers, weaken enemies in corrupted ground and survive extended fights.",
+    "counterplay": "Exact cooldowns, resource limits, barrier duration, target criteria and counterplay require separate gameplay design and testing."
   },
   "design": {
-    "owner_status": "legacy_candidate_pending_aetherfall_approval",
-    "visual_identity": "Provisional historical idea; master AETHERFALL visual style pending.",
-    "signature_prop": "Unique prop pending",
-    "palette": [],
-    "materials": [],
+    "owner_status": "approved_concept_only",
+    "visual_identity": "Massive graveborn humanoid juggernaut, walking mausoleum silhouette, broad shoulders, heavy armored limbs, wide stance. Closed angular horned helmet with vertical purple glowing visor slits; retain exact face/helmet shapes in the four expression studies. Layered aged iron and mausoleum stone armor with bronze-gold edging, jagged spikes, bone carving and shoulder skull ornaments. Purple void-soul energy glows through rib-like chest armor and gothic window-like openings; preserve the pointed-arch illuminated structure on his back. Heavy chains, suspended purple soul lanterns, tattered purple funeral cloth and front tabard; no pirate rigging or generic cape substitution. Grave Maul is the signature long-handled gothic mausoleum-shaped hammer with spiked roof, glowing pointed-arch purple windows and hanging lanterns. Preserve the exact 4:3 AETHERFALL source sheet, front/side/back turnaround and materials/palette, not an earlier alternative or a generated approximation.",
+    "signature_prop": "Grave Maul",
+    "palette": [
+      "bone ivory",
+      "aged iron gray",
+      "violet",
+      "deep plum",
+      "charcoal",
+      "bronze-gold"
+    ],
+    "materials": [
+      "Aged iron",
+      "Mausoleum stone",
+      "Bone carving",
+      "Funeral cloth (tattered)",
+      "Void-soul energy"
+    ],
     "accessibility_notes": "Check contrast, gameplay-distance silhouette, VFX obstruction, color-blind readability, sound alternatives and safe flashes in real tests.",
-    "kit_status": "pending",
-    "active_abilities": [],
-    "passive": null
+    "kit_status": "concept_reference_only",
+    "active_abilities": [
+      {
+        "slot": "primary",
+        "name": "Grave Maul",
+        "summary": "A devastating, empowered maul strike that crushes enemies, dealing heavy damage (increased against high-durability targets)."
+      },
+      {
+        "slot": "active_1",
+        "name": "Bone Bastion",
+        "summary": "Raises jagged grave-spires or tombstone barricades from the ground, blocking paths and controlling space."
+      },
+      {
+        "slot": "active_2",
+        "name": "Decay Field",
+        "summary": "Corrupts the ground in an area, dealing damage over time and weakening enemies' defenses."
+      },
+      {
+        "slot": "active_3",
+        "name": "Titan's Roar",
+        "summary": "Unleashes a monumental roar that staggers enemies and slows their movement and attack speed."
+      }
+    ],
+    "passive": {
+      "name": "Hollow Endurance",
+      "summary": "Converts a portion of incoming damage into temporary armor (Endurance), bolstering Korvex's durability."
+    }
   },
   "concept_reference": {
-    "repo_path": "art/concepts/characters/CHR_Korvex/MASTER_CONCEPT_PENDING.png",
+    "repo_path": "art/concepts/characters/CHR_Korvex/Korvex_The_Hollow_Titan_CANONICAL_v1.png",
     "archive_status": "pending_source_upload",
-    "sha256": null,
-    "origin_note": "Legacy selected concept, not an approved new AETHERFALL source image."
+    "sha256": "697796f1da2a4561c19671ee20e44f38e830634e61f803a71206204f5d615ec6",
+    "origin_note": "Owner replied Approve to exact Korvex concept shown in AETHERFALL review, 2026-11-28. Review PNG is byte-identical to archived Library Korvex: The Hollow Titan Concept Sheet(1).png. Exact original saved separately; GitHub binary pending."
   },
   "sheet_sections": {
-    "hero_portrait": "pending",
-    "turnaround_front": "pending",
-    "turnaround_side": "pending",
-    "turnaround_back": "pending",
+    "hero_portrait": "visible_in_unarchived_reference",
+    "turnaround_front": "visible_in_unarchived_reference",
+    "turnaround_side": "visible_in_unarchived_reference",
+    "turnaround_back": "visible_in_unarchived_reference",
     "turnaround_three_quarter": "pending",
-    "silhouette_exploration": "pending",
-    "face_expressions": "pending",
-    "palette_swatches": "pending",
-    "materials_callouts": "pending",
-    "weapon_or_focus": "pending",
-    "gameplay_identity": "pending",
-    "ability_kit": "pending",
+    "silhouette_exploration": "visible_in_unarchived_reference",
+    "face_expressions": "visible_in_unarchived_reference",
+    "palette_swatches": "visible_in_unarchived_reference",
+    "materials_callouts": "visible_in_unarchived_reference",
+    "weapon_or_focus": "visible_in_unarchived_reference",
+    "gameplay_identity": "visible_in_unarchived_reference",
+    "ability_kit": "visible_in_unarchived_reference",
     "vfx_motion": "pending",
     "audio_voice": "pending",
     "technical_handoff": "pending",
@@ -52,7 +89,7 @@
   },
   "section_waivers": {},
   "gates": {
-    "identity_owner_approved": false,
+    "identity_owner_approved": true,
     "source_archived": false,
     "concept_package_reviewed": false,
     "blockout_approved": false,
@@ -64,9 +101,9 @@
   },
   "stage_evidence": {},
   "blockers": [
-    "Archive the original rights-cleared master sheet and verify its SHA-256.",
-    "Complete the full distinctive character-sheet package and owner approval.",
-    "Do not claim Blender/Godot/gameplay/device evidence without genuine captures."
+    "Archive exact PNG at pinned repository path and verify SHA-256.",
+    "Complete three-quarter turnaround, motion/VFX, audio, technical handoff, accessibility and full roster comparison; concept package review remains pending.",
+    "The existing reconstruction/blockout is not approved by this concept selection. Native Blender model/rig, Godot gameplay and device verification remain pending."
   ],
-  "provenance_note": "Concept or proposed design, NOT a model, rig, playable character or native runtime evidence."
+  "provenance_note": "Owner-approved concept sheet only; no ultimate explicitly labeled in source, no final numerical balance, no model/runtime approval."
 }

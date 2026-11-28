@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | **Vellaris** | Self-healing sustain; crimson gothic hero | AETHERFALL-approved Vellaris Bloodshield. Existing `CHR_Vellaris_Bloodshield` path kept. |
 | **Thorndell** | Venom tank/disruptor, antlered forest titan | AETHERFALL-approved ThornDell/Venomroot. Keep existing asset ID `CHR_ThornDell`; Thorndell is a legacy spelling. |
-| **Korvex** | Attrition, zone control | Candidate `CHR_Korvex`, no model. |
+| **Korvex** | Anti-tank pressure, zone denial, frontline attrition | AETHERFALL owner-approved Hollow Titan concept, `CHR_Korvex`; Grave Maul; no verified production model. |
 | **Dreadhull** | Battlefield reclamation, protection and disruption | AETHERFALL-approved Bonebrine Reaver #07, `CHR_Dreadhull`; exact owner-approved concept locked, no model. |
 | **Morrigan** | Gothic area control | Candidate `CHR_Morrigan`, no model. |
 
