@@ -25,7 +25,7 @@ jobs:
 
   native-godot-4-7-2-smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 14
     steps:
       - name: Checkout read-only source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -56,3 +56,18 @@ jobs:
             exit 1
           fi
           echo 'PASS: exact-version native Godot import/boot; no graphic, animation, device or gameplay proof'
+      - name: Exercise first level and capture real software-rendered player views
+        env:
+          GODOT: /tmp/aetherfall-godot/Godot_v4.7.2-stable_linux.x86_64
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: bash tools/unbound_reach_evidence.sh "$RUNNER_TEMP/unbound-reach"
+      - name: Keep commit-specific logs, screenshots and interaction video
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: unbound-reach-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            ${{ runner.temp }}/unbound-reach
+            !${{ runner.temp }}/unbound-reach/frames
+          if-no-files-found: warn
+          retention-days: 14
