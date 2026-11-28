@@ -50,6 +50,11 @@ func finish_lighting() -> void:
     marker(s,Vector3(0,3.0,-16.0),"RESCUE  /  01",Color("b7f1d4"))
     marker(s,Vector3(-22,4.1,-11.5),"RIDGE  /  02",Color("e0c3f0"))
     marker(s,Vector3(15,3.0,20),"MARKET  /  03",Color("e8c3a2"))
+    marker(s,Vector3(0,4.1,26),"DRONE TRACKS  /  04",Color("f6d39e"))
+    for i in range(3):
+        var x := (float(i)-1.0)*10.0
+        v.block("TargetLaneRail",Vector3(x,0.06,26.5),Vector3(4.6,0.12,5.1),Color("796779"),false)
+        v.block("TargetLaneMark",Vector3(x,0.14,24.7),Vector3(4.6,0.06,0.26),Color("e0b083"),false)
 
 func marker(scene, where: Vector3, text: String, tint: Color) -> void:
     var l := Label3D.new()

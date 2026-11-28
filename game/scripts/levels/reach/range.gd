@@ -3,12 +3,14 @@ extends Node3D
 const Valley = preload("res://scripts/levels/reach/valley.gd")
 const Pilot = preload("res://scripts/levels/reach/pilot.gd")
 const Interface = preload("res://scripts/levels/reach/hud.gd")
+const Gallery = preload("res://scripts/levels/reach/target_gallery.gd")
 const RIGS := ["WARDEN", "STRIKER", "MENDER"]
 const TEAL := Color("72e7cf")
 const RED := Color("fa775e")
 var valley := Valley.new()
 var pilot := Pilot.new()
 var hud := Interface.new()
+var gallery := Gallery.new()
 var ally := Node3D.new()
 var ally_core: MeshInstance3D
 var ward: MeshInstance3D
@@ -81,6 +83,7 @@ func _ready() -> void:
         body.add_child(col)
         gem(body,0.75,RED)
         ring(body,1.04,GOLD_COLOR())
+    add_child(gallery)
     add_child(hud)
     hud.setup(self)
     reset_trial()
@@ -138,6 +141,7 @@ func reset_trial() -> void:
         drones[i].visible = true
     ally.visible = true
     ward.visible = false
+    gallery.reset()
     ally.position = Vector3(0,1.05,8)
     place_drones()
     recover()
@@ -209,6 +213,9 @@ func fire(heavy: bool = false) -> void:
                 drones[idx].visible = false
                 message = "Sentry disabled for 5 seconds."
             else: message = "Sentry hit."
+        elif gallery.hit(hit.collider):
+            hits += 1
+            message = "Target track: %d hits, %d knockdowns." % [gallery.total_hits,gallery.scored]
     beam(start-pilot.camera.global_transform.basis.y*0.12,end,TEAL)
 
 func use_tool() -> void:

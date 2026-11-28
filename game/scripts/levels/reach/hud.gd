@@ -188,7 +188,7 @@ func _process(_dt: float) -> void:
 func refresh(s) -> void:
     state.text = "%s   /   %s" % [{"READY":"FREE EXPLORE","RUNNING":"ESCORT LIVE","WON":"COURIER SAFE","LOST":"COURIER LOST"}.get(s.phase,s.phase),s.RIGS[s.mode]]
     hp.value = s.ally_hp
-    numbers.text = "ALLY %d/100    BLOCKED %d    HEALED %d" % [s.ally_hp,s.prevented,s.restored]
+    numbers.text = "ALLY %d/100  BLOCKED %d  HEALED %d  TARGETS %d" % [s.ally_hp,s.prevented,s.restored,s.gallery.scored]
     last.text = "Last: %s" % s.last_result
     hint.text = "%s  /  %.1fs  Hits %d/%d" % [s.message,s.elapsed,s.hits,s.shots]
     if touch_enabled:

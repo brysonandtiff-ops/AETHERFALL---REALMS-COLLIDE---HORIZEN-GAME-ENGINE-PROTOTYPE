@@ -40,6 +40,14 @@ func exercise() -> void:
     root.add_child(level)
     await ticks(12)
     check(level.phase == "READY", "boots at ready state")
+    check(level.gallery.targets.size() == 3, "moving target practice lane constructed")
+    var target = level.gallery.targets[0]
+    for i in range(3): level.gallery.hit(target)
+    check(level.gallery.scored == 1 and not target.visible, "target practice counts destruction")
+    await ticks(188)
+    check(target.visible and level.gallery.health[0] == 3, "practice target respawns after cooldown")
+    level.gallery.reset()
+    check(level.gallery.scored == 0 and level.gallery.total_hits == 0, "target drill score resets")
     var origin: Vector3 = level.pilot.position
     key(KEY_W, true)
     await ticks(15)
