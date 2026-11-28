@@ -80,6 +80,7 @@ func run() -> void:
 	check(level.pad.glyph("Interact") == "Y" and level.pad.glyph("Hub") == "X", "swap conflicts and update prompt")
 	level.update_hud()
 	check("Y USE" in level.control_hint.text, "live HUD prompt reflects custom remapping")
+	check(level.hud.text.split("\n").size() == 2 and level.control_hint.text.split("\n").size() == 2, "HUD panels use real two-line labels")
 	check(level.pad.save_profile() == OK, "save settings")
 	level.pad.defaults()
 	level.pad.load_profile()
