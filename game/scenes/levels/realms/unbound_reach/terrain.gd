@@ -97,19 +97,44 @@ func label3(p: Vector3, words: String, c: Color, pixels: float = 0.016) -> void:
 	add_child(t)
 	t.position = p
 
-func bridge(a: Vector3, b: Vector3, w: float) -> void:
-	# Local -Z follows the 3D incline; top face meets both end surfaces.
+func bridge_segment(a: Vector3,b: Vector3,w: float,solid: bool) -> void:
 	var basis3 := Basis.looking_at((b-a).normalized(),Vector3.UP)
 	var mid := (a+b)/2 - basis3.y*0.25
-	var body := box("Causeway",mid,Vector3(w,0.5,a.distance_to(b)+0.18),SAND)
+	var body := box("Causeway",mid,Vector3(w,0.5,a.distance_to(b)+0.10),SAND,solid)
 	body.basis = basis3
 	for side in [-1,1]:
 		var trim := box("EdgeInlay",mid+basis3.x*side*(w/2-0.15)+basis3.y*0.26,Vector3(0.16,0.05,a.distance_to(b)),GOLD,false)
 		trim.basis = basis3
 
+func bridge(a: Vector3, b: Vector3, w: float) -> void:
+	if is_equal_approx(a.y,b.y):
+		bridge_segment(a,b,w,true)
+		return
+	var low := a if a.y<b.y else b
+	var high := b if a.y<b.y else a
+	var forward := Vector3(high.x-low.x,0,high.z-low.z).normalized()
+	var side := forward.cross(Vector3.UP).normalized()*w*0.5
+	# Reach full height before the capsule meets the vertical wall of the circular deck.
+	var crest := high-forward*clampf(Vector2(high.x-low.x,high.z-low.z).length()*0.10,0.65,1.5)
+	var end := high+forward*0.75
+	bridge_segment(low,crest,w,false)
+	bridge_segment(crest,end,w,false)
+	var points := PackedVector3Array()
+	for offset in [-side,side]:
+		for station in [low,crest,end]: points.append(station+offset)
+		points.append(low+offset-Vector3.UP*0.50)
+		points.append(Vector3(end.x,low.y-0.50,end.z)+offset)
+	var shape := ConvexPolygonShape3D.new()
+	shape.points = points
+	var body := StaticBody3D.new()
+	body.name = "SlopeAndLanding"
+	var collision := CollisionShape3D.new()
+	collision.shape = shape
+	body.add_child(collision)
+	add_child(body,true)
+
 func island(p: Vector3, radius: float, depth: float, top: Color) -> void:
 	drum("Deck",p-Vector3.UP*0.5,radius,1,top,true)
-	# Organic tapered basalt silhouette, no exposed invisible walk surfaces.
 	for i in range(15):
 		var a := TAU*i/15
 		var d := scenery.randf_range(0.65,1.0)*depth
@@ -166,7 +191,6 @@ func make_world() -> void:
 		for x in [-1,1]:
 			var key := ("A" if x<0 else "B") if z<0 else ("C" if x<0 else "D")
 			var ledge: Vector3 = STOPS[key]
-			# Meet each deck at its near lip rather than burying the ramp in its collider.
 			bridge(junction+Vector3(3.5*x,0,0),ledge-Vector3(x*6.8,0,0),4.6)
 			var deck := west if x<0 else east
 			bridge(deck+Vector3(0,0,z*(7.8 if x<0 else 11.8)),ledge-Vector3(0,0,z*6.8),4.2)
@@ -175,7 +199,6 @@ func make_world() -> void:
 	var hub: Vector3 = STOPS.Hub
 	island(hub,12.5,24,DARK)
 	ring(hub+Vector3.UP*0.05,11.6,0.09,CYAN)
-	# Low curved transparent observation glazing; the counter is physical, not an invisible wall.
 	for i in range(12):
 		var a := -PI+PI*(float(i)+0.5)/12
 		var p := hub+Vector3(cos(a)*11.9,0,sin(a)*11.9)
@@ -188,7 +211,6 @@ func make_world() -> void:
 		gm.albedo_color = Color(0.45,0.86,0.98,0.16)
 		(glass as MeshInstance3D).material_override = gm
 		if i%3==0: box("Frame",p+Vector3.UP*2.6,Vector3(0.23,5.2,0.26),DARK)
-	# North horizon anchor: separate skyline island, not a playable destination.
 	island(Vector3(0,1,-105),16,31,MOSS)
 	for i in range(7):
 		var a := TAU*i/7

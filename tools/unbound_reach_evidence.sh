@@ -42,5 +42,5 @@ with open(sys.argv[1], encoding='utf-8') as f:
 if int(stream['nb_frames']) != 180 or abs(float(stream['duration']) - 7.5) > 0.05:
     raise SystemExit('Unexpected recording length')
 PY
-git archive --format=zip --output="$OUT/Unbound-Reach-Godot-Project.zip" HEAD game/project.godot game/scenes/bootstrap/main.tscn game/scenes/levels/realms/unbound_reach game/tests/unbound_reach_test.gd game/tests/unbound_reach_capture.gd docs/game-design/UNBOUND_REACH_PLAYTEST.md
+git archive --format=zip --output="$OUT/Unbound-Reach-Godot-Project.zip" HEAD game/project.godot game/scenes/bootstrap/main.tscn game/scenes/levels/realms/unbound_reach game/tests/unbound_reach_test.gd game/tests/unbound_reach_capture.gd game/tests/xbox_range_test.gd docs/game-design/UNBOUND_REACH_PLAYER_HUD.json docs/game-design/UNBOUND_REACH_PLAYTEST.md
 (cd "$OUT" && sha256sum *.png *.mp4 *.txt *.zip > SHA256SUMS)
