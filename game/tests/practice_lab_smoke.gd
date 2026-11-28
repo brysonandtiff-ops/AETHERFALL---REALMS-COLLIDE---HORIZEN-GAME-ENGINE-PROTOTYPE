@@ -17,9 +17,9 @@ func _run_test() -> void:
     await process_frame
     await physics_frame
 
-    var pilot := lab.get_node_or_null("TrainingPlayer")
-    var hud := lab.get_node_or_null("MobileControls/TouchHUD")
-    var target := lab.get_node_or_null("CentralTrainingTarget")
+    var pilot = lab.get_node_or_null("TrainingPlayer")
+    var hud = lab.get_node_or_null("MobileControls/TouchHUD")
+    var target = lab.get_node_or_null("CentralTrainingTarget")
     if pilot == null or hud == null or target == null:
         _fail("Missing player, HUD or training target")
         return
