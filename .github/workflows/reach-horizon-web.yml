@@ -1,0 +1,65 @@
+name: HORIZEN World Library - actual Godot web build
+on:
+  pull_request:
+    paths:
+      - 'game/scripts/levels/reach/**'
+      - 'game/scenes/levels/arenas/unbound_reach.tscn'
+      - 'tools/range/export_web.py'
+      - 'tests/horizen_range/**'
+      - '.github/workflows/reach-horizon-web.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Checkout existing HORIZEN shell at reviewed source identity
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: f92ef7c74d2106ac8c16bcfd50e6e47a17d0fb6e
+          persist-credentials: false
+          path: shell-source
+          sparse-checkout: horizen-game-engine
+      - name: Export same GDScript game as a single-threaded Godot web build
+        run: |
+          set -euo pipefail
+          cp -a shell-source/horizen-game-engine "$RUNNER_TEMP/horizen-game-engine"
+          python3 tools/range/export_web.py "$RUNNER_TEMP/web-build" "$RUNNER_TEMP/horizen-game-engine"
+          mkdir -p "$RUNNER_TEMP/browser-proof"
+          cp "$RUNNER_TEMP/horizen-game-engine/BUILD_INFO.json" "$RUNNER_TEMP/browser-proof/"
+          cat > "$RUNNER_TEMP/horizen-game-engine/PLAY.txt" <<'GUIDE'
+          AETHERFALL / The Unbound Reach / engineering slice 01
+          From this directory run: python3 serve.py --port 8080
+          Open http://127.0.0.1:8080/ in Chrome. World Library > Register Local World.
+          Name: The Unbound Reach. Entry URL: ./builds/unbound-reach/index.html
+          Save, Verify Entry, then Launch. Or open the entry on the same server directly.
+          Desktop: WASD move, mouse or arrows look, Space jump, F start, E rig tool,
+          X/fire, C checkpoint, R reset. 1 Warden, 2 Striker, 3 Mender. No install/APK.
+          First play: select Warden, begin, stay next to the teal courier and hold E.
+          GUIDE
+          (cd "$RUNNER_TEMP" && zip -qr "$RUNNER_TEMP/browser-proof/HORIZEN-Unbound-Reach-browser.zip" horizen-game-engine)
+      - name: Exercise HORIZEN World Library and Godot in Chrome
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/pw"
+          "$RUNNER_TEMP/pw/bin/pip" -q install playwright==1.51.0
+          cd "$RUNNER_TEMP/horizen-game-engine"
+          python3 serve.py --port 8080 > "$RUNNER_TEMP/browser-proof/http.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for n in $(seq 1 40); do if curl -fsS http://127.0.0.1:8080/ >/dev/null; then break; fi; sleep .3; done
+          "$RUNNER_TEMP/pw/bin/python" "$GITHUB_WORKSPACE/tests/horizen_range/world_library.py" "$RUNNER_TEMP/browser-proof"
+      - name: Archive actual web build and browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: HORIZEN-Unbound-Reach-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/browser-proof/
+          retention-days: 14
+          if-no-files-found: warn
