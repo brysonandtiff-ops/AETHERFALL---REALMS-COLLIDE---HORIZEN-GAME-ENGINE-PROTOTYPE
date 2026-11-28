@@ -36,6 +36,11 @@ func run() -> void:
 	level.pad_reset()
 	level.pad.file_path = "user://xbox_range_ci_test.cfg"
 	level.pad.defaults()
+	level.pad.settings["Move deadzone"] = 0.0
+	axis(level, JOY_AXIS_LEFT_X, 0.08)
+	check(level.pad.active and level.pad.move().x > 0.07, "soft first stick motion claims controller without the former 20% gate")
+	level.pad_reset()
+	level.pad.defaults()
 	axis(level, JOY_AXIS_RIGHT_X, 0.03)
 	check(level.pad.look().is_zero_approx(), "resting stick noise rejected")
 	axis(level, JOY_AXIS_LEFT_Y, -0.51)
@@ -60,8 +65,21 @@ func run() -> void:
 	await physics_frame
 	await physics_frame
 	check(level.pad.menu and level.shots == 2, "menu consumes fire")
+	var game_clock_before := level.clock
+	await physics_frame
+	await physics_frame
+	check(level.clock > game_clock_before, "menu keeps range simulation running rather than freezing world physics")
+	check(level.settings_panel.visible and not level.normal_hud.visible, "menu displays its own accessible foreground")
+	var original := level.pad.glyph("Interact")
+	level.pad.rebind("Interact", "Y")
+	button(level, JOY_BUTTON_B, true)
+	await physics_frame
+	check(not level.pad.menu and level.pad.glyph("Interact") == original, "B cancels temporary remaps and closes menu")
+	check(level.normal_hud.visible and not level.settings_panel.visible, "game HUD returns after closing settings")
 	level.pad.rebind("Interact", "Y")
 	check(level.pad.glyph("Interact") == "Y" and level.pad.glyph("Hub") == "X", "swap conflicts and update prompt")
+	level.update_hud()
+	check("Y USE" in level.control_hint.text, "live HUD prompt reflects custom remapping")
 	check(level.pad.save_profile() == OK, "save settings")
 	level.pad.defaults()
 	level.pad.load_profile()
@@ -69,5 +87,5 @@ func run() -> void:
 	level.pad_reset()
 	check(not level.pad.aiming() and level.pad.move().is_zero_approx(), "disconnect clears held actions")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(level.pad.file_path))
-	if failed == 0: print("XBOX_RANGE_NATIVE_PASS: synthetic packets, analog movement, ADS, trigger edges, menu isolation, remap and persistence")
+	if failed == 0: print("XBOX_RANGE_NATIVE_PASS: soft first-stick input, analog movement, ADS, trigger edges, moving world in safe menu, cancel, live HUD glyphs and persistent remaps")
 	quit(0 if failed == 0 else 1)
