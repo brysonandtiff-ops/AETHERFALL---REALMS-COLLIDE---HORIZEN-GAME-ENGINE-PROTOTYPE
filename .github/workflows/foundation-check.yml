@@ -82,10 +82,24 @@ jobs:
           file /tmp/aetherfall-evidence/practice-lab-native.png
           sha256sum /tmp/aetherfall-evidence/practice-lab-native.png
 
+      - name: Encode real game frames as a short native gameplay video
+        if: steps.visual_capture.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v ffmpeg
+          ffmpeg -y -hide_banner -loglevel error -framerate 12 -i '/tmp/aetherfall-evidence/frames/frame_%03d.png' -c:v libx264 -pix_fmt yuv420p /tmp/aetherfall-evidence/practice-lab-native.mp4
+          test -s /tmp/aetherfall-evidence/practice-lab-native.mp4
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 /tmp/aetherfall-evidence/practice-lab-native.mp4
+          sha256sum /tmp/aetherfall-evidence/practice-lab-native.mp4
+
       - name: Archive genuine CI-rendered greybox image if capture succeeded
         if: steps.visual_capture.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: aetherfall-native-greybox
-          path: /tmp/aetherfall-evidence/practice-lab-native.png
+          path: |
+            /tmp/aetherfall-evidence/practice-lab-native.png
+            /tmp/aetherfall-evidence/practice-lab-native.mp4
           if-no-files-found: error
