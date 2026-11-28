@@ -30,6 +30,8 @@ func defaults() -> void:
 	for key in NUM: settings[key] = NUM[key][0]
 	for key in FLAGS: settings[key] = false
 	preset = 0
+	clear_state()
+	blocked.clear()
 
 func clear_state() -> void:
 	held.clear()
@@ -42,6 +44,8 @@ func reset_device() -> void:
 	device = -1
 	active = false
 	menu = false
+	blocked.clear()
+	snapshot.clear()
 
 func glyph(action: String) -> String:
 	return str(binds.get(action,"—"))
@@ -131,6 +135,13 @@ func menu_text() -> String:
 		text += ("▶  " if i == row else "     ") + key + "   :   " + val + "\n"
 	return text + "\n%d / %d    %s" % [row+1,entries.size(),note]
 
+func cancel_menu() -> void:
+	if not snapshot.is_empty():
+		binds = snapshot["binds"].duplicate()
+		settings = snapshot["settings"].duplicate()
+		preset = int(snapshot["preset"])
+	set_menu(false)
+
 func set_menu(value: bool) -> void:
 	menu = value
 	axes.fill(0)
@@ -149,13 +160,14 @@ func packet(e: InputEvent) -> String:
 	var token := ""
 	var down := false
 	if e is InputEventJoypadMotion:
-		if device == -1 and absf(e.axis_value)<0.2: return ""
+		# A small genuine stick movement must be able to claim the pad. Noise stays
+		# below this detection floor; configured deadzones still control gameplay.
+		if device == -1 and absf(e.axis_value) < 0.02: return ""
 		if device != -1 and device != e.device: return ""
 		if int(e.axis) in [0,1,2,3]:
-			if not menu: axes[int(e.axis)] = e.axis_value
-			if absf(e.axis_value)>0.2:
-				device = e.device
-				active = true
+			if not menu: axes[int(e.axis)] = clampf(e.axis_value, -1.0, 1.0)
+			device = e.device
+			active = true
 			return ""
 		if e.axis not in [JOY_AXIS_TRIGGER_LEFT,JOY_AXIS_TRIGGER_RIGHT]: return ""
 		token = "LT" if e.axis == JOY_AXIS_TRIGGER_LEFT else "RT"
@@ -181,13 +193,11 @@ func packet(e: InputEvent) -> String:
 			"D-down": row = posmod(row+1,rows().size())
 			"D-left", "D-right": adjust(str(rows()[row]),1 if token == "D-right" else -1)
 			"A", "Menu":
-				if save_profile() == OK: set_menu(false)
+				if save_profile() == OK:
+					set_menu(false)
+					snapshot.clear()
 				else: note = "Save failed; B cancels"
-			"B":
-				binds = snapshot["binds"].duplicate()
-				settings = snapshot["settings"].duplicate()
-				preset = int(snapshot["preset"])
-				set_menu(false)
+			"B": cancel_menu()
 		return ""
 	if token == "Menu":
 		snapshot = {"binds":binds.duplicate(),"settings":settings.duplicate(),"preset":preset}
