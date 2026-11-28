@@ -40,6 +40,7 @@ func run() -> void:
     var pilot = level.pilot
     var hud = level.hud
     check(hud.touch_enabled and hud.touch_actions.size() >= 7,"touch controls built")
+    check(hud.joystick_knob.size.x <= 50 and hud.joystick_knob.size.y <= 50,"joystick thumb indicator remains compact")
     check(root.content_scale_aspect == Window.CONTENT_SCALE_ASPECT_EXPAND,"mobile viewport expands without letterboxing")
     check(root.content_scale_size.x == root.content_scale_size.y,"square touch design basis")
 
@@ -52,6 +53,8 @@ func run() -> void:
             if r.position.x < 0 or r.position.y < 0 or r.end.x > viewport_size.x or r.end.y > viewport_size.y:
                 safe = false
         check(safe,"buttons stay within %dx%d viewport" % [int(viewport_size.x),int(viewport_size.y)])
+        if viewport_size.x < 660:
+            check(hud.touch_actions["BEGIN"].position.y >= hud.info_frame.position.y + hud.info_frame.size.y + 10,"portrait controls avoid stats panel")
     hud.layout_touch(Vector2(1280,720))
     var camera_yaw: float = pilot.rotation.y
     pilot._unhandled_input(touch(0,Vector2(110,610),true))

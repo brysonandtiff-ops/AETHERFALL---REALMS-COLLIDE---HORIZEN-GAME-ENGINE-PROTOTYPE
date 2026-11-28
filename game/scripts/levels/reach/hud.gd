@@ -13,7 +13,7 @@ var last: Label = Label.new()
 var hint: Label = Label.new()
 var touch_enabled := false
 var touch_actions: Dictionary = {}
-var joystick_base: PanelContainer
+var joystick_base: Control
 var joystick_knob: PanelContainer
 var last_view := Vector2.ZERO
 
@@ -134,11 +134,15 @@ func setup_touch(s) -> void:
     tool.button_down.connect(func(): s.touch_guard = true)
     tool.button_up.connect(func(): s.touch_guard = false)
     action("RIG","RIG",func(): s.switch_rig((s.mode+1)%3))
-    joystick_base = PanelContainer.new()
+    joystick_base = Control.new()
     joystick_base.name = "MovePad"
     joystick_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    joystick_base.add_theme_stylebox_override("panel",style(Color("254257a3"),Color("9ad1d6c9"),70))
     root.add_child(joystick_base)
+    var disc := PanelContainer.new()
+    disc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    disc.add_theme_stylebox_override("panel",style(Color("254257a3"),Color("9ad1d6c9"),70))
+    disc.size = Vector2(148,148)
+    joystick_base.add_child(disc)
     joystick_knob = PanelContainer.new()
     joystick_knob.name = "Thumb"
     joystick_knob.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -159,7 +163,7 @@ func layout_touch(view: Vector2) -> void:
     info_frame.position = Vector2(10,8)
     info_frame.custom_minimum_size.x = minf(305,w-20)
     info_frame.size.x = minf(305,w-20)
-    var top_y: float = 10 if w >= 660 else 180
+    var top_y: float = 10 if w >= 660 else 232
     var top_x: float = w-252 if w >= 660 else 10
     var top_width := 78.0
     for i in range(3):
