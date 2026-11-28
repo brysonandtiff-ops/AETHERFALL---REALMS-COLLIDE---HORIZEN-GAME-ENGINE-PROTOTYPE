@@ -1,6 +1,7 @@
-import copy
 import importlib.util
 import json
+import shutil
+import subprocess
 from pathlib import Path
 import tempfile
 import unittest
@@ -95,6 +96,51 @@ class PrivateSireBridgeTests(unittest.TestCase):
             subprocess.run(["git", "-C", str(root), "remote", "add", "origin",
                             "https://github.com/other/repo.git"], check=True)
             self.assertEqual(bridge.source_report(root)["source"], "BLOCKED")
+
+
+    @unittest.skipUnless(shutil.which("git"), "git unavailable")
+    def test_real_git_and_subprocess_positive_catalog_fixture(self):
+        # A real isolated Git checkout exercises the bridge; fixture data is
+        # not S.I.R.E. production source, nor evidence of its live runtime.
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            def run(*args):
+                return subprocess.check_output(
+                    ["git", "-C", str(root), *args], text=True).strip()
+            run("init", "-q")
+            run("remote", "add", "origin", "https://github.com/" + bridge.REPO + ".git")
+            registry = root / bridge.REGISTRY
+            studio = root / bridge.STUDIO
+            for file in (registry, studio):
+                file.parent.mkdir(parents=True, exist_ok=True)
+            registry.write_text(
+                'import json\nnames = ("agents", "skills", "plugins", "abilities", "execution")\n'
+                'print(json.dumps(dict(success=True, counts={n: 1 for n in names}, '
+                '**{n: [{"id": "fixture"}] for n in names})))\n', encoding="utf-8")
+            studio.write_text(
+                'CAPABILITIES: tuple = (StudioCapability("fixture"),)\n', encoding="utf-8")
+            run("add", ".")
+            run("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                "-c", "commit.gpgsign=false", "commit", "-qm", "fixture")
+            pin = run("rev-parse", "HEAD")
+            registry_blob = run("rev-parse", "HEAD:" + bridge.REGISTRY)
+            studio_blob = run("rev-parse", "HEAD:" + bridge.STUDIO)
+            with patch.multiple(bridge, PIN=pin, REGISTRY_BLOB=registry_blob,
+                                STUDIO_BLOB=studio_blob):
+                report = bridge.source_report(root)
+                self.assertEqual(report["source"], "PINNED_SOURCE_VERIFIED")
+                self.assertEqual(report["tracked_paths"], 2)
+                result = bridge.catalog(root)
+                self.assertEqual(result["catalogue"], "EXECUTED_SOURCE_REGISTRY")
+                self.assertEqual(result["studio_capability_ids"], ["fixture"])
+                self.assertEqual(result["studio_verified_count"], 0)
+                self.assertEqual(result["runtime"], "NOT_VERIFIED")
+                self.assertEqual(result["runner"], "NOT_VERIFIED")
+                self.assertFalse(result["dispatch"])
+                registry.write_text("raise RuntimeError('unexpected execution')\n",
+                                    encoding="utf-8")
+                self.assertEqual(bridge.source_report(root)["source"], "BLOCKED")
+                self.assertEqual(bridge.catalog(root)["source"], "BLOCKED")
 
 
 if __name__ == "__main__":
