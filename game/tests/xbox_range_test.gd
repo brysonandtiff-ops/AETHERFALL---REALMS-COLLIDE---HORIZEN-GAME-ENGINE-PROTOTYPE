@@ -65,12 +65,12 @@ func run() -> void:
 	await physics_frame
 	await physics_frame
 	check(level.pad.menu and level.shots == 2, "menu consumes fire")
-	var game_clock_before := level.clock
+	var game_clock_before: float = level.clock
 	await physics_frame
 	await physics_frame
 	check(level.clock > game_clock_before, "menu keeps range simulation running rather than freezing world physics")
 	check(level.settings_panel.visible and not level.normal_hud.visible, "menu displays its own accessible foreground")
-	var original := level.pad.glyph("Interact")
+	var original: String = level.pad.glyph("Interact")
 	level.pad.rebind("Interact", "Y")
 	button(level, JOY_BUTTON_B, true)
 	await physics_frame
