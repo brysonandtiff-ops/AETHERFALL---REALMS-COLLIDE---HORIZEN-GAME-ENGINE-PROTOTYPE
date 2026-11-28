@@ -12,6 +12,9 @@ git rev-parse HEAD > "$OUT/tested-commit.txt"
 printf '%s\n' "${PR_HEAD_SHA:-$(git rev-parse HEAD)}" > "$OUT/source-head.txt"
 printf '%s\n' 'Graphical Linux native software-rendered scripted test; NOT Android, human input or production FPS.' > "$OUT/scope.txt"
 "$GODOT" --headless --path game --editor --import --quit 2>&1 | tee "$OUT/import.log"
+timeout 75 "$GODOT" --headless --path game --script res://tests/xbox_range_test.gd 2>&1 | tee "$OUT/xbox-input.log"
+grep -q '^XBOX_RANGE_NATIVE_PASS:' "$OUT/xbox-input.log"
+if grep -Eiq '(SCRIPT ERROR|ERROR|FATAL):' "$OUT/xbox-input.log"; then exit 1; fi
 timeout 75 "$GODOT" --headless --path game --script res://tests/unbound_reach_test.gd 2>&1 | tee "$OUT/native.log"
 grep -q '^UNBOUND_REACH_NATIVE_PASS:' "$OUT/native.log"
 if grep -Eiq '(SCRIPT ERROR|ERROR|FATAL):' "$OUT/import.log" "$OUT/native.log"; then exit 1; fi
