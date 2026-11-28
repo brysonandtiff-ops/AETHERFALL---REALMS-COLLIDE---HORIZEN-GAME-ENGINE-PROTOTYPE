@@ -39,7 +39,7 @@
       "type": "character",
       "role": "tank_attrition_zone_control",
       "status": "reserved_no_source",
-      "concept_status": "legacy_owner_approved_candidate_for_aetherfall",
+      "concept_status": "aetherfall_approved",
       "concept_dir": "art/concepts/characters/CHR_Korvex",
       "source_dir": "art/blender/characters/CHR_Korvex",
       "runtime_dir": "game/assets/characters/heroes/CHR_Korvex"

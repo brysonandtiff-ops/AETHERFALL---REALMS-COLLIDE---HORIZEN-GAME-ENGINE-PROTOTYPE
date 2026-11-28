@@ -192,6 +192,50 @@
         "No model, rig, runtime, full roster uniqueness or completed concept-package claim without corresponding proof."
       ],
       "approval_scope": "Exact owner-selected visual screenshot and replacement identity only; full gameplay kit/ascension mechanics pending."
+    },
+    "CHR_Korvex": {
+      "approval": "owner_approved_aetherfall_concept",
+      "evidence_class": "CONCEPT_ONLY",
+      "source": {
+        "path": "art/concepts/characters/CHR_Korvex/Korvex_The_Hollow_Titan_CANONICAL_v1.png",
+        "uploaded_filename": "AETHERFALL_Korvex_The_Hollow_Titan_Review.png",
+        "format": "PNG",
+        "media_type": "image/png",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 3166920,
+        "sha256": "697796f1da2a4561c19671ee20e44f38e830634e61f803a71206204f5d615ec6",
+        "state": "pending_binary_checkin"
+      },
+      "identity": {
+        "display_name": "Korvex",
+        "epithet": "The Hollow Titan",
+        "role_class": "tank",
+        "signature_focus": "Grave Maul",
+        "active_ability_names": [
+          "Grave Maul",
+          "Bone Bastion",
+          "Decay Field",
+          "Titan's Roar"
+        ],
+        "passive_ability_name": "Hollow Endurance"
+      },
+      "visual_lock": [
+        "Massive graveborn humanoid juggernaut, walking mausoleum silhouette, broad shoulders, heavy armored limbs, wide stance.",
+        "Closed angular horned helmet with vertical purple glowing visor slits; retain exact face/helmet shapes in the four expression studies.",
+        "Layered aged iron and mausoleum stone armor with bronze-gold edging, jagged spikes, bone carving and shoulder skull ornaments.",
+        "Purple void-soul energy glows through rib-like chest armor and gothic window-like openings; preserve the pointed-arch illuminated structure on his back.",
+        "Heavy chains, suspended purple soul lanterns, tattered purple funeral cloth and front tabard; no pirate rigging or generic cape substitution.",
+        "Grave Maul is the signature long-handled gothic mausoleum-shaped hammer with spiked roof, glowing pointed-arch purple windows and hanging lanterns.",
+        "Preserve the exact 4:3 AETHERFALL source sheet, front/side/back turnaround and materials/palette, not an earlier alternative or a generated approximation."
+      ],
+      "forbidden_drift": [
+        "No replacement helmet, different silhouette, human face, generic knight or copied hero armor.",
+        "No Grave Maul substitution with an axe, shield, sword, anchor or unrelated weapon.",
+        "No removal of gothic mausoleum motifs, chains, skulls, lanterns, purple funeral cloth or void-soul energy.",
+        "Do not silently rename Korvex to Corvex or resolve the separate unapproved alias/collision record.",
+        "No changes to approved source bytes or concept kit without explicit owner review; no final tuning, model or runtime claims."
+      ]
     }
   },
   "alternate_references": {

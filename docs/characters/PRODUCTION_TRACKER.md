@@ -6,7 +6,7 @@ Current truth is in `plans/<ID>.json`, not this snapshot. No character has verif
 | --- | --- | --- | --- |
 | `CHR_Vellaris_Bloodshield` | AETHERFALL concept approved | Uploaded reference seen, binary NOT archived | Not verified |
 | `CHR_ThornDell` | AETHERFALL concept approved | Source not verified | Not verified |
-| `CHR_Korvex` | Legacy candidate | Source not verified | Not verified |
+| `CHR_Korvex` | AETHERFALL concept approved: The Hollow Titan | Original in Library; GitHub binary pending | Not verified |
 | `CHR_Dreadhull` | AETHERFALL concept approved: Bonebrine Reaver #07 | Original verified in chat; GitHub binary pending | Not verified |
 | `CHR_KRAIT` | AETHERFALL visual concept approved: The Sovereign Guardian; replaces Bryskar | Original in Library; GitHub binary pending | Not verified |
 | `CHR_Morrigan` | Legacy candidate | Source not verified | Not verified |

@@ -56,6 +56,15 @@ PINNED = {
         "focus": "Rift Knuckles", "actives": [], "passive": None,
         "traits": ("horn", "cyan", "dragon-shaped", "gauntlets", "reactor", "ascension"),
     },
+    "CHR_Korvex": {
+        "path": "art/concepts/characters/CHR_Korvex/Korvex_The_Hollow_Titan_CANONICAL_v1.png",
+        "sha256": "697796f1da2a4561c19671ee20e44f38e830634e61f803a71206204f5d615ec6",
+        "format": "PNG", "width": 1448, "height": 1086, "bytes": 3166920,
+        "name": "Korvex", "title": "The Hollow Titan", "role": "tank",
+        "focus": "Grave Maul", "actives": ["Grave Maul","Bone Bastion","Decay Field","Titan's Roar"],
+        "passive": "Hollow Endurance",
+        "traits": ("mausoleum", "horned", "purple", "chains", "lanterns", "grave maul", "funeral cloth"),
+    },
 }
 # Independently pinned owner-selected design contract. Progress gates are not locked here.
 DREADHULL_DESIGN_CONTRACT = {
@@ -186,6 +195,85 @@ KRAIT_REPLACEMENT = {
     "owner_approval_date": "2026-11-27",
     "historical_kit_path": "docs/characters/BRYSKAR_OWNER_SELECTED_KIT.md",
     "scope": "Owner approved K.R.A.I.T visual design and replacement identity; complete inherited gameplay kit and ascension rules require separate confirmation."
+}
+# Independent owner-selected Korvex concept contract.
+KORVEX_DESIGN_CONTRACT = {
+    "identity": {
+        "display_name": "Korvex",
+        "epithet": "The Hollow Titan",
+        "role_class": "tank",
+        "signature_focus": "Grave Maul",
+        "active_ability_names": [
+            "Grave Maul",
+            "Bone Bastion",
+            "Decay Field",
+            "Titan's Roar"
+        ],
+        "passive_ability_name": "Hollow Endurance"
+    },
+    "visual_lock": [
+        "Massive graveborn humanoid juggernaut, walking mausoleum silhouette, broad shoulders, heavy armored limbs, wide stance.",
+        "Closed angular horned helmet with vertical purple glowing visor slits; retain exact face/helmet shapes in the four expression studies.",
+        "Layered aged iron and mausoleum stone armor with bronze-gold edging, jagged spikes, bone carving and shoulder skull ornaments.",
+        "Purple void-soul energy glows through rib-like chest armor and gothic window-like openings; preserve the pointed-arch illuminated structure on his back.",
+        "Heavy chains, suspended purple soul lanterns, tattered purple funeral cloth and front tabard; no pirate rigging or generic cape substitution.",
+        "Grave Maul is the signature long-handled gothic mausoleum-shaped hammer with spiked roof, glowing pointed-arch purple windows and hanging lanterns.",
+        "Preserve the exact 4:3 AETHERFALL source sheet, front/side/back turnaround and materials/palette, not an earlier alternative or a generated approximation."
+    ],
+    "forbidden_drift": [
+        "No replacement helmet, different silhouette, human face, generic knight or copied hero armor.",
+        "No Grave Maul substitution with an axe, shield, sword, anchor or unrelated weapon.",
+        "No removal of gothic mausoleum motifs, chains, skulls, lanterns, purple funeral cloth or void-soul energy.",
+        "Do not silently rename Korvex to Corvex or resolve the separate unapproved alias/collision record.",
+        "No changes to approved source bytes or concept kit without explicit owner review; no final tuning, model or runtime claims."
+    ],
+    "visual_identity": "Massive graveborn humanoid juggernaut, walking mausoleum silhouette, broad shoulders, heavy armored limbs, wide stance. Closed angular horned helmet with vertical purple glowing visor slits; retain exact face/helmet shapes in the four expression studies. Layered aged iron and mausoleum stone armor with bronze-gold edging, jagged spikes, bone carving and shoulder skull ornaments. Purple void-soul energy glows through rib-like chest armor and gothic window-like openings; preserve the pointed-arch illuminated structure on his back. Heavy chains, suspended purple soul lanterns, tattered purple funeral cloth and front tabard; no pirate rigging or generic cape substitution. Grave Maul is the signature long-handled gothic mausoleum-shaped hammer with spiked roof, glowing pointed-arch purple windows and hanging lanterns. Preserve the exact 4:3 AETHERFALL source sheet, front/side/back turnaround and materials/palette, not an earlier alternative or a generated approximation.",
+    "palette": [
+        "bone ivory",
+        "aged iron gray",
+        "violet",
+        "deep plum",
+        "charcoal",
+        "bronze-gold"
+    ],
+    "materials": [
+        "Aged iron",
+        "Mausoleum stone",
+        "Bone carving",
+        "Funeral cloth (tattered)",
+        "Void-soul energy"
+    ],
+    "signature_prop": "Grave Maul",
+    "active_abilities": [
+        {
+            "slot": "primary",
+            "name": "Grave Maul",
+            "summary": "A devastating, empowered maul strike that crushes enemies, dealing heavy damage (increased against high-durability targets)."
+        },
+        {
+            "slot": "active_1",
+            "name": "Bone Bastion",
+            "summary": "Raises jagged grave-spires or tombstone barricades from the ground, blocking paths and controlling space."
+        },
+        {
+            "slot": "active_2",
+            "name": "Decay Field",
+            "summary": "Corrupts the ground in an area, dealing damage over time and weakening enemies' defenses."
+        },
+        {
+            "slot": "active_3",
+            "name": "Titan's Roar",
+            "summary": "Unleashes a monumental roar that staggers enemies and slows their movement and attack speed."
+        }
+    ],
+    "passive": {
+        "name": "Hollow Endurance",
+        "summary": "Converts a portion of incoming damage into temporary armor (Endurance), bolstering Korvex's durability."
+    },
+    "archetype": "Anti-tank / zone denial / frontline juggernaut",
+    "one_of_one_hook": "Walking mausoleum with Grave Maul, tombstone barricades, defense-eroding decay and temporary Endurance armor.",
+    "silhouette_read": "Broad spiked gothic mausoleum armor, horned visor, purple lantern chains, long-handled mausoleum hammer and tattered funeral cloth.",
+    "gameplay_promise": "Pressure high-durability targets, control space with tomb barriers, weaken enemies in corrupted ground and survive extended fights."
 }
 EXTRA_KNOWN = {
     "art/concepts/characters/CHR_ThornDell/ThornDell_Venomroot_chat_copy.webp": {
@@ -364,6 +452,21 @@ def check(root=ROOT):
             cref = {}
         pi = plan.get("identity") or {}
         design = plan.get("design") or {}
+        if identifier == "CHR_Korvex":
+            actual_contract = {
+                "identity": ident,
+                "visual_lock": lock.get("visual_lock"),
+                "forbidden_drift": lock.get("forbidden_drift"),
+                **{key: design.get(key) for key in (
+                    "visual_identity", "palette", "materials", "signature_prop",
+                    "active_abilities", "passive")},
+                **{key: pi.get(key) for key in (
+                    "archetype", "one_of_one_hook", "silhouette_read", "gameplay_promise")},
+            }
+            if actual_contract != KORVEX_DESIGN_CONTRACT:
+                errors.append("Korvex approved design contract drift")
+            if source.get("media_type") != "image/png" or source.get("uploaded_filename") != "AETHERFALL_Korvex_The_Hollow_Titan_Review.png":
+                errors.append("Korvex original source provenance drift")
         if identifier == "CHR_KRAIT":
             actual_visual = {
                 "visual_lock": lock.get("visual_lock"),

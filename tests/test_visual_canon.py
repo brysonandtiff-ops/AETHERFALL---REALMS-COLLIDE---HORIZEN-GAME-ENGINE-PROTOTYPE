@@ -22,6 +22,7 @@ class VisualCanonTests(unittest.TestCase):
             "docs/characters/plans/CHR_ThornDell.json",
             "docs/characters/plans/CHR_Dreadhull.json",
             "docs/characters/plans/CHR_KRAIT.json",
+            "docs/characters/plans/CHR_Korvex.json",
             "art/asset_registry.json",
         ]
         for rel in paths:
@@ -186,6 +187,32 @@ class VisualCanonTests(unittest.TestCase):
         self.change("docs/characters/CANON_LOCKS.json",
                     lambda d: d["locked_characters"]["CHR_KRAIT"]["source"].update(state="source_verified"))
         self.rejected("Character source promoted without original image bytes: CHR_KRAIT")
+
+    def test_korvex_exact_master_cannot_drift(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_Korvex"]["source"].update(sha256="a"*64))
+        self.rejected("Approved reference identity/hash drift: CHR_Korvex")
+
+    def test_korvex_maul_cannot_be_replaced(self):
+        self.change("docs/characters/plans/CHR_Korvex.json",
+                    lambda d: d["design"].update(signature_prop="Grave Maul renamed shield"))
+        self.rejected("Korvex approved design contract drift")
+
+    def test_korvex_kit_mechanics_cannot_drift(self):
+        self.change("docs/characters/plans/CHR_Korvex.json",
+                    lambda d: d["design"]["active_abilities"][0].update(summary="Unrelated attack"))
+        self.rejected("Korvex approved design contract drift")
+
+    def test_korvex_visual_traits_cannot_be_changed(self):
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_Korvex"]["visual_lock"].append("Replace with pirate"))
+        self.rejected("Korvex approved design contract drift")
+
+    def test_korvex_archive_cannot_be_forged(self):
+        (self.root / guard.PINNED["CHR_Korvex"]["path"]).unlink(missing_ok=True)
+        self.change("docs/characters/CANON_LOCKS.json",
+                    lambda d: d["locked_characters"]["CHR_Korvex"]["source"].update(state="source_verified"))
+        self.rejected("Character source promoted without original image bytes: CHR_Korvex")
 
     def test_infographic_hierarchy_cannot_be_dropped(self):
         self.change("docs/characters/CANON_LOCKS.json",
