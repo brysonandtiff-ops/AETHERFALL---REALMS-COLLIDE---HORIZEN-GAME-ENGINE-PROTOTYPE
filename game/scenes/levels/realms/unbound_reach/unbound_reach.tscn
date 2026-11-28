@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/realms/unbound_reach/range.gd" id="1_range"]
+[ext_resource type="Script" path="res://scenes/levels/realms/unbound_reach/arrival_marker.gd" id="2_marker"]
+[ext_resource type="Script" path="res://scenes/levels/realms/unbound_reach/dressing.gd" id="3_dress"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
 sky_top_color = Color(0.23, 0.51, 0.77, 1)
@@ -16,7 +18,8 @@ background_mode = 2
 sky = SubResource("Sky")
 ambient_light_source = 2
 ambient_light_color = Color(0.77, 0.86, 1.0, 1)
-ambient_light_energy = 0.68
+ambient_light_energy = 0.47
+tonemap_mode = 2
 fog_enabled = true
 fog_light_color = Color(0.72, 0.82, 0.89, 1)
 fog_density = 0.0028
@@ -24,12 +27,19 @@ fog_density = 0.0028
 [node name="UnboundReach" type="Node3D"]
 script = ExtResource("1_range")
 
+[node name="HubArrival" type="Marker3D" parent="."]
+position = Vector3(0, 28, 51.3)
+script = ExtResource("2_marker")
+
+[node name="RangeEnvironmentDetail" type="Node" parent="."]
+script = ExtResource("3_dress")
+
 [node name="ValleyAtmosphere" type="WorldEnvironment" parent="."]
 environment = SubResource("Env")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 rotation = Vector3(-0.93, -0.65, 0)
 light_color = Color(1, 0.92, 0.8, 1)
-light_energy = 1.12
+light_energy = 0.93
 shadow_enabled = true
 directional_shadow_max_distance = 105.0
