@@ -41,6 +41,14 @@ jobs:
           godot --headless --fixed-fps 60 --path game --script "$GITHUB_WORKSPACE/tests/range/bridge_drill.gd" 2>&1 | tee "$RUNNER_TEMP/reach-proof/playtest.log"
           grep -Fq 'AF_RANGE_RESULT PASS' "$RUNNER_TEMP/reach-proof/playtest.log"
           ! grep -Ei 'SCRIPT ERROR|^ERROR:' "$RUNNER_TEMP/reach-proof/playtest.log"
+      - name: Headless simulated touch interaction and responsive HUD regression
+        env:
+          AF_FORCE_TOUCH_UI: '1'
+        run: |
+          set -euo pipefail
+          godot --headless --fixed-fps 60 --path game --script "$GITHUB_WORKSPACE/tests/range/mobile_controls.gd" 2>&1 | tee "$RUNNER_TEMP/reach-proof/mobile-input.log"
+          grep -Fq 'AF_MOBILE_RESULT PASS' "$RUNNER_TEMP/reach-proof/mobile-input.log"
+          ! grep -Ei 'SCRIPT ERROR|^ERROR:' "$RUNNER_TEMP/reach-proof/mobile-input.log"
       - name: Capture real software-rendered Godot frames and interaction video
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
