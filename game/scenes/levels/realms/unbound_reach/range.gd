@@ -1,6 +1,7 @@
 extends "res://scenes/levels/realms/unbound_reach/terrain.gd"
 ## Range-only instrumentation. No competitive rules or canonical hero kits.
 const DEST := ["Arena","A","Rescue","Arch","B","C","D"]
+var pad := preload("res://scenes/levels/realms/unbound_reach/range_pad.gd").new()
 var stops := STOPS
 var player := CharacterBody3D.new()
 var camera := Camera3D.new()
@@ -24,6 +25,9 @@ var notice_until := 0.0
 var previous_hud := ""
 
 func _ready() -> void:
+	pad.load_profile()
+	Input.joy_connection_changed.connect(_pad_connection)
+	get_window().focus_exited.connect(pad_reset)
 	make_world()
 	add_child(player)
 	player.name = "PracticeBody"
@@ -106,15 +110,52 @@ func warp(zone: String) -> void:
 		player.rotation.y = atan2(player.position.x,player.position.z)
 	message("Arrived: "+zone)
 
+func pad_reset() -> void:
+	if pad.menu and not pad.snapshot.is_empty():
+		pad.binds = pad.snapshot["binds"].duplicate()
+		pad.settings = pad.snapshot["settings"].duplicate()
+		pad.preset = int(pad.snapshot["preset"])
+	pad.reset_device()
+	pad.blocked.clear()
+	jump_requested = false
+	fire_requested = false
+	use_requested = false
+	camera.fov = 78.0
+
+func _pad_connection(id: int, connected: bool) -> void:
+	if not connected and id == pad.device:
+		pad_reset()
+		message("Controller disconnected. Reconnect or use keyboard.")
+
 func _unhandled_input(e: InputEvent) -> void:
+	if e is InputEventJoypadButton or e is InputEventJoypadMotion:
+		var action := pad.packet(e)
+		if pad.menu:
+			fire_requested = false
+			jump_requested = false
+			use_requested = false
+		else:
+			match action:
+				"Jump": jump_requested = true
+				"Fire": fire_requested = true
+				"Interact": use_requested = true
+				"Hub": warp("Hub")
+				"Reset drill": reset_drill()
+		return
+	if pad.menu:
+		if e is InputEventKey and e.pressed and e.physical_keycode == KEY_ESCAPE: pad_reset()
+		return
 	if e is InputEventMouseMotion and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:
+		pad.active = false
 		player.rotate_y(-e.relative.x*0.0022)
 		pitch = clampf(pitch-e.relative.y*0.0022,-1.42,1.42)
 		camera.rotation.x = pitch
 	elif e is InputEventMouseButton and e.pressed and e.button_index==MOUSE_BUTTON_LEFT:
+		pad.active = false
 		if Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED: Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		else: fire_requested = true
 	elif e is InputEventKey and e.pressed and not e.echo:
+		pad.active = false
 		match e.physical_keycode:
 			KEY_ESCAPE: Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			KEY_SPACE: jump_requested = true
@@ -123,6 +164,10 @@ func _unhandled_input(e: InputEvent) -> void:
 			KEY_T: reset_drill()
 
 func _physics_process(delta: float) -> void:
+	if pad.menu:
+		hud.text = pad.menu_text()
+		previous_hud = ""
+		return
 	clock += delta
 	for i in range(drones.size()):
 		var rail := 0 if i<6 else 1
@@ -133,8 +178,15 @@ func _physics_process(delta: float) -> void:
 		if not d.visible and clock>=float(d.get_meta("restore_at",0.0)):
 			d.show()
 			(d as StaticBody3D).collision_layer = 1
-	var k := Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W))).limit_length(1)
-	var motion := player.basis * Vector3(k.x,0,k.y) * (9.0 if Input.is_physical_key_pressed(KEY_SHIFT) else 6.0)
+	var look := pad.look()
+	var scale_aim := float(pad.settings["ADS multiplier"]) if pad.aiming() else 1.0
+	player.rotate_y(-look.x*deg_to_rad(float(pad.settings["Horizontal speed"]))*scale_aim*delta)
+	pitch = clampf(pitch-look.y*deg_to_rad(float(pad.settings["Vertical speed"]))*scale_aim*delta,-1.42,1.42)
+	if not is_zero_approx(look.y): camera.rotation.x = pitch
+	camera.fov = move_toward(camera.fov,58.0 if pad.aiming() else 78.0,160.0*delta)
+	var k := Vector2(float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A)),float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W)))
+	k = (k+pad.move()).limit_length(1)
+	var motion := player.basis * Vector3(k.x,0,k.y) * (9.0 if Input.is_physical_key_pressed(KEY_SHIFT) or pad.running() else 6.0)
 	player.velocity.x = motion.x
 	player.velocity.z = motion.z
 	if not player.is_on_floor(): player.velocity.y -= 21.0*delta
@@ -181,7 +233,7 @@ func interact() -> void:
 	mesh.material_override = material(CYAN if health==0 else Color("d4ffee"),true)
 	if health==0:
 		rescued += 1
-		message("Ally revived. E again to heal.")
+		message("Ally revived. Use %s again to heal." % (pad.glyph("Interact") if pad.active else "E"))
 	else: message("Ally healed to full")
 
 func shoot() -> void:
@@ -214,13 +266,17 @@ func message(s: String) -> void:
 	notice_until = clock+2.3
 
 func update_hud() -> void:
-	var context := ""
+	var ctx := ""
+	var use_key := pad.glyph("Interact") if pad.active else "E"
 	var n := nearest(terminals,3.2)
-	if n>=0: context = ["E   Choose destination", "E   Change drone respawn delay", "E   Enter portal → "+DEST[destination]][n]
-	elif nearest(pods,3.0)>=0: context = "E   Revive / heal ally"
-	elif player.position.distance_to(Vector3(-36,3,1))<3.5: context = "E   Return to Hero Hub"
-	elif clock<notice_until: context = notice
-	var text := "THE UNBOUND REACH   /   PRACTICE RANGE\nHits %d / %d     Allies revived %d / 4     Portal: %s\nWASD move · Shift run · Space jump · Click aim/fire · Esc release\nE interact · T reset drills · R return to hub\n%s" % [hits,shots,rescued,DEST[destination],context]
+	if n>=0: ctx = use_key+"   "+["Choose destination", "Change drone respawn delay", "Enter portal → "+DEST[destination]][n]
+	elif nearest(pods,3.0)>=0: ctx = use_key+"   Revive / heal ally"
+	elif player.position.distance_to(Vector3(-36,3,1))<3.5: ctx = use_key+"   Return to Hero Hub"
+	elif clock<notice_until: ctx = notice
+	var hints := "WASD move · Shift run · Space jump · Click fire · Esc release\nE interact · T reset drills · R return to hub"
+	if pad.active:
+		hints = "%s aim · %s fire · %s jump · %s interact · Menu controls" % [pad.glyph("Aim"),pad.glyph("Fire"),pad.glyph("Jump"),use_key]
+	var text := "THE UNBOUND REACH   /   PRACTICE RANGE\nHits %d / %d     Allies revived %d / 4     Portal: %s\n%s\n%s" % [hits,shots,rescued,DEST[destination],hints,ctx]
 	if text!=previous_hud:
 		hud.text = text
 		previous_hud = text
