@@ -284,3 +284,17 @@ func _unhandled_input(e: InputEvent) -> void:
     elif e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed:
         if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED: fire()
         elif not DisplayServer.is_touchscreen_available(): Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+    elif e is InputEventJoypadButton:
+        if e.button_index == JOY_BUTTON_RIGHT_SHOULDER and not e.pressed:
+            touch_guard = false
+        if e.pressed:
+            match e.button_index:
+                JOY_BUTTON_A: pilot.jump_queued = true
+                JOY_BUTTON_X: fire()
+                JOY_BUTTON_RIGHT_SHOULDER:
+                    touch_guard = true
+                    use_tool()
+                JOY_BUTTON_Y: switch_rig((mode+1)%3)
+                JOY_BUTTON_START: start_trial()
+                JOY_BUTTON_BACK: reset_trial()
